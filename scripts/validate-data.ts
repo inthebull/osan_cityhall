@@ -22,6 +22,24 @@ for (const f of readdirSync(join(root, "data/map/floors"))) {
   }
 }
 
+// 게임 청사 배치(hall.json): 방 ID 중복, 격자 범위, 부서 연결
+const hall = read("data/map/hall.json");
+const seen = new Set<string>();
+for (const f of hall.floors) {
+  for (const r of f.rooms) {
+    if (seen.has(r.id)) errors.push(`hall.json: 방 ID ${r.id} 중복`);
+    seen.add(r.id);
+    if (r.x < 1 || r.y < 1 || r.x + r.w > hall.size.w - 1 || r.y + r.h > hall.size.h - 1) errors.push(`hall.json: ${f.id}/${r.id} 격자 범위 밖`);
+    if (r.dept_id && !deptIds.has(r.dept_id)) errors.push(`hall.json: ${r.id}의 dept_id ${r.dept_id}가 orgs.json에 없음`);
+  }
+}
+for (const o of orgs as { dept_id: string; room_ids?: string[] }[]) {
+  for (const id of o.room_ids ?? []) {
+    const inFloors = readdirSync(join(root, "data/map/floors")).some((f) => read(`data/map/floors/${f}`).rooms.some((r: { id: string }) => r.id === id));
+    if (!seen.has(id) && !inFloors) errors.push(`orgs.json: ${o.dept_id}의 방 ${id}가 지도에 없음`);
+  }
+}
+
 // 개인정보 패턴: 주민번호, 휴대전화, 이메일
 const pii: [string, RegExp][] = [
   ["주민번호", /\b\d{6}-[1-4]\d{6}\b/],
