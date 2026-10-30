@@ -14,6 +14,18 @@
   --color-rose: #b84b45;
   --color-foam: #fbf7f0;
   --font-display: "Jua", "IBM Plex Sans KR", sans-serif;
+
+  /* 아이소메트릭 청사 화면: DESIGN.md 시정슬로건 색(남색·청록)과 문서 팔레트 */
+  --color-osan-navy: #16288b;
+  --color-osan-teal: #00a0ad;
+  --color-osan-teal-deep: #006b73;
+  --color-osan-teal-tint: #e0f4f5;
+  --color-slate-ink: #1f2937;
+  --color-slate-muted: #6b7280;
+  --color-surface: #f7f8fa;
+  --color-hairline: #d9dee7;
+  --color-warn-tint: #fcebd3;
+  --color-warn-ink: #7a4a12;
 }
 
 @layer base {

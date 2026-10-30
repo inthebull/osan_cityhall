@@ -16,8 +16,23 @@ export type Action =
   | "roof"
   | "portal";
 
+// ai: AI 주무관 근무(불 켜진 방), feature: 업무배분·도구 등 기능 공간, planned: 채용 예정(불 꺼진 방), facility: 엘리베이터·통로
+export type RoomKind = "ai" | "feature" | "planned" | "facility";
+
+export type RoomRect = {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  kind: RoomKind;
+  ground: string;
+};
+
 export type Spot = {
   id: string;
+  kind: RoomKind;
   x: number;
   y: number;
   title: string;
@@ -54,6 +69,7 @@ export type FloorMap = {
   spots: Spot[];
   labels: { x: number; y: number; text: string }[];
   decors: Decor[];
+  rooms: RoomRect[];
   spawn: { x: number; y: number };
 };
 
@@ -89,13 +105,29 @@ export function floorList(): { id: FloorId; name: string }[] {
   }));
 }
 
-export function directory(): { id: FloorId; name: string; places: { id: string; title: string }[] }[] {
+const FEATURE_ACTIONS: Action[] = ["pingpong", "market", "roof", "tool", "minwon"];
+
+// CLAUDE.md 범위: AI 주무관은 민원여권과·노인장애인과·동 행정복지센터만. 나머지 부서 방은 '채용 예정'.
+export function roomKind(room: { dept_id?: string | null; action: Action; id: string }): RoomKind {
+  if (room.dept_id) return "ai";
+  if (FEATURE_ACTIONS.includes(room.action) || room.id === "guide") return "feature";
+  return "planned";
+}
+
+export const PLANNED_LINE =
+  "이 방은 AI 주무관 채용 예정입니다. 지금은 민원여권과, 노인장애인과, 동 행정복지센터에서 AI 주무관이 근무합니다.";
+
+export function directory(): {
+  id: FloorId;
+  name: string;
+  places: { id: string; title: string; kind: RoomKind }[];
+}[] {
   return FLOOR_ORDER.map((id) => {
     const spots = FLOORS[id].spots;
     const elevator = spots.find((spot) => spot.action === "floors");
     const places = spots
       .filter((spot) => spot.action !== "floors" || spot === elevator)
-      .map((spot) => ({ id: spot.id, title: spot.title }));
+      .map((spot) => ({ id: spot.id, title: spot.title, kind: spot.kind }));
     return { id, name: id === "ax" ? "별관" : FLOORS[id].name.replace("본관 ", ""), places };
   });
 }
@@ -358,6 +390,7 @@ function build(
   const labels: FloorMap["labels"] = [];
   const decors: Decor[] = [];
   const doors: [number, number][] = [];
+  const rects: RoomRect[] = [];
 
   for (const room of rooms) {
     for (let y = room.y - 1; y <= room.y + room.h; y++) {
@@ -369,6 +402,8 @@ function build(
       }
     }
     doors.push(...doorCells(room));
+    const kind = roomKind(room);
+    rects.push({ id: room.id, name: room.name, x: room.x, y: room.y, w: room.w, h: room.h, kind, ground: room.floor });
     labels.push({
       x: (room.x + room.w / 2) * TILE,
       y: (room.y + 0.45) * TILE,
@@ -391,14 +426,15 @@ function build(
     furnish(room, props, decors);
 
     const feet = npcFeet(room);
-    const actor = room.actor !== false && room.action !== "portal";
+    const actor = room.actor !== false && room.action !== "portal" && kind !== "planned";
     spots.push({
       id: room.id,
+      kind,
       x: feet.x,
       y: feet.y,
       title: room.name,
       action: room.action,
-      lines: room.lines,
+      lines: kind === "planned" ? [PLANNED_LINE] : room.lines,
       stamp: room.stamp,
       portal: room.portal,
       actor,
@@ -417,6 +453,7 @@ function build(
     props.push({ sprite: 2, x, y, solid: false, hw: 0, hh: 0 });
     spots.push({
       id: `ev-${id}-${at.x}`,
+      kind: "facility",
       x,
       y: y + 8,
       title: "엘리베이터",
@@ -435,6 +472,7 @@ function build(
     props.push({ sprite: 8, x, y: y - 8, solid: false, hw: 0, hh: 0 });
     spots.push({
       id: `portal-${id}`,
+      kind: "facility",
       x,
       y,
       title: portal.title,
@@ -487,6 +525,7 @@ function build(
     spots,
     labels,
     decors,
+    rooms: rects,
     spawn: { x: (spawn.x + 0.5) * TILE, y: (spawn.y + 0.5) * TILE },
   };
 }
