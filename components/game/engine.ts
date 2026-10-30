@@ -174,7 +174,7 @@ export class HallEngine {
   }
 
   zoomBy(factor: number) {
-    this.userZoom = Math.max(0.6, Math.min(1.9, this.userZoom * factor));
+    this.userZoom = Math.max(this.renderer === "3d" ? 0.45 : 0.6, Math.min(1.9, this.userZoom * factor));
   }
 
   interact() {

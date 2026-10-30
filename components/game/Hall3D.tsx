@@ -3,11 +3,12 @@
 // 청사 3D 장면(React Three Fiber). 이동·길찾기·판정은 HallEngine이 하고, 이 화면은 그 상태를 매 프레임 읽어 그린다.
 import { useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { PerformanceMonitor } from "@react-three/drei";
-import { EffectComposer, N8AO } from "@react-three/postprocessing";
+import { Environment, Lightformer, PerformanceMonitor } from "@react-three/drei";
+import { EffectComposer, N8AO, ToneMapping } from "@react-three/postprocessing";
+import { ToneMappingMode } from "postprocessing";
 import * as THREE from "three";
 import type { HallEngine } from "./engine";
-import { C, buildFurniture, buildWalls, type Part } from "./layout3d";
+import { C, H, buildFurniture, buildWalls, type Part } from "./layout3d";
 import { MAP_H, MAP_W, TILE, type FloorMap, type RoomRect } from "./world";
 
 type Props = {
@@ -25,6 +26,7 @@ type RigProps = Props & { anchors: Anchors };
 const ELEV = (35 * Math.PI) / 180;
 const CAM_DIR = new THREE.Vector3(Math.cos(ELEV) / Math.SQRT2, Math.sin(ELEV), Math.cos(ELEV) / Math.SQRT2).normalize();
 const u = (px: number) => px / TILE;
+const BG = "#A4ABB5";
 // 발표 노트북 내장 그래픽에서도 부드럽게: 프레임이 떨어지면 AO를 끄고 해상도를 1배로 낮춘다.
 // ?lite 는 처음부터 낮은 품질, ?hq 는 끝까지 높은 품질(화면 캡처용).
 const QUERY = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
@@ -55,9 +57,14 @@ export function Hall3D({ engineRef, insetLeft, insetRight, onBackgroundClick }: 
         shadows={{ type: THREE.PCFSoftShadowMap }}
         dpr={high ? [1, 2] : 1}
         gl={{ antialias: true }}
+        onCreated={({ gl }) => {
+          gl.toneMapping = THREE.NeutralToneMapping;
+          gl.toneMappingExposure = 1.12;
+        }}
         camera={{ position: [30, 30, 30], zoom: 30, near: -200, far: 400 }}
       >
-        <color attach="background" args={["#E4E7EC"]} />
+        <color attach="background" args={[BG]} />
+
         {FORCE === null && <PerformanceMonitor onDecline={() => setHigh(false)} />}
         {floor && (
           <Scene
@@ -74,12 +81,15 @@ export function Hall3D({ engineRef, insetLeft, insetRight, onBackgroundClick }: 
         )}
         {high && (
           <EffectComposer enableNormalPass={false} multisampling={4}>
-            <N8AO aoRadius={0.55} intensity={2.2} distanceFalloff={0.6} halfRes quality="medium" color="#1b2230" />
+            <N8AO aoRadius={0.7} intensity={2.6} distanceFalloff={0.8} halfRes quality="medium" color="#20242c" />
+            <ToneMapping mode={ToneMappingMode.NEUTRAL} />
           </EffectComposer>
         )}
       </Canvas>
       {floor && <Labels floor={floor} focus={focus} anchors={anchors} />}
-      <div ref={fadeRef} className="pointer-events-none absolute inset-0 bg-[#EEF1F6]" style={{ opacity: 0 }} />
+      {/* 가장자리를 살짝 어둡게: 흰 모형이 배경에서 떠 보이게 */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_55%_45%,transparent_45%,rgba(28,34,46,0.28)_100%)]" />
+      <div ref={fadeRef} className="pointer-events-none absolute inset-0 bg-[#9CA3AE]" style={{ opacity: 0 }} />
     </div>
   );
 }
@@ -101,6 +111,25 @@ function Scene({
   onFocus: (id: string | null) => void;
   fadeRef: RefObject<HTMLDivElement | null>;
 }) {
+  // 주광이 층 가운데를 향하도록 대상 물체를 장면에 넣는다.
+  const target = useMemo(() => {
+    const o = new THREE.Object3D();
+    o.position.set(MAP_W / 2, 0, MAP_H / 2);
+    return o;
+  }, []);
+  // 그림자 카메라 범위는 직접 넣고 갱신해야 한다(기본값은 가운데 10칸뿐).
+  const sun = useRef<THREE.DirectionalLight>(null);
+  useLayoutEffect(() => {
+    const cam = sun.current?.shadow.camera;
+    if (!cam) return;
+    cam.left = -30;
+    cam.right = 30;
+    cam.top = 24;
+    cam.bottom = -24;
+    cam.near = 1;
+    cam.far = 90;
+    cam.updateProjectionMatrix();
+  }, []);
   useFrame(() => {
     const engine = engineRef.current;
     if (!engine) return;
@@ -113,23 +142,28 @@ function Scene({
 
   return (
     <>
-      <hemisphereLight args={["#ffffff", "#cfd4dc", 1.25]} />
+      <hemisphereLight args={["#ffffff", "#b9b2a8", 0.35]} />
+      {/* 왼쪽 위에서 들어오는 따뜻한 주광: 화면 왼쪽 면은 밝고 오른쪽 면은 은은하게 */}
       <directionalLight
-        position={[MAP_W / 2 + 6, 26, MAP_H / 2 + 20]}
-        intensity={1.9}
+        ref={sun}
+        position={[MAP_W / 2 - 14, 17, MAP_H / 2 + 14]}
+        intensity={3.0}
+        color="#FFF3E2"
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[4096, 4096]}
         shadow-bias={-0.0004}
-        shadow-normalBias={0.02}
-        shadow-camera-left={-32}
-        shadow-camera-right={32}
-        shadow-camera-top={32}
-        shadow-camera-bottom={-32}
-        shadow-camera-near={1}
-        shadow-camera-far={90}
+        shadow-normalBias={0.03}
       >
-        <object3D attach="target" position={[MAP_W / 2, 0, MAP_H / 2]} />
+        <primitive object={target} attach="target" />
       </directionalLight>
+      <primitive object={target} />
+      <directionalLight position={[MAP_W / 2 + 20, 12, MAP_H / 2 - 6]} intensity={0.35} color="#DCE6F5" />
+      {/* 실내 사진처럼 부드러운 환경광(외부 파일 없이 만든 조명판) */}
+      <Environment resolution={128} frames={1} environmentIntensity={0.8}>
+        <Lightformer form="rect" intensity={1.5} color="#ffffff" position={[0, 8, 0]} rotation-x={Math.PI / 2} scale={[20, 20, 1]} />
+        <Lightformer form="rect" intensity={0.9} color="#FFF1DE" position={[-8, 3, 6]} rotation-y={Math.PI / 3} scale={[10, 4, 1]} />
+        <Lightformer form="rect" intensity={0.6} color="#DDE8F7" position={[8, 3, -6]} rotation-y={-Math.PI / 1.5} scale={[10, 4, 1]} />
+      </Environment>
       <CameraRig engineRef={engineRef} insetLeft={insetLeft} insetRight={insetRight} anchors={anchors} />
       <FloorScene key={floor.id} floor={floor} engineRef={engineRef} />
       <Player engineRef={engineRef} />
@@ -154,8 +188,10 @@ function CameraRig({ engineRef, insetLeft, insetRight, anchors }: RigProps) {
     const spanW = (MAP_W + MAP_H) / Math.SQRT2;
     const spanH = ((MAP_W + MAP_H) / Math.SQRT2) * Math.sin(ELEV) + 1.6;
     const fit = Math.min(availW / spanW, (size.height - 120) / spanH);
-    const zoom = fit * v.zoom;
-    const follow = Math.max(0, Math.min(1, (v.zoom - 1) / 0.5));
+    // 3D는 참고 이미지처럼 가까이서 보는 것이 기본(사용자 배율 1 = 층 전체의 2.2배), 축소하면 층 전체가 보인다.
+    const scale = Math.max(1, v.zoom * 2.2);
+    const zoom = fit * scale;
+    const follow = Math.max(0, Math.min(1, (scale - 1) / 0.6));
     const center = new THREE.Vector3(MAP_W / 2, 0, MAP_H / 2);
     const player = new THREE.Vector3(u(v.x), 0, u(v.y));
     const goal = center.clone().lerp(player, follow);
@@ -201,8 +237,9 @@ function Instanced({ parts, castShadow = true }: { parts: Part[]; castShadow?: b
 
 const GEOS = {
   box: new THREE.BoxGeometry(1, 1, 1),
-  cyl: new THREE.CylinderGeometry(1, 0.85, 1, 18),
-  ball: new THREE.IcosahedronGeometry(1, 1),
+  cyl: new THREE.CylinderGeometry(1, 0.88, 1, 24),
+  ball: new THREE.IcosahedronGeometry(1, 2),
+  cone: new THREE.ConeGeometry(1, 1, 20),
 };
 
 function PartGroup({ list, castShadow }: { list: Part[]; castShadow: boolean }) {
@@ -213,8 +250,10 @@ function PartGroup({ list, castShadow }: { list: Part[]; castShadow: boolean }) 
     if (!mesh) return;
     const m = new THREE.Matrix4();
     const q = new THREE.Quaternion();
+    const e = new THREE.Euler();
     for (let i = 0; i < list.length; i++) {
       const p = list[i];
+      q.setFromEuler(e.set(p.rx ?? 0, p.ry ?? 0, 0, "YXZ"));
       m.compose(new THREE.Vector3(p.x, p.y, p.z), q, new THREE.Vector3(p.sx, p.sy, p.sz));
       mesh.setMatrixAt(i, m);
     }
@@ -231,14 +270,14 @@ function PartGroup({ list, castShadow }: { list: Part[]; castShadow: boolean }) 
     >
       <meshStandardMaterial
         color={first.color}
-        roughness={first.glow ? 0.3 : first.shape === "ball" ? 0.7 : 0.82}
+        roughness={first.glow ? 0.25 : first.shape === "ball" ? 0.75 : first.color === C.dark ? 0.4 : 0.7}
         metalness={0}
+        envMapIntensity={0.9}
         emissive={first.glow ? first.color : "#000000"}
-        emissiveIntensity={first.glow ? 0.55 : 0}
+        emissiveIntensity={first.glow ? 0.45 : 0}
         transparent={alpha < 1}
         opacity={alpha}
         depthWrite={alpha === 1}
-        flatShading={first.shape === "ball"}
       />
     </instancedMesh>
   );
@@ -250,27 +289,42 @@ function makeTexture(kind: "wood" | "tile" | "carpet" | "grass") {
   c.height = 256;
   const g = c.getContext("2d") as CanvasRenderingContext2D;
   if (kind === "wood") {
-    const tones = ["#E8D3B1", "#E3CBA6", "#EDD9B9", "#E0C7A0", "#E9D4B3"];
+    // 밝은 오크 마루: 판마다 색을 조금씩, 결은 가는 선으로
+    const tones = ["#E4C79E", "#DDBE93", "#E8CEA8", "#D9B98C", "#E2C49A", "#EBD3AF"];
     const plank = 32;
     for (let y = 0; y < 256; y += plank) {
-      let x = -((y / plank) % 3) * 40;
+      let x = -((y / plank) % 4) * 37;
       let i = y / plank;
       while (x < 256) {
-        const len = 90 + ((i * 37) % 70);
+        const len = 110 + ((i * 53) % 90);
         g.fillStyle = tones[i % tones.length];
         g.fillRect(x, y, len, plank);
-        g.fillStyle = "rgba(120, 85, 45, 0.18)";
-        g.fillRect(x, y, 1.5, plank);
+        g.strokeStyle = "rgba(150, 105, 60, 0.10)";
+        g.lineWidth = 1;
+        for (let k = 0; k < 4; k++) {
+          const gy = y + 5 + k * 7 + ((i * 3 + k) % 4);
+          g.beginPath();
+          g.moveTo(x + 4, gy);
+          g.bezierCurveTo(x + len * 0.3, gy + 2, x + len * 0.6, gy - 2, x + len - 4, gy + 1);
+          g.stroke();
+        }
+        g.fillStyle = "rgba(110, 75, 40, 0.22)";
+        g.fillRect(x, y, 1.2, plank);
         x += len;
         i++;
       }
-      g.fillStyle = "rgba(120, 85, 45, 0.22)";
-      g.fillRect(0, y, 256, 1.5);
+      g.fillStyle = "rgba(110, 75, 40, 0.25)";
+      g.fillRect(0, y, 256, 1.2);
     }
   } else if (kind === "tile") {
-    g.fillStyle = "#EFF0F2";
+    // 복도: 따뜻한 밝은 회색 대형 타일
+    g.fillStyle = "#E4E6E9";
     g.fillRect(0, 0, 256, 256);
-    g.strokeStyle = "rgba(60, 70, 85, 0.12)";
+    for (let i = 0; i < 900; i++) {
+      g.fillStyle = `rgba(120, 110, 100, ${Math.random() * 0.035})`;
+      g.fillRect(Math.random() * 256, Math.random() * 256, 3, 3);
+    }
+    g.strokeStyle = "rgba(90, 85, 80, 0.14)";
     g.lineWidth = 2;
     for (let i = 0; i <= 256; i += 128) {
       g.beginPath();
@@ -321,7 +375,8 @@ function RoomFloor({ room }: { room: RoomRect }) {
         map.needsUpdate = true;
         const scale = room.ground === "w" ? 0.5 : room.ground === "t" ? 1 : 0.5;
         map.repeat.set(w * scale, d * scale);
-        const dim = room.kind === "planned" ? "#C9CBD0" : room.kind === "void" ? "#9EA3AB" : "#FFFFFF";
+        // 채용 예정 방은 불이 꺼진 듯 살짝 어둡게
+        const dim = room.kind === "planned" ? "#D6D3CF" : room.kind === "void" ? "#B4B8BF" : "#FFFFFF";
         return { w, d, x: p.x - 0.5 + w / 2, z: p.y - 0.5 + d / 2, map, dim };
       }),
     [room, tex],
@@ -331,17 +386,11 @@ function RoomFloor({ room }: { room: RoomRect }) {
       {materials.map((m, i) => (
         <mesh key={i} position={[m.x, 0.006, m.z]} rotation-x={-Math.PI / 2} receiveShadow>
           <planeGeometry args={[m.w, m.d]} />
-          <meshStandardMaterial map={room.kind === "void" ? null : m.map} color={m.dim} roughness={0.85} />
+          <meshStandardMaterial map={room.kind === "void" ? null : m.map} color={m.dim} roughness={0.55} envMapIntensity={0.6} />
         </mesh>
       ))}
-      {(room.kind === "ai" || room.kind === "feature") && room.w > 3 && room.h > 3 && (
-        <mesh position={[room.x + room.w / 2, 0.012, room.y + room.h / 2]} rotation-x={-Math.PI / 2} receiveShadow>
-          <planeGeometry args={[room.w - 1.6, room.h - 1.6]} />
-          <meshStandardMaterial color={C.teal} transparent opacity={0.16} roughness={1} />
-        </mesh>
-      )}
       {room.kind === "ai" && (
-        <pointLight position={[room.x + room.w / 2, 1.6, room.y + room.h / 2]} intensity={2.2} distance={6} decay={1.6} color="#fff6e5" />
+        <pointLight position={[room.x + room.w / 2, 1.8, room.y + room.h / 2]} intensity={3} distance={7} decay={1.5} color="#FFF1DC" />
       )}
     </>
   );
@@ -352,12 +401,33 @@ function FloorScene({ floor, engineRef }: { floor: FloorMap; engineRef: RefObjec
   const furniture = useMemo(() => buildFurniture(floor), [floor]);
   const slab = useMemo(() => {
     const parts: Part[] = [];
+    // 바닥판: 칸마다 나누면 옆면에 줄이 생기므로 같은 가로 구간이 이어지는 줄끼리 큰 사각형으로 묶는다.
+    const runs: string[] = [];
+    for (let y = 0; y < MAP_H; y++) {
+      const row: [number, number][] = [];
+      let x = 0;
+      while (x < MAP_W) {
+        if (floor.grid[y][x] === " ") {
+          x++;
+          continue;
+        }
+        const x0 = x;
+        while (x < MAP_W && floor.grid[y][x] !== " ") x++;
+        row.push([x0, x]);
+      }
+      runs.push(JSON.stringify(row));
+    }
+    let y0 = 0;
+    for (let y = 1; y <= MAP_H; y++) {
+      if (y < MAP_H && runs[y] === runs[y0]) continue;
+      for (const [a, b] of JSON.parse(runs[y0]) as [number, number][]) {
+        parts.push({ shape: "box", x: (a + b) / 2, y: -H.slab / 2, z: (y0 + y) / 2, sx: b - a, sy: H.slab, sz: y - y0, color: C.slab });
+      }
+      y0 = y;
+    }
     for (let y = 0; y < MAP_H; y++) {
       for (let x = 0; x < MAP_W; x++) {
-        const ch = floor.grid[y][x];
-        if (ch === " ") continue;
-        parts.push({ shape: "box", x: x + 0.5, y: -0.15, z: y + 0.5, sx: 1, sy: 0.3, sz: 1, color: C.slab });
-        if (ch === "r") parts.push({ shape: "box", x: x + 0.5, y: 0.004, z: y + 0.5, sx: 1, sy: 0.01, sz: 1, color: "#BFE6EA", noShadow: true });
+        if (floor.grid[y][x] === "r") parts.push({ shape: "box", x: x + 0.5, y: 0.004, z: y + 0.5, sx: 1, sy: 0.01, sz: 1, color: "#BFE6EA", noShadow: true });
       }
     }
     return parts;
@@ -385,7 +455,11 @@ function FloorScene({ floor, engineRef }: { floor: FloorMap; engineRef: RefObjec
 
   return (
     <group>
-      <Instanced parts={slab} castShadow={false} />
+      <Instanced parts={slab} castShadow />
+      <mesh position={[MAP_W / 2, -H.slab - 0.001, MAP_H / 2]} rotation-x={-Math.PI / 2} receiveShadow>
+        <planeGeometry args={[MAP_W * 3, MAP_H * 3]} />
+        <shadowMaterial transparent opacity={0.22} color="#1c2230" />
+      </mesh>
       <mesh
         position={[MAP_W / 2, 0.001, MAP_H / 2]}
         rotation-x={-Math.PI / 2}
@@ -394,7 +468,7 @@ function FloorScene({ floor, engineRef }: { floor: FloorMap; engineRef: RefObjec
         onClick={(e) => pointer(e, true)}
       >
         <planeGeometry args={[MAP_W, MAP_H]} />
-        <meshStandardMaterial map={corridorTex} color={C.corridor} roughness={0.6} transparent opacity={0} depthWrite={false} />
+        <meshStandardMaterial map={corridorTex} transparent opacity={0} depthWrite={false} />
       </mesh>
       <CorridorFloor floor={floor} />
       {floor.rooms.map((room) => (
@@ -455,7 +529,7 @@ function CorridorFloor({ floor }: { floor: FloorMap }) {
   }, []);
   return (
     <mesh geometry={geo} receiveShadow>
-      <meshStandardMaterial map={tex} color="#FFFFFF" roughness={0.55} side={THREE.DoubleSide} />
+      <meshStandardMaterial map={tex} color="#FFFFFF" roughness={0.4} envMapIntensity={0.7} side={THREE.DoubleSide} />
     </mesh>
   );
 }
@@ -582,12 +656,25 @@ function Labels({ floor, focus, anchors }: { floor: FloorMap; focus: string | nu
     const lx = spot ? cx - (u(spot.x) - cx) * 0.6 : cx;
     const lz = spot ? cz - (u(spot.y) - cz) * 0.6 : cz;
     const on = focus === room.id;
+    if (room.kind !== "ai" && !on) {
+      // AI 주무관이 없는 방은 바닥 안내 글씨처럼 조용하게
+      items.push({
+        key: room.id,
+        at: [lx, 0.9, lz],
+        node: (
+          <span className={`text-[11px] font-semibold whitespace-nowrap [text-shadow:0_0_3px_#fff,0_0_6px_#fff] ${room.kind === "planned" ? "text-slate-muted" : "text-slate-ink"}`}>
+            {room.name}
+          </span>
+        ),
+      });
+      continue;
+    }
     items.push({
       key: room.id,
-      at: [lx, 1.1, lz],
+      at: [lx, 1.25, lz],
       node: (
         <span
-          className={`inline-flex items-center gap-1.5 rounded-full border bg-white/95 px-2.5 py-1 text-xs font-semibold whitespace-nowrap shadow-md ${on ? "border-osan-teal ring-2 ring-osan-teal-tint" : "border-hairline"} ${room.kind === "planned" ? "text-slate-muted" : "text-slate-ink"}`}
+          className={`inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-1 text-xs font-semibold whitespace-nowrap shadow-[0_4px_14px_rgba(20,30,50,0.18)] ${on ? "border-osan-teal ring-2 ring-osan-teal-tint" : "border-white"} ${room.kind === "planned" ? "text-slate-muted" : "text-slate-ink"}`}
         >
           {room.kind === "ai" && <span className="h-2 w-2 rounded-full bg-osan-teal" />}
           {room.name}
