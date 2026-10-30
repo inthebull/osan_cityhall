@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Manual index (공개 지침 목록)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["doc_id", "dept_id", "title", "source_url", "fetched_at", "pages"],
+    "properties": {
+      "doc_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+      "dept_id": { "type": "string", "pattern": "^D-" },
+      "title": { "type": "string" },
+      "year": { "type": "integer" },
+      "publisher": { "type": "string" },
+      "source_url": { "type": "string" },
+      "fetched_at": { "type": "string" },
+      "pages": { "type": "integer", "minimum": 1 }
+    }
+  }
+}

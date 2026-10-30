@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Duties",
+  "description": "부서 자리(직무)별 담당 업무와 분장사무 근거. 성명·전화번호는 넣지 않는다.",
+  "type": "object",
+  "required": ["source", "source_url", "law_url", "fetched_at", "seats"],
+  "properties": {
+    "source": { "type": "string" },
+    "source_url": { "type": "string", "format": "uri" },
+    "law_url": { "type": "string" },
+    "fetched_at": { "type": "string", "format": "date" },
+    "seats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["seat_id", "dept_id", "team", "role", "label", "tasks"],
+        "additionalProperties": false,
+        "properties": {
+          "seat_id": { "type": "string", "pattern": "^S-[A-Z]+-[0-9]{2}$" },
+          "dept_id": { "enum": ["D-CIVIL", "D-ELDER", "D-DONG"] },
+          "team": { "type": ["string", "null"] },
+          "role": { "type": "string" },
+          "label": { "type": "string" },
+          "tasks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["task_id", "title", "kind", "label", "basis", "other_dept"],
+              "additionalProperties": false,
+              "properties": {
+                "task_id": { "type": "string", "pattern": "^T[0-9]{5}$" },
+                "title": { "type": "string" },
+                "kind": { "type": "string" },
+                "label": { "type": "string" },
+                "basis": {
+                  "type": ["object", "null"],
+                  "required": ["law", "article", "item_no", "item", "score"],
+                  "properties": {
+                    "law": { "type": "string" },
+                    "article": { "type": "string" },
+                    "item_no": { "type": "integer" },
+                    "item": { "type": "string" },
+                    "score": { "type": "number" }
+                  }
+                },
+                "other_dept": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

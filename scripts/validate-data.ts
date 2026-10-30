@@ -3,6 +3,8 @@ import Ajv2020 from "ajv/dist/2020";
 import addFormats from "ajv-formats";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { PACKS, verifyPack } from "../lib/handover/packs";
+import { loadManuals, pageText } from "../lib/kb/manuals";
 
 const root = process.cwd();
 const read = (p: string) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -38,6 +40,37 @@ for (const o of orgs as { dept_id: string; room_ids?: string[] }[]) {
     const inFloors = readdirSync(join(root, "data/map/floors")).some((f) => read(`data/map/floors/${f}`).rooms.some((r: { id: string }) => r.id === id));
     if (!seen.has(id) && !inFloors) errors.push(`orgs.json: ${o.dept_id}의 방 ${id}가 지도에 없음`);
   }
+}
+
+// 공개 지침 목록(data/manuals/index.json)과 쪽 텍스트 파일
+const manualSchema = ajv.compile(read("data/schema/manual.schema.json"));
+const manuals = read("data/manuals/index.json");
+if (!manualSchema(manuals)) errors.push(`manuals/index.json: ${ajv.errorsText(manualSchema.errors)}`);
+for (const m of manuals as { doc_id: string; dept_id: string }[]) {
+  if (!deptIds.has(m.dept_id)) errors.push(`manuals/index.json: ${m.doc_id}의 dept_id ${m.dept_id}가 orgs.json에 없음`);
+  try {
+    read(`data/manuals/pages/${m.doc_id}.json`);
+  } catch {
+    errors.push(`manuals: pages/${m.doc_id}.json이 없거나 읽을 수 없음`);
+  }
+}
+
+// 자리별 업무(data/kb/duties.json): 성명·전화번호 없이 업무와 근거만
+const dutySchema = ajv.compile(read("data/schema/duty.schema.json"));
+const duties = read("data/kb/duties.json");
+if (!dutySchema(duties)) errors.push(`kb/duties.json: ${ajv.errorsText(dutySchema.errors)}`);
+const seatIds = new Set<string>();
+for (const s of (duties as { seats: { seat_id: string }[] }).seats ?? []) {
+  if (seatIds.has(s.seat_id)) errors.push(`kb/duties.json: seat_id ${s.seat_id} 중복`);
+  seatIds.add(s.seat_id);
+}
+if (/\b0\d{1,2}-?\d{3,4}-?\d{4}\b/.test(JSON.stringify(duties))) errors.push("kb/duties.json: 전화번호가 들어 있음");
+
+// 업무별 맞춤 자료: 모든 인용이 지침 원문 해당 쪽에 그대로 있어야 한다
+{
+  const { docs } = loadManuals();
+  const docPages = (id: string) => docs.find((d) => d.doc_id === id && d.kind !== "duty")?.pages;
+  for (const pack of PACKS) errors.push(...verifyPack(pack, docPages, pageText));
 }
 
 // 개인정보 패턴: 주민번호, 휴대전화, 이메일
