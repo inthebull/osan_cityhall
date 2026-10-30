@@ -146,6 +146,9 @@ export function OfficerDesk({ profile }: { profile: DeskProfile }) {
             <span className="mt-3 inline-block rounded-sm border-2 border-navy bg-paper-2 px-2 text-xs font-semibold text-navy">
               AI 초안 · 최종 판단은 담당자
             </span>
+            <a href={`/handover?dept=${profile.dept_id}`} className="mt-2 block text-xs font-semibold text-mint underline">
+              이 업무 인수인계 자료 보기
+            </a>
           </section>
 
           <details className="rounded-lg border border-line bg-foam p-3 text-sm" open>
