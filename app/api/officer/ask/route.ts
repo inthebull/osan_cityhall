@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { MODELS } from "@/lib/ai/models";
 import { OFFICER_ASK_PROMPT } from "@/lib/ai/prompts/officer-ask";
+import { isUnlocked } from "@/lib/auth/demo";
 import { loadManuals } from "@/lib/kb/manuals";
 import { getDept } from "@/lib/map/data";
 
@@ -29,13 +30,17 @@ export async function POST(req: Request) {
   };
 
   if (hits.length === 0) return NextResponse.json({ found: false, answer: NOT_FOUND, citations: [], draft: true });
-  if (!process.env.ANTHROPIC_API_KEY) {
-    // 키가 없으면 검색 결과만 돌려준다.
+  const locked = !isUnlocked(req);
+  if (!process.env.ANTHROPIC_API_KEY || locked) {
+    // 키가 없거나 시연용 암호로 잠겨 있으면 검색 결과만 돌려준다(요금 없음).
     return NextResponse.json({
       found: true,
-      answer: "관련 지침 단락을 찾았습니다. (AI 요약은 API 키 등록 후 동작합니다)",
+      answer: locked && process.env.ANTHROPIC_API_KEY
+        ? "관련 지침 단락을 찾았습니다. AI 요약은 시연용 접속 암호를 입력하면 동작합니다."
+        : "관련 지침 단락을 찾았습니다. (AI 요약은 API 키 등록 후 동작합니다)",
       citations: hits.slice(0, 3).map((h) => cite(h.passage.id)),
       draft: true,
+      locked: locked && Boolean(process.env.ANTHROPIC_API_KEY),
     });
   }
 

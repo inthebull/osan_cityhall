@@ -26,6 +26,7 @@ export type Spot = {
   stamp?: string;
   portal?: FloorId;
   actor: boolean;
+  dept?: string;
 };
 
 export type Prop = {
@@ -402,6 +403,7 @@ function build(
       stamp: room.stamp,
       portal: room.portal,
       actor,
+      dept: room.dept_id ?? undefined,
     });
   }
 
