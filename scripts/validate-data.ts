@@ -73,6 +73,19 @@ if (/\b0\d{1,2}-?\d{3,4}-?\d{4}\b/.test(JSON.stringify(duties))) errors.push("kb
   for (const pack of PACKS) errors.push(...verifyPack(pack, docPages, pageText));
 }
 
+// AI 주무관 정의(data/officers/*.json): 담당 자리와 지침이 실제로 있고 같은 부서여야 한다
+{
+  const officerSchema = ajv.compile(read("data/schema/officer.schema.json"));
+  const manualDept = new Map((manuals as { doc_id: string; dept_id: string }[]).map((m) => [m.doc_id, m.dept_id]));
+  const seatDept = new Map((duties as { seats: { seat_id: string; dept_id: string }[] }).seats.map((s) => [s.seat_id, s.dept_id]));
+  for (const f of readdirSync(join(root, "data/officers"))) {
+    const o = read(`data/officers/${f}`);
+    if (!officerSchema(o)) errors.push(`officers/${f}: ${ajv.errorsText(officerSchema.errors)}`);
+    for (const id of o.doc_ids ?? []) if (manualDept.get(id) !== o.dept_id) errors.push(`officers/${f}: 지침 ${id}가 없거나 다른 부서`);
+    for (const id of o.seat_ids ?? []) if (seatDept.get(id) !== o.dept_id) errors.push(`officers/${f}: 자리 ${id}가 없거나 다른 부서`);
+  }
+}
+
 // 개인정보 패턴: 주민번호, 휴대전화, 이메일
 const pii: [string, RegExp][] = [
   ["주민번호", /\b\d{6}-[1-4]\d{6}\b/],
