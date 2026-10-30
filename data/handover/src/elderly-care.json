@@ -1,0 +1,60 @@
+{
+  "pack_id": "elderly-custom-care",
+  "dept_id": "D-ELDER",
+  "title": "노인맞춤돌봄서비스",
+  "team": "노인정책팀",
+  "match": ["맞춤돌봄", "노인돌봄서비스", "노인돌봄"],
+  "summary": {
+    "text": "혼자 일상생활이 어려운 65세 이상 취약노인에게 안부 확인, 생활지원 같은 돌봄을 제공하는 사업입니다. 동에서 신청을 받고, 지역수행기관이 조사·상담·계획을 맡으며, 시가 심의해 대상자를 결정합니다.",
+    "sources": [
+      { "doc_id": "elderly-care-guide-2026", "page": 10, "quote": "일상생활 영위가 어려운 취약노인에게 적절한 돌봄서비스를 제공하여 안정적인 노후" },
+      { "doc_id": "elderly-care-guide-2026-changes", "page": 1, "quote": "맞춤돌봄서비스 신청 접수 → ②(지역) 서비스" }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "law",
+      "title": "근거 법령·대상",
+      "items": [
+        { "text": "국가와 지자체는 홀로 사는 노인에게 방문요양·돌봄 서비스와 안전확인 등 보호조치를 해야 합니다. (노인복지법 제27조의2)", "sources": [{ "doc_id": "elderly-welfare-act", "page": 3, "quote": "홀로 사는 노인에 대하여 방문요양과 돌봄 등의 서비스와 안전확인 등의 보호조치를 취하여야 한다" }] },
+        { "text": "대상은 65세 이상 기초생활수급자, 차상위계층, 기초연금수급자입니다. 65세 미만은 예외 승인도 안 됩니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 10, "quote": "65세 이상(65세 미만의 경우 예외승인 불가)" }] },
+        { "text": "돌봄이 필요한 정도에 따라 퇴원후돌봄군(월 44시간 이하), 중점돌봄군(월 20~40시간 미만), 일반돌봄군(월 16시간 미만)으로 나눕니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 12, "quote": "월 20시간 이상 40시간 미만의 직접서비스 및 주기적인 가사지원서비스 제공 가능" }, { "doc_id": "elderly-care-guide-2026", "page": 12, "quote": "월 16시간 미만의 직접서비스 제공, 주기적인 가사지원서비스는 제공 불가" }] }
+      ]
+    },
+    {
+      "kind": "process",
+      "title": "처리 절차",
+      "items": [
+        { "text": "① 동 접수 → ② 지역수행기관 선정조사·상담·제공계획 → ③ 시 심의·결정 → ④ 서비스 제공 → 재사정 → 종결·사후관리 순서입니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 11, "quote": "재사정 종결 및 사후관리" }] },
+        { "text": "시는 노인맞춤돌봄협의체 등을 통해 대상자와 제공계획이 적절한지 판단해 승인합니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 20, "quote": "노인맞춤돌봄협의체 등을 통해 서비스 대상자 및 서비스 제공계획의" }] },
+        { "text": "2026년 7월 개정으로 퇴원환자 긴급지원절차가 생겼습니다. 퇴원 후 2주 이내 노인은 동 접수 후 7일 안에 서비스가 시작될 수 있습니다.", "sources": [{ "doc_id": "elderly-care-guide-2026-changes", "page": 1, "quote": "접수 후 7일이내 서비스가 제공될수있는 긴급지원절차 신설" }, { "doc_id": "elderly-care-guide-2026-changes", "page": 1, "quote": "퇴원 후 2주 이내 대상자" }] }
+      ]
+    },
+    {
+      "kind": "documents",
+      "title": "신청 방법·서류",
+      "items": [
+        { "text": "본인 신청은 노인맞춤돌봄서비스 신청서(서식 제1호)와 신분증을 받습니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 36, "quote": "노인맞춤돌봄서비스 신청서(이하 ‘신청서’) 및 신청자의 신분증" }] },
+        { "text": "방문이 어려우면 전화·우편·팩스·복지로로도 받습니다. 전화 신청은 동 담당자가 신청서를 대신 써서 접수합니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 36, "quote": "전화로 신청할 경우" }, { "doc_id": "elderly-care-guide-2026", "page": 36, "quote": "담당공무원이 신청서를 대리 작성하여 접수" }] },
+        { "text": "공무원이 직권으로 신청할 때는 신청자의 동의를 받아 대신 작성합니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 36, "quote": "공무원이 직권 신청하는 경우 신청자의 동의를 받아 신청서 대리 작성 및 신청" }] }
+      ]
+    },
+    {
+      "kind": "pitfalls",
+      "title": "자주 틀리는 점",
+      "items": [
+        { "text": "장기요양 등급자는 장기요양이 우선이라, 등급을 포기하고 맞춤돌봄을 신청할 수 없습니다. 유효기간이 끝난 사람은 신청할 수 있습니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 11, "quote": "장 기요양을  포기하고" }, { "doc_id": "elderly-care-guide-2026", "page": 11, "quote": "장기요양 등급 유효기간 만료자는 신청 가능" }] },
+        { "text": "유사·중복 사업 이용자는 원칙적으로 제외하지만, 시장이 필요하다고 인정하면 예외로 제공할 수 있습니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 10, "quote": "서비스가 필요하다고 인정하는 경우 예외적으로 제공 가능" }] },
+        { "text": "시 자체 사업이 유사·중복인지는 시가 판단해 대상자 명단을 동에 안내합니다. 동에서 임의로 판단하지 않습니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 20, "quote": "유사중복여부를 정하고 유사중복대상자 명단을" }] }
+      ]
+    },
+    {
+      "kind": "faq",
+      "title": "자주 묻는 질문",
+      "items": [
+        { "text": "대상자로 선정되지 않았는데 다시 판단받을 수 있나요? 결정을 안 날부터 90일 이내에 이의신청서(서식 제14호)를 시에 내면 됩니다.", "sources": [{ "doc_id": "elderly-care-guide-2026", "page": 67, "quote": "있음을 안 날로부터 90일 이내" }, { "doc_id": "elderly-care-guide-2026", "page": 67, "quote": "이의신청서를 작성하여" }] },
+        { "text": "퇴원환자 단기집중 서비스는 얼마나 받을 수 있나요? 1개월 이내이고 연장은 안 됩니다.", "sources": [{ "doc_id": "elderly-care-guide-2026-changes", "page": 1, "quote": "서비스 제공기간 1개월 이내(연장 불가)" }] }
+      ]
+    }
+  ]
+}

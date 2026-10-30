@@ -1,0 +1,67 @@
+{
+  "pack_id": "senior-welfare-center",
+  "dept_id": "D-ELDER",
+  "title": "노인복지관 운영·지원",
+  "team": "노인시설팀",
+  "match": ["노인종합복지관", "노인복지관"],
+  "summary": {
+    "text": "노인복지관은 노인의 여가·건강·일자리·사회참여 서비스를 한곳에서 제공하는 노인여가복지시설입니다. 담당자는 위탁 운영 관리, 운영비 지원, 지도감독과 3년마다 하는 시설평가를 챙깁니다.",
+    "sources": [
+      { "doc_id": "elderly-welfare-act", "page": 5, "quote": "노인복지관 : 노인의 교양ㆍ취미생활 및 사회참여활동 등에 대한 각종 정보와 서비스를 제공하고" },
+      { "doc_id": "elderly-welfare-guide-2026-1", "page": 110, "quote": "다양한 복지욕구에 따른 서비스를 체계적이고 복합적으로 제공하여" }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "law",
+      "title": "근거 법령",
+      "items": [
+        { "text": "노인복지관은 경로당, 노인교실과 함께 노인여가복지시설입니다. (노인복지법 제36조)", "sources": [{ "doc_id": "elderly-welfare-act", "page": 5, "quote": "제36조(노인여가복지시설) ①노인여가복지시설은 다음 각 호의 시설로 한다" }] },
+        { "text": "시설평가는 사회복지사업법에 따라 3년마다 1회 이상 해야 합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 123, "quote": "3년마다 1회 이상" }] }
+      ]
+    },
+    {
+      "kind": "process",
+      "title": "위탁 운영",
+      "items": [
+        { "text": "시는 운영능력이 있는 사회복지법인·비영리법인과 위탁계약을 맺어 운영할 수 있고, 수탁기관의 재위탁은 안 됩니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 110, "quote": "수탁 받은 기관의 제3자에게 재위탁은 불가" }] },
+        { "text": "수탁기관은 공개 모집하고, 9인 이내 심사위원회로 선정합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 110, "quote": "제21조를 준용하여 수탁기관을 공개 모집" }, { "doc_id": "elderly-welfare-guide-2026-1", "page": 111, "quote": "9인 이내의 위원으로 구성하고" }] },
+        { "text": "위탁계약 기간은 5년이고, 심사위원회 평가 결과에 따라 갱신 여부를 정합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 111, "quote": "위탁계약기간을 5년으로 하고" }] },
+        { "text": "위탁계약서에 인권침해·성범죄 발생 시 계약 해지 등이 가능하다는 내용을 꼭 넣습니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 111, "quote": "성추행 등 인권침해가 발생한 경우, 계약 해지 등이 가능토록 하는 내용을 포함하여" }] }
+      ]
+    },
+    {
+      "kind": "documents",
+      "title": "시설 기준·신고",
+      "items": [
+        { "text": "노인복지관은 연면적 500㎡ 이상이고, 사무실·식당·상담실·강당·프로그램실·물리치료실 등을 1실 이상 갖춰야 합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 112, "quote": "노인복지관은 연면적 500㎡ 이상의 규모로 설치" }] },
+        { "text": "법인 사무공간, 종교활동 공간, 외부 임대 공간처럼 고유 목적에 맞지 않는 공간은 둘 수 없습니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 112, "quote": "노인복지관 운영법인 사무 공간, 종교활동을 위한 숙소 및 사무공간" }] },
+        { "text": "민간이 설치하려면 노인여가복지시설설치신고서를 내고, 시는 시설을 확인한 뒤 신고필증을 내줍니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 111, "quote": "노인여가복지시설설치신고서" }, { "doc_id": "elderly-welfare-guide-2026-1", "page": 111, "quote": "노인여가복지시설설치신고필증" }] }
+      ]
+    },
+    {
+      "kind": "fees",
+      "title": "운영비·이용료",
+      "items": [
+        { "text": "운영비 보조는 사업 실적, 시설과 직원 규모를 보고 차등 지원할 수 있습니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 122, "quote": "운영비 보조는 사업수행실적, 시설 및 직원규모 등을 고려하여 차등 지원 가능" }] },
+        { "text": "기초생활수급자 등 생활이 어려운 노인으로 읍·면·동장이 추천한 사람은 실비 프로그램을 무료로 이용할 수 있다는 내용을 안내물에 넣어야 합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 122, "quote": "자는 무료 이용할 수 있는 내용을 명기 필요" }] }
+      ]
+    },
+    {
+      "kind": "pitfalls",
+      "title": "자주 틀리는 점",
+      "items": [
+        { "text": "지도감독은 하되 노인복지관 운영의 자율성을 해치지 않게 관리합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 122, "quote": "노인복지관 운영의 자율성을 해치지 않도록 관리" }] },
+        { "text": "시가 직영하는 복지관도 노인복지법의 시설·직원배치 기준을 똑같이 지켜야 합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 112, "quote": "지방자치단체 직영 노인복지관 시설인 경우에도 노인복지법에 따른 시설 및 직원배치" }] },
+        { "text": "운영비 예산은 사회복지법인 및 사회복지시설 재무·회계규칙 등에 따라 집행되는지 확인합니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 122, "quote": "회계규칙｣ 등 관계규정에 따라 집행" }] }
+      ]
+    },
+    {
+      "kind": "faq",
+      "title": "자주 묻는 질문",
+      "items": [
+        { "text": "복지관이 먼 동네 어르신을 위해 분관을 둘 수 있나요? 네, 접근성이 나쁜 지역에는 분관을 둘 수 있고 500㎡ 기준은 적용되지 않습니다.", "sources": [{ "doc_id": "elderly-welfare-guide-2026-1", "page": 112, "quote": "접근성이 좋지 않은 지역의 노인을 위하여" }, { "doc_id": "elderly-welfare-guide-2026-1", "page": 112, "quote": "규정 적용을 받지 아니하며" }] }
+      ]
+    }
+  ]
+}

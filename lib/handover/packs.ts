@@ -23,9 +23,12 @@ export function getPack(id: string): Pack | undefined {
   return PACKS.find((p) => p.pack_id === id);
 }
 
+// 동 행정복지센터는 시청 과의 사무를 접수하므로 모든 과의 묶음을 붙일 수 있다.
 export function packFor(taskTitle: string, deptId: string): Pack | undefined {
   const t = taskTitle.replace(/\s/g, "");
-  return PACKS.find((p) => p.dept_id === deptId && p.match.some((m) => t.includes(m.replace(/\s/g, ""))));
+  return PACKS.find(
+    (p) => (p.dept_id === deptId || deptId === "D-DONG") && p.match.some((m) => t.includes(m.replace(/\s/g, ""))),
+  );
 }
 
 const squash = (s: string) => s.replace(/\s+/g, "");
@@ -42,19 +45,19 @@ export function verifyPack(
     const where = `${pack.pack_id} "${item.text.slice(0, 20)}…"`;
     if (item.sources.length === 0) errors.push(`${where}: 근거 없음`);
     for (const src of item.sources) {
-      const pages = docPages(src.doc_id);
-      if (pages === undefined) {
+      if (docPages(src.doc_id) === undefined) {
         errors.push(`${where}: 문서 ${src.doc_id} 없음`);
         continue;
       }
-      if (src.page < 1 || src.page > pages) {
-        errors.push(`${where}: ${src.doc_id} ${src.page}쪽은 범위 밖`);
+      // 발췌본은 원래 PDF 쪽 번호를 쓰므로 쪽 수가 아니라 실제 쪽이 있는지로 본다.
+      const text = pageText(src.doc_id, src.page);
+      if (text === undefined) {
+        errors.push(`${where}: ${src.doc_id} ${src.page}쪽 없음`);
         continue;
       }
       const q = squash(src.quote);
       if (q.length < 4 || q.length > 300) errors.push(`${where}: 인용 길이 ${q.length}자`);
-      const text = pageText(src.doc_id, src.page);
-      if (!text || !squash(text).includes(q)) errors.push(`${where}: ${src.doc_id} ${src.page}쪽에 "${src.quote.slice(0, 30)}" 없음`);
+      if (!squash(text).includes(q)) errors.push(`${where}: ${src.doc_id} ${src.page}쪽에 "${src.quote.slice(0, 30)}" 없음`);
     }
   }
   return errors;
