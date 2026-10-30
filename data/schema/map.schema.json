@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Floor",
+  "type": "object",
+  "required": ["building_id", "level", "size", "rooms", "corridors"],
+  "properties": {
+    "building_id": { "type": "string" },
+    "level": { "type": "string", "description": "B1, 1, 2 ..." },
+    "size": { "type": "object", "required": ["w", "h"], "properties": { "w": { "type": "integer" }, "h": { "type": "integer" } } },
+    "background": { "type": "string", "description": "층별 안내도 이미지 경로(편집기용)" },
+    "rooms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "shape", "door", "status", "confirmed"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^R-" },
+          "name": { "type": "string" },
+          "dept_id": { "type": ["string", "null"] },
+          "kind": { "enum": ["dept", "civil", "exec", "meeting", "facility", "common"] },
+          "shape": {
+            "oneOf": [
+              { "type": "object", "required": ["x", "y", "w", "h"], "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "w": { "type": "number" }, "h": { "type": "number" } } },
+              { "type": "object", "required": ["points"], "properties": { "points": { "type": "array", "items": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 } } } }
+            ]
+          },
+          "door": { "type": "object", "required": ["x", "y"], "properties": { "x": { "type": "number" }, "y": { "type": "number" } } },
+          "status": { "enum": ["active", "planned", "facility"] },
+          "confirmed": { "type": "boolean" },
+          "virtual_space": { "type": "string", "description": "업무조정실·도구 상가처럼 실제 청사에 없는 가상 공간이면 그 이름" },
+          "source": { "type": "string" }
+        }
+      }
+    },
+    "corridors": { "type": "array", "items": { "type": "object", "required": ["from", "to"], "properties": { "from": { "type": "array" }, "to": { "type": "array" }, "width": { "type": "number" } } } },
+    "vertical": { "type": "array", "items": { "type": "object", "required": ["id", "type", "x", "y"], "properties": { "id": { "type": "string" }, "type": { "enum": ["elevator", "stairs"] }, "x": { "type": "number" }, "y": { "type": "number" } } } }
+  }
+}

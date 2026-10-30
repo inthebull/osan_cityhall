@@ -1,0 +1,11 @@
+{
+  "id": "dong-sema-1", "building_id": "dong-sema", "level": "1", "title": "세마동 행정복지센터 (내부 배치 가상)",
+  "size": { "w": 80, "h": 30 },
+  "rooms": [
+    { "id": "R-DONG-ADMIN", "name": "행정민원 창구", "dept_id": "D-DONG", "kind": "civil", "shape": { "x": 2, "y": 2, "w": 36, "h": 11 }, "door": { "x": 20, "y": 13 }, "status": "active", "confirmed": false, "source": "가상 배치" },
+    { "id": "R-DONG-WELFARE", "name": "복지 창구", "dept_id": "D-DONG", "kind": "civil", "shape": { "x": 40, "y": 2, "w": 38, "h": 11 }, "door": { "x": 59, "y": 13 }, "status": "active", "confirmed": false, "source": "가상 배치" },
+    { "id": "R-DONG-CHIEF", "name": "동장실", "dept_id": null, "kind": "exec", "shape": { "x": 2, "y": 17, "w": 18, "h": 11 }, "door": { "x": 11, "y": 17 }, "status": "planned", "confirmed": false, "source": "가상 배치" },
+    { "id": "R-DONG-ROOM", "name": "주민 프로그램실", "dept_id": null, "kind": "meeting", "shape": { "x": 22, "y": 17, "w": 32, "h": 11 }, "door": { "x": 38, "y": 17 }, "status": "planned", "confirmed": false, "source": "가상 배치" }
+  ],
+  "corridors": [ { "from": [0, 15], "to": [80, 15], "width": 4 } ]
+}

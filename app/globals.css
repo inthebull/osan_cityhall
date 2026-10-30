@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f7f5;
+  --foreground: #1b1b1b;
+  --room-active: #fff4cc;
+  --room-planned: #e9e9e6;
+  --room-stroke: #6b6b6b;
+  --corridor: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --foreground: #ececec;
+    --room-active: #4a3f12;
+    --room-planned: #2a2a2a;
+    --room-stroke: #9a9a9a;
+    --corridor: #1e1e1e;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}

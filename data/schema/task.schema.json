@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task",
+  "type": "object",
+  "required": ["task_id", "dept_id", "title", "text", "keywords", "source"],
+  "properties": {
+    "task_id": { "type": "string", "pattern": "^T-[A-Z]+-[0-9]{3}$" },
+    "dept_id": { "type": "string", "pattern": "^D-" },
+    "team_id": { "type": "string" },
+    "title": { "type": "string" },
+    "text": { "type": "string", "description": "사무분장 원문 그대로" },
+    "keywords": { "type": "array", "items": { "type": "string" } },
+    "targets": { "type": "array", "items": { "type": "string" }, "description": "가로수, 배수구, 보도블록 ..." },
+    "actions": { "type": "array", "items": { "type": "string" }, "description": "정비, 허가, 단속, 지원 ..." },
+    "places": { "type": "array", "items": { "type": "string" }, "description": "도로, 공원, 공동주택 단지, 하천 ..." },
+    "rule_ids": { "type": "array", "items": { "type": "string" } },
+    "competency": {
+      "type": "object",
+      "properties": { "law": { "type": "integer", "minimum": 1, "maximum": 5 }, "civil": { "type": "integer" }, "field": { "type": "integer" }, "budget": { "type": "integer" }, "negotiation": { "type": "integer" }, "document": { "type": "integer" } }
+    },
+    "source": { "type": "string" }
+  }
+}

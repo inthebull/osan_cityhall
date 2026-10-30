@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool (AI 도구 상가 등록 카드)",
+  "type": "object",
+  "required": ["tool_id", "name", "team", "purpose", "task_ids", "mode", "data_grade", "review", "consent", "version", "disclaimer"],
+  "properties": {
+    "tool_id": { "type": "string", "pattern": "^TL-" },
+    "name": { "type": "string" },
+    "team": { "type": "string", "description": "만든 팀 또는 'AI 주무관(방 이름)'" },
+    "purpose": { "type": "string", "maxLength": 80 },
+    "task_ids": { "type": "array", "items": { "type": "string" } },
+    "io": { "type": "object", "properties": { "input": { "type": "string" }, "output": { "type": "string" } } },
+    "mode": { "enum": ["link", "embed", "api", "generated"] },
+    "url": { "type": "string", "format": "uri" },
+    "html_ref": { "type": "string", "description": "generated 도구의 저장 경로" },
+    "data_grade": { "enum": ["public_only", "internal_required"] },
+    "review": { "type": "object", "required": ["status"], "properties": { "status": { "enum": ["pending", "passed", "failed"] }, "checked_at": { "type": "string" }, "checklist": { "type": "object" } } },
+    "consent": { "type": "boolean", "description": "만든 팀의 입주 동의" },
+    "version": { "type": "string" },
+    "disclaimer": { "type": "string", "default": "결과 책임은 만든 팀에 있으며, 청사는 찾기·연결만 제공합니다." }
+  }
+}

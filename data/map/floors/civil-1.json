@@ -1,0 +1,13 @@
+{
+  "id": "civil-1", "building_id": "civil", "level": "1", "title": "민원실 건물 1층",
+  "size": { "w": 80, "h": 30 },
+  "rooms": [
+    { "id": "R-CIVIL-PASSPORT", "name": "민원여권과", "dept_id": "D-CIVIL", "kind": "dept", "shape": { "x": 2, "y": 2, "w": 40, "h": 11 }, "door": { "x": 22, "y": 13 }, "status": "active", "confirmed": false, "source": "research_오산시청_청사배치.md (1층 위치는 추정)" },
+    { "id": "R-CIVIL-COUNTER", "name": "민원 창구", "dept_id": "D-CIVIL", "kind": "civil", "shape": { "x": 44, "y": 2, "w": 34, "h": 11 }, "door": { "x": 60, "y": 13 }, "status": "active", "confirmed": false, "source": "추정" },
+    { "id": "R-DISPATCH", "name": "업무배분실", "dept_id": null, "kind": "common", "virtual_space": "AI 업무배분", "shape": { "x": 2, "y": 17, "w": 30, "h": 11 }, "door": { "x": 17, "y": 17 }, "status": "active", "confirmed": true, "source": "가상 공간" },
+    { "id": "R-TAX", "name": "국세청 민원실", "dept_id": null, "kind": "facility", "shape": { "x": 34, "y": 17, "w": 20, "h": 11 }, "door": { "x": 44, "y": 17 }, "status": "planned", "confirmed": false, "source": "청사 안 운영은 확인, 건물·층 미확인" },
+    { "id": "R-EV1", "name": "EV·계단", "dept_id": null, "kind": "facility", "shape": { "x": 56, "y": 17, "w": 8, "h": 11 }, "door": { "x": 60, "y": 17 }, "status": "facility", "confirmed": false, "source": "가상" }
+  ],
+  "corridors": [ { "from": [0, 15], "to": [80, 15], "width": 4 } ],
+  "vertical": [ { "id": "EV1", "type": "elevator", "x": 60, "y": 22 } ]
+}

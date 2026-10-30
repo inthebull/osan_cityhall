@@ -1,0 +1,13 @@
+{
+  "_note": "청사 배치는 공개 자료로 확인된 범위만 반영한 임시 도면입니다. 층별 안내도를 받으면 /dev/map-editor로 다시 그립니다.",
+  "size": { "w": 100, "h": 60 },
+  "buildings": [
+    { "id": "main", "name": "본관", "shape": { "x": 30, "y": 10, "w": 34, "h": 22 }, "confirmed": true, "floors": ["main-x"], "note": "층별 부서 배치 미확인" },
+    { "id": "annex", "name": "별관", "shape": { "x": 70, "y": 12, "w": 18, "h": 18 }, "confirmed": true, "floors": [], "note": "본관 동쪽, 지하1층~지상5층, 2023-01 개관" },
+    { "id": "civil", "name": "민원실 건물", "shape": { "x": 8, "y": 14, "w": 18, "h": 14 }, "confirmed": true, "floors": ["civil-1"], "note": "1층 민원실, 위층 오산버드파크(위치 관계는 추정)" },
+    { "id": "council", "name": "시의회", "shape": { "x": 8, "y": 34, "w": 18, "h": 12 }, "confirmed": false, "floors": [], "note": "위치 관계 미확인" }
+  ],
+  "external": [
+    { "id": "dong-sema", "name": "세마동 행정복지센터", "address": "경기도 오산시 독산성로 419", "floors": ["dong-sema-1"], "note": "동 행정복지센터 대표 센터(팀원 근무지). 내부 배치는 가상" }
+  ]
+}

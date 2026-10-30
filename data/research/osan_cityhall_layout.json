@@ -1,0 +1,607 @@
+{
+  "source_date": "2026-10-30 (research date; org per 2026-01-01 reorganization and 2026-07~09 personnel news). Official osan.go.kr floor guide NOT accessible -> floor data incomplete",
+  "address": "경기도 오산시 성호대로 141 (오산동), 18132",
+  "confidence_legend": "each room has 'status': confirmed | inferred | unknown",
+  "buildings": [
+    {
+      "id": "main",
+      "name": "본관",
+      "floors_total": null,
+      "note": "층수·층별 배치 미확인. 주차장은 본관 뒤편과 지하(약 377면, 블로그)",
+      "floors": [
+        {
+          "level": "B1",
+          "rooms": [
+            {
+              "name": "주차장(지하)",
+              "type": "facility",
+              "status": "confirmed",
+              "source": "https://infoai.co.kr/ (3rd-party blog, undated)"
+            }
+          ]
+        },
+        {
+          "level": "unknown",
+          "rooms": [
+            {
+              "name": "시장실",
+              "type": "exec",
+              "status": "unknown",
+              "source": null
+            },
+            {
+              "name": "부시장실",
+              "type": "exec",
+              "status": "unknown",
+              "source": null
+            },
+            {
+              "name": "대회의실",
+              "type": "meeting",
+              "status": "unknown",
+              "source": null
+            },
+            {
+              "name": "상황실",
+              "type": "meeting",
+              "status": "unknown",
+              "source": null
+            },
+            {
+              "name": "구내식당",
+              "type": "facility",
+              "status": "exists-confirmed, location unknown",
+              "source": "http://jachilaw.com/DATA/GG-OS/PDF/2-05-05-001-20200128.PDF (오산시청구내식당운영규정)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "annex",
+      "name": "별관",
+      "position_hint": "본관 동쪽",
+      "floors_total": "B1~5F",
+      "gfa_m2": 4318,
+      "opened": "2023-01-19 (준공 2022-11)",
+      "floors": [
+        {
+          "level": "B1",
+          "rooms": []
+        },
+        {
+          "level": "1",
+          "rooms": []
+        },
+        {
+          "level": "2",
+          "rooms": [
+            {
+              "name": "직장어린이집",
+              "type": "facility",
+              "status": "confirmed",
+              "source": "https://newsseoul.co.kr/news/view/1065579610383647"
+            }
+          ]
+        },
+        {
+          "level": "3-5",
+          "rooms": [
+            {
+              "name": "사무실 10개(부서명 미확인)",
+              "type": "dept",
+              "status": "confirmed",
+              "source": "https://newsseoul.co.kr/news/view/1065579610383647"
+            },
+            {
+              "name": "다목적실 2개",
+              "type": "meeting",
+              "status": "confirmed",
+              "source": "https://newsseoul.co.kr/news/view/1065579610383647"
+            },
+            {
+              "name": "직원 휴게실",
+              "type": "facility",
+              "status": "confirmed",
+              "source": "https://newsseoul.co.kr/news/view/1065579610383647"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "civil",
+      "name": "민원실 건물(나무위키 표기: 서관)",
+      "floors_total": "원래 2층 + 옥상 증축 오산버드파크(총 4층 규모)",
+      "floors": [
+        {
+          "level": "1",
+          "rooms": [
+            {
+              "name": "민원실(민원여권과 창구)",
+              "type": "civil",
+              "dept_code": "민원여권과",
+              "phone": "031-8036-8036",
+              "status": "inferred",
+              "source": "https://www.segye.com/newsView/20210602513783 ; https://infoai.co.kr/ (3rd-party blog, undated)"
+            }
+          ]
+        },
+        {
+          "level": "2-4",
+          "rooms": [
+            {
+              "name": "오산버드파크",
+              "type": "facility",
+              "status": "confirmed",
+              "source": "https://www.segye.com/newsView/20210602513783"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "council",
+      "name": "오산시의회 청사",
+      "position_hint": "서관(민원실 건물) 옆",
+      "floors_total": null,
+      "floors": [],
+      "note": "주소 성호대로 141, 층별 배치 미확인 (osancouncil.go.kr 배치도 접근 차단)"
+    },
+    {
+      "id": "unknown_bldg",
+      "name": "건물 미상",
+      "floors": [
+        {
+          "level": "unknown",
+          "rooms": [
+            {
+              "name": "국세청 민원실",
+              "type": "civil",
+              "status": "confirmed",
+              "source": "https://kyeonggi.com/article/20250217580170"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "orgs": [
+    {
+      "bureau": "기획재정국",
+      "dept": "세정과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "confirmed",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "기획재정국",
+      "dept": "징수과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "confirmed",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "기획재정국",
+      "dept": "회계과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "confirmed",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "기획재정국",
+      "dept": "기획예산과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "자치행정국",
+      "dept": "토지정보과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "confirmed",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "자치행정국",
+      "dept": "데이터정책과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "confirmed",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "자치행정국",
+      "dept": "자치행정과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "자치행정국",
+      "dept": "민원여권과",
+      "phone": "031-8036-8036",
+      "teams": [
+        "민원행정팀(8036-7280~3)",
+        "여권팀(8036-7290)",
+        "토지정보팀(8036-7310~2, 개편 전 정보일 수 있음)",
+        "건축민원팀(8036-7330~4)",
+        "세정민원팀(8036-7350~2)"
+      ],
+      "bureau_status": "inferred",
+      "source": "https://www.joongboo.com/news/articleView.html?idxno=363737961",
+      "location": "민원실 건물 1층 (inferred); 창구 배치 unknown"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "기후환경정책과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "confirmed",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "도시정책과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "도시개발과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "건축과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "주택과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "도시공원과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "도로과",
+      "phone": null,
+      "teams": [
+        "도로시설팀(2026 신설)"
+      ],
+      "bureau_status": "inferred",
+      "source": "https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "도시주택국",
+      "dept": "하천녹지과",
+      "phone": null,
+      "teams": [
+        "하천정책팀(2026 신설)"
+      ],
+      "bureau_status": "inferred",
+      "source": "https://www.joongboo.com/news/articleView.html?idxno=363709951"
+    },
+    {
+      "bureau": "복지교육국",
+      "dept": "희망복지과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "복지교육국",
+      "dept": "아동복지과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "복지교육국",
+      "dept": "가족보육과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "복지교육국",
+      "dept": "노인장애인과",
+      "phone": "031-8036-7443 (노인일자리 문의처, 2024-12; 과 대표번호인지 미확인)",
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; http://www.osannews.net/28623",
+      "location": "unknown"
+    },
+    {
+      "bureau": "복지교육국",
+      "dept": "평생교육과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "경제문화국",
+      "dept": "기업일자리과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "경제문화국",
+      "dept": "민생경제과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "경제문화국",
+      "dept": "문화예술과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "경제문화국",
+      "dept": "체육과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "시민안전국",
+      "dept": "안전정책과",
+      "phone": null,
+      "teams": [
+        "재난대응 인력 보강(팀명 미확인)"
+      ],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "시민안전국",
+      "dept": "교통정책과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "시민안전국",
+      "dept": "스마트교통안전과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "시민안전국",
+      "dept": "자원순환과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "시민안전국",
+      "dept": "위생과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://news.ifm.kr/news/articleView.html?idxno=456100"
+    },
+    {
+      "bureau": "시장·부시장 직속",
+      "dept": "홍보담당관",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "시장·부시장 직속",
+      "dept": "감사담당관",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "보건소(직속기관)",
+      "dept": "보건행정과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "보건소(직속기관)",
+      "dept": "건강증진과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "inferred",
+      "source": "https://www.anewsa.com/detail.php?number=3184288"
+    },
+    {
+      "bureau": "unknown(사업소/직속기관 추정)",
+      "dept": "수도과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "unknown",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "unknown(사업소/직속기관 추정)",
+      "dept": "하수과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "unknown",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "unknown(사업소/직속기관 추정)",
+      "dept": "도시농업과",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "unknown",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    },
+    {
+      "bureau": "unknown(사업소/직속기관 추정)",
+      "dept": "차량등록사업소",
+      "phone": null,
+      "teams": [],
+      "bureau_status": "unknown",
+      "source": "https://www.anewsa.com/detail.php?number=3184288 ; https://www.joongboo.com/news/articleView.html?idxno=363737961"
+    }
+  ],
+  "orgs_note": "6국: 기획재정국(신설)·자치행정국·복지교육국·경제문화국·도시주택국·시민안전국, 27과 173팀 (2026-01-01). 통합돌봄팀·마음건강팀 신설(상위 과 미확인). 출처 https://www.joongboo.com/news/articleView.html?idxno=363709951",
+  "dong_centers": [
+    {
+      "name": "중앙동",
+      "address": "경기도 오산시 경기대로 307",
+      "phone": "031-8036-6200",
+      "status": "confirmed",
+      "source": "https://www.114.co.kr/life/public/detail/4902",
+      "layout": {
+        "building": "옛 국제화센터, B1~4F, 3,175㎡ (2013)",
+        "floors": [
+          {
+            "level": "B1",
+            "rooms": []
+          },
+          {
+            "level": "1-2",
+            "rooms": [
+              "동 사무실(총무)",
+              "민원창구",
+              "복지상담실",
+              "회의실",
+              "대강당",
+              "다목적 프로그램실",
+              "문화강좌실 (주민자치센터 공동운영)"
+            ]
+          },
+          {
+            "level": "3-4",
+            "rooms": [
+              "혁신교육지원센터",
+              "식품안전체험관",
+              "청소년문화의집",
+              "드림스타트센터"
+            ]
+          }
+        ],
+        "status": "confirmed (2013, current use may differ)",
+        "source": "https://www.kyeonggi.com/article/201306200517486 ; https://www.kgnews.co.kr/news/article.html?no=355136"
+      }
+    },
+    {
+      "name": "남촌동",
+      "address": null,
+      "phone": "031-8036-6260",
+      "status": "phone from search snippet only",
+      "source": "https://www.114.co.kr/life/public/detail/4898"
+    },
+    {
+      "name": "신장1동",
+      "address": "경기도 오산시 문헌공로 45",
+      "phone": "031-8036-6290",
+      "status": "confirmed",
+      "source": "https://www.114.co.kr/life/public/detail/4901"
+    },
+    {
+      "name": "신장2동",
+      "address": "(임시) 경기도 오산시 내삼미로79번길 48 리더스프라자 3층; 신청사 수청동 621-2 2027-02 개청 예정",
+      "phone": null,
+      "status": "confirmed(2024-01)",
+      "source": "https://www.thereport.co.kr/news/articleView.html?idxno=45193 ; https://kyeonggi.com/article/20250716580063",
+      "planned_layout": {
+        "building": "수청동 621-2, B1~3F, 3,817㎡, 2027-02 개청 예정",
+        "floors": [
+          {
+            "level": "1",
+            "rooms": [
+              "민원 처리 공간",
+              "상담실"
+            ]
+          },
+          {
+            "level": "2-3",
+            "rooms": [
+              "주민자치 프로그램실",
+              "소회의실",
+              "다목적강당"
+            ]
+          }
+        ],
+        "source": "https://kyeonggi.com/article/20250716580063"
+      }
+    },
+    {
+      "name": "세마동",
+      "address": "경기도 오산시 독산성로 419",
+      "phone": "031-8036-6320",
+      "status": "confirmed",
+      "source": "https://www.114.co.kr/life/public/detail/4900"
+    },
+    {
+      "name": "초평동",
+      "address": "경기도 오산시 초평중앙로 77",
+      "phone": "031-8036-6350",
+      "status": "confirmed",
+      "source": "https://www.114.co.kr/life/public/detail/4903"
+    },
+    {
+      "name": "대원1동",
+      "address": "경기도 오산시 오산로132번길 28 (원동 404-8)",
+      "phone": null,
+      "status": "inferred (옛 대원동 센터 주소)",
+      "source": "https://fpfl.purpleo.co.kr/view/5412"
+    },
+    {
+      "name": "대원2동",
+      "address": "(임시) 경기도 오산시 동부대로 332-13 더테라스퀘어 가동 1층",
+      "phone": null,
+      "status": "confirmed(2024-01)",
+      "source": "https://www.thereport.co.kr/news/articleView.html?idxno=45193"
+    }
+  ],
+  "floor_plan_urls": {
+    "official_building_guide": "https://www.osan.go.kr/portal/contents.do?mId=0503010000",
+    "official_org_chart": "https://www.osan.go.kr/portal/contents.do?mId=0503020000",
+    "council_layout": "https://www.osancouncil.go.kr/kr/intro/cms?cms_id=location1",
+    "note": "모두 조사 도구에서 접근 차단. 이미지 URL 미확보"
+  }
+}

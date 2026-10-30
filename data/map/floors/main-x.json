@@ -1,0 +1,13 @@
+{
+  "id": "main-x", "building_id": "main", "level": "?", "title": "본관 (층 미확인)",
+  "size": { "w": 80, "h": 30 },
+  "rooms": [
+    { "id": "R-ELDER", "name": "노인장애인과", "dept_id": "D-ELDER", "kind": "dept", "shape": { "x": 2, "y": 2, "w": 30, "h": 11 }, "door": { "x": 17, "y": 13 }, "status": "active", "confirmed": false, "source": "본관 소재·층 미확인 (복지교육국)" },
+    { "id": "R-WELFARE-ETC", "name": "복지교육국 다른 과", "dept_id": null, "kind": "dept", "shape": { "x": 34, "y": 2, "w": 44, "h": 11 }, "door": { "x": 56, "y": 13 }, "status": "planned", "confirmed": false, "source": "미확인" },
+    { "id": "R-MAYOR", "name": "시장실", "dept_id": null, "kind": "exec", "shape": { "x": 2, "y": 17, "w": 20, "h": 11 }, "door": { "x": 12, "y": 17 }, "status": "planned", "confirmed": false, "source": "본관 소재, 층 미확인" },
+    { "id": "R-HALL", "name": "대회의실", "dept_id": null, "kind": "meeting", "shape": { "x": 24, "y": 17, "w": 30, "h": 11 }, "door": { "x": 39, "y": 17 }, "status": "planned", "confirmed": false, "source": "본관 소재, 층 미확인" },
+    { "id": "R-EV2", "name": "EV·계단", "dept_id": null, "kind": "facility", "shape": { "x": 56, "y": 17, "w": 8, "h": 11 }, "door": { "x": 60, "y": 17 }, "status": "facility", "confirmed": false, "source": "가상" }
+  ],
+  "corridors": [ { "from": [0, 15], "to": [80, 15], "width": 4 } ],
+  "vertical": [ { "id": "EV2", "type": "elevator", "x": 60, "y": 22 } ]
+}

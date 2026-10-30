@@ -1,0 +1,5 @@
+[
+  { "dept_id": "D-CIVIL", "name": "민원여권과", "bureau": "자치행정국", "phone": "031-8036-8036", "room_ids": ["R-CIVIL-PASSPORT", "R-CIVIL-COUNTER"], "teams": [], "source": "research_오산시청_청사배치.md (대표번호: 제3자 블로그, 확인 필요)" },
+  { "dept_id": "D-ELDER", "name": "노인장애인과", "bureau": "복지교육국", "phone": null, "room_ids": ["R-ELDER"], "teams": [], "source": "research_오산시청_청사배치.md (대표번호 미확인)" },
+  { "dept_id": "D-DONG", "name": "동 행정복지센터", "bureau": null, "phone": null, "room_ids": ["R-DONG-ADMIN", "R-DONG-WELFARE"], "teams": [], "source": "대표 센터: 세마동(031-8036-6320)" }
+]
