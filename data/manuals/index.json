@@ -328,5 +328,45 @@
     "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=282799",
     "fetched_at": "2026-10-30",
     "pages": 11
+  },
+  {
+    "doc_id": "funeral-act",
+    "dept_id": "D-ELDER",
+    "title": "장사 등에 관한 법률 [시행 2025. 1. 24.] [법률 제20110호, 2024. 1. 23., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=259173",
+    "fetched_at": "2026-10-30",
+    "pages": 9
+  },
+  {
+    "doc_id": "funeral-act-decree",
+    "dept_id": "D-ELDER",
+    "title": "장사 등에 관한 법률 시행령 [시행 2026. 3. 24.] [대통령령 제36220호, 2026. 3. 24., 타법개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=284837",
+    "fetched_at": "2026-10-30",
+    "pages": 13
+  },
+  {
+    "doc_id": "funeral-act-rule",
+    "dept_id": "D-ELDER",
+    "title": "장사 등에 관한 법률 시행규칙 [시행 2026. 4. 3.] [보건복지부령 제1170호, 2026. 4. 3., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=285427",
+    "fetched_at": "2026-10-30",
+    "pages": 19
+  },
+  {
+    "doc_id": "funeral-guide",
+    "dept_id": "D-ELDER",
+    "title": "2024년 장사정책 추진 우수사례 및 민원답변 모음집 (보건복지부, 2024.3.)",
+    "year": 2024,
+    "publisher": "보건복지부 노인지원과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1480763",
+    "fetched_at": "2026-10-30",
+    "pages": 392
   }
 ]
