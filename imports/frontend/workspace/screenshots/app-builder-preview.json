@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "오산시 AI 청사",
+      "hasCanvas": true,
+      "bodyTextLen": 215,
+      "bodyTextHash": "ddee1a24e84e91be2d38ddc8d7137bea9afa1c23b2045769eea5be42f4f5abe3",
+      "bodyTextPrefix": "본관 1층 도트로 걷는 오산시청 0/6 도장 F4O · 가상 청사 오산시 AI 청사 공식 배치도를 따라 본관 1층부",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "오산시 AI 청사",
+      "hasCanvas": true,
+      "bodyTextLen": 215,
+      "bodyTextHash": "ddee1a24e84e91be2d38ddc8d7137bea9afa1c23b2045769eea5be42f4f5abe3",
+      "bodyTextPrefix": "본관 1층 도트로 걷는 오산시청 0/6 도장 F4O · 가상 청사 오산시 AI 청사 공식 배치도를 따라 본관 1층부",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=Jua&display=swap");
+@import "tailwindcss";
+
+@source "./HallGame.tsx";
+
+@theme {
+  --color-ink: #2c2416;
+  --color-paper: #f6efe2;
+  --color-paper-2: #efe2cc;
+  --color-navy: #24344c;
+  --color-navy-2: #1a2638;
+  --color-mint: #1f9a7c;
+  --color-mint-2: #d7f3ea;
+  --color-wood: #c9843a;
+  --color-line: #ddcfb6;
+  --color-rose: #b84b45;
+  --color-foam: #fbf7f0;
+  --font-display: "Jua", "IBM Plex Sans KR", sans-serif;
+  --font-sans: "IBM Plex Sans KR", sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    margin: 0;
+    height: 100%;
+    background: var(--color-navy-2);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
