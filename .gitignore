@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+
+# 인수인계 PPT 렌더링 점검 결과
+/.render/

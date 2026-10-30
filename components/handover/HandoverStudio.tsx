@@ -4,7 +4,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Download, Lock, MessageCircle, Sparkles } from "lucide-react";
 import { OfficerChat } from "@/components/game/OfficerChat";
 import type { Slide } from "@/lib/handover/deck";
-import { BADGE, HEADER, basisLabel, basisTone, chipsOf, gridOf, layoutOf, sourceRefs, splitRow, type Tone } from "@/lib/handover/layout";
+import { BADGE, COVER_NOTE, HEADER, SLOGAN_LOGO, basisLabel, basisTone, chipsOf, gridOf, layoutOf, sourceRefs, splitRow, type Tone } from "@/lib/handover/layout";
 
 export type SeatSummary = { seat_id: string; dept_id: string; team: string | null; label: string; count: number; packs: number };
 export type PackSummary = { pack_id: string; dept_id: string; title: string; team: string };
@@ -14,10 +14,10 @@ type Deck = { seat: { seat_id: string; label: string; dept_name: string }; slide
 const SOURCE_NOTE = "출처: 오산시 홈페이지 직원 업무 목록(성명 가림), 오산시 행정기구 및 정원 조례 시행규칙 분장사무";
 
 const TONE_CLASS: Record<Tone, string> = {
-  ok: "border-mint bg-mint-2 text-[#14634f]",
+  ok: "border-osan-teal bg-osan-tint text-osan-teal-deep",
   warn: "border-wood bg-[#fcebd3] text-[#7a4a12]",
   bad: "border-rose bg-[#fde2e1] text-[#8a2e2a]",
-  plain: "border-line bg-foam text-navy",
+  plain: "border-doc-line bg-doc-card text-doc-ink",
 };
 
 // 색·서체는 DESIGN.md, PPT(lib/handover/pptx.ts)와 같은 배치 규칙(lib/handover/layout.ts)으로 그린다.
@@ -27,7 +27,7 @@ function Card({ tone = "plain", className = "", children }: { tone?: Tone; class
 
 function Dot({ n, className = "" }: { n: number | string; className?: string }) {
   return (
-    <span className={`inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-mint-deep text-[10px] font-bold text-foam sm:size-6 sm:text-xs ${className}`}>{n}</span>
+    <span className={`inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-osan-teal-deep text-[10px] font-bold text-foam sm:size-6 sm:text-xs ${className}`}>{n}</span>
   );
 }
 
@@ -36,7 +36,7 @@ function SlideBody({ slide }: { slide: Slide }) {
   const basis = slide.basis && (
     <Card tone={basisTone(slide.basis.strength)} className="mt-2 shrink-0 text-xs sm:text-sm">
       <b>근거 · {basisLabel(slide.basis.strength)}</b>
-      <p className="text-navy">{slide.basis.text}</p>
+      <p className="text-doc-ink">{slide.basis.text}</p>
     </Card>
   );
   if (layout === "explain") {
@@ -45,8 +45,8 @@ function SlideBody({ slide }: { slide: Slide }) {
       <>
         <div className="flex min-h-0 flex-1 gap-2">
           <Card tone="ok" className={rest.length ? "basis-3/5" : "flex-1"}>
-            <p className="text-xs font-bold text-mint-deep">이 업무는</p>
-            <p className="text-sm leading-relaxed text-navy sm:text-lg">{main}</p>
+            <p className="text-xs font-bold text-osan-teal-deep">이 업무는</p>
+            <p className="text-sm leading-relaxed text-doc-ink sm:text-lg">{main}</p>
           </Card>
           {rest.length > 0 && (
             <Card className="flex-1">
@@ -64,7 +64,7 @@ function SlideBody({ slide }: { slide: Slide }) {
   if (layout === "steps") {
     return (
       <ol className="relative flex min-h-0 flex-1 gap-2 pt-1">
-        <span aria-hidden className="absolute left-[8%] right-[8%] top-[18px] h-0.5 bg-mint sm:top-[22px]" />
+        <span aria-hidden className="absolute left-[8%] right-[8%] top-[18px] h-0.5 bg-osan-teal sm:top-[22px]" />
         {slide.bullets.map((b, i) => (
           <li key={i} className="flex min-w-0 flex-1 flex-col items-center gap-2">
             <Dot n={i + 1} className="relative size-7 text-sm sm:size-9" />
@@ -79,16 +79,16 @@ function SlideBody({ slide }: { slide: Slide }) {
       <div className="min-h-0 flex-1 overflow-y-auto">
         <table className="w-full border-collapse text-xs sm:text-sm">
           <thead>
-            <tr className="bg-navy text-left text-foam">
-              <th className="w-1/4 border border-line px-2 py-1">자리·부서</th>
-              <th className="border border-line px-2 py-1">함께 볼 내용</th>
+            <tr className="bg-osan-navy text-left text-foam">
+              <th className="w-1/4 border border-doc-line px-2 py-1">자리·부서</th>
+              <th className="border border-doc-line px-2 py-1">함께 볼 내용</th>
             </tr>
           </thead>
           <tbody>
             {slide.bullets.map(splitRow).map(([a, b], i) => (
-              <tr key={i} className={i % 2 ? "bg-white" : "bg-foam"}>
-                <td className="border border-line px-2 py-1 font-semibold">{a || "관련"}</td>
-                <td className="border border-line px-2 py-1">{b}</td>
+              <tr key={i} className={i % 2 ? "bg-white" : "bg-doc-card"}>
+                <td className="border border-doc-line px-2 py-1 font-semibold">{a || "관련"}</td>
+                <td className="border border-doc-line px-2 py-1">{b}</td>
               </tr>
             ))}
           </tbody>
@@ -101,8 +101,8 @@ function SlideBody({ slide }: { slide: Slide }) {
       <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
         {slide.bullets.map((q, i) => (
           <li key={i} className="flex items-center gap-2">
-            <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-navy text-xs font-bold text-foam sm:size-9">Q</span>
-            <span className="flex-1 rounded-lg border border-mint bg-mint-2 px-3 py-2 text-sm sm:text-base">{q}</span>
+            <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-osan-navy text-xs font-bold text-foam sm:size-9">Q</span>
+            <span className="flex-1 rounded-lg border border-osan-teal bg-osan-tint px-3 py-2 text-sm sm:text-base">{q}</span>
           </li>
         ))}
       </ul>
@@ -114,7 +114,7 @@ function SlideBody({ slide }: { slide: Slide }) {
     <>
       <ul className={`grid min-h-0 flex-1 auto-rows-min gap-1.5 overflow-y-auto ${cols === 3 ? "sm:grid-cols-3" : cols === 2 ? "sm:grid-cols-2" : ""}`}>
         {slide.bullets.map((b, i) => (
-          <li key={i} className="flex items-center gap-2 rounded-sm border border-l-4 border-line bg-foam p-1.5 text-xs sm:p-2 sm:text-sm">
+          <li key={i} className="flex items-center gap-2 rounded-sm border border-l-4 border-doc-line bg-doc-card p-1.5 text-xs sm:p-2 sm:text-sm">
             {numbered && <Dot n={i + 1} />}
             <span>{b}</span>
           </li>
@@ -128,21 +128,28 @@ function SlideBody({ slide }: { slide: Slide }) {
 function SlideView({ slide, index, total }: { slide: Slide; index: number; total: number }) {
   if (slide.kind === "cover") {
     return (
-      <div className="relative flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-navy bg-navy p-5 pl-8 text-foam sm:p-8 sm:pl-12">
-        <span aria-hidden className="absolute inset-y-0 left-0 w-2 bg-mint sm:w-3" />
-        <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs">
-          <span className="text-mint-2">{HEADER}</span>
-          <span className="rounded-sm bg-foam px-2 py-0.5 font-semibold text-navy">{BADGE}</span>
+      <div className="relative flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-osan-navy bg-white pl-8 text-doc-ink sm:pl-12">
+        <span aria-hidden className="absolute inset-y-0 left-0 w-2 bg-osan-navy sm:w-3" />
+        <span aria-hidden className="absolute inset-y-0 left-2 w-0.5 bg-osan-teal sm:left-3 sm:w-1" />
+        <div className="flex items-start justify-between gap-2 px-3 pt-4 text-[10px] sm:px-5 sm:pt-6 sm:text-xs">
+          <span className="font-semibold text-osan-navy">{HEADER}</span>
+          <span className="rounded-sm bg-osan-teal-deep px-2 py-0.5 font-semibold text-white">{BADGE}</span>
         </div>
-        <div className="my-auto">
-          <h2 className="font-display text-3xl sm:text-5xl">{slide.title}</h2>
-          <span aria-hidden className="mt-2 block h-1 w-16 bg-mint" />
-          {slide.subtitle && <p className="mt-2 text-sm text-mint-2 sm:text-lg">{slide.subtitle}</p>}
+        <div className="my-auto px-3 sm:px-5">
+          <h2 className="text-2xl font-bold text-osan-navy sm:text-5xl">{slide.title}</h2>
+          <span aria-hidden className="mt-2 block h-1 w-16 bg-osan-teal" />
+          {slide.subtitle && <p className="mt-2 text-sm text-osan-teal-deep sm:text-lg">{slide.subtitle}</p>}
           {slide.bullets.map((b, i) => (
             <p key={i} className="mt-3 text-xs leading-relaxed sm:text-base">{b}</p>
           ))}
         </div>
-        <p className="text-[10px] text-mint-2">
+        <div className="flex items-end justify-between gap-2 px-3 pb-2 sm:px-5">
+          <span className="text-[10px] text-[#6b7280] sm:text-xs">{COVER_NOTE}</span>
+          {/* 시정슬로건 원본 이미지: 비율·색 변경 금지(DESIGN.md 0절) */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={SLOGAN_LOGO} alt="시민과 함께 여는 성장도시 오산" className="h-4 w-auto sm:h-7" />
+        </div>
+        <p className="bg-osan-navy px-3 py-1 text-right text-[10px] font-semibold text-white sm:px-5">
           {index + 1} / {total}
         </p>
       </div>
@@ -150,15 +157,15 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
   }
   const chips = slide.kind === "overview" ? chipsOf(slide.subtitle) : [];
   return (
-    <div className="flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-navy bg-white text-navy">
-      <div className="flex shrink-0 items-center justify-between gap-2 bg-navy px-3 py-1 text-[10px] sm:px-5 sm:text-xs">
-        <span className="text-mint-2">{HEADER}</span>
-        <span className="rounded-sm bg-mint-deep px-2 py-0.5 font-semibold text-foam">{BADGE}</span>
+    <div className="flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-osan-navy bg-white text-doc-ink">
+      <div className="flex shrink-0 items-center justify-between gap-2 border-b-2 border-osan-teal bg-osan-navy px-3 py-1 text-[10px] sm:px-5 sm:text-xs">
+        <span className="text-white">{HEADER}</span>
+        <span className="rounded-sm bg-osan-teal-deep px-2 py-0.5 font-semibold text-foam">{BADGE}</span>
       </div>
       <div className="flex min-h-0 flex-1 flex-col px-3 pb-2 pt-2 sm:px-5 sm:pt-3">
-        <h2 className="font-display text-lg sm:text-3xl">{slide.title}</h2>
+        <h2 className="text-lg font-bold text-osan-navy sm:text-3xl">{slide.title}</h2>
         <div className="mt-1 flex flex-wrap items-center gap-2">
-          <span aria-hidden className="h-1 w-10 bg-mint" />
+          <span aria-hidden className="h-1 w-10 bg-osan-teal" />
           {chips.length
             ? chips.map((c) => (
                 <span key={c.text} className={`rounded-sm border px-1.5 text-[10px] font-semibold sm:text-xs ${TONE_CLASS[c.tone]}`}>
@@ -166,7 +173,7 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
                 </span>
               ))
             : (slide.tag || slide.subtitle) && (
-                <span className="text-xs font-semibold text-mint-deep sm:text-sm">{[slide.tag, slide.subtitle].filter(Boolean).join(" · ")}</span>
+                <span className="text-xs font-semibold text-osan-teal-deep sm:text-sm">{[slide.tag, slide.subtitle].filter(Boolean).join(" · ")}</span>
               )}
         </div>
         <div className="mt-2 flex min-h-0 flex-1 flex-col sm:mt-3">
@@ -175,7 +182,7 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
         {slide.sources && slide.sources.length > 0 && (
           <details className="mt-2 shrink-0 text-[10px] sm:text-xs">
             <summary className="cursor-pointer">
-              <b className="text-mint-deep">근거</b> {sourceRefs(slide).slice(0, 2).join(" · ")}
+              <b className="text-osan-teal-deep">근거</b> {sourceRefs(slide).slice(0, 2).join(" · ")}
               {sourceRefs(slide).length > 2 ? " 외" : ""}
             </summary>
             <ul className="mt-1 max-h-24 space-y-1 overflow-y-auto">
@@ -195,7 +202,7 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
             </ul>
           </details>
         )}
-        <p className="mt-1 shrink-0 border-t border-line pt-1 text-right text-[10px] font-semibold">
+        <p className="mt-1 shrink-0 border-t border-doc-line pt-1 text-right text-[10px] font-semibold">
           {index + 1} / {total}
         </p>
       </div>

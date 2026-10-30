@@ -4,6 +4,10 @@ import type { Slide } from "./deck";
 
 export const BADGE = "AI 초안 · 최종 판단은 담당자";
 export const HEADER = "오산시 AI 청사 · 업무 인수인계";
+// 공식 서비스로 오인되지 않도록 표지에 적는다(DESIGN.md 0절).
+export const COVER_NOTE = "2026 오산시 시정연구모임 F4O · 연구 시제품";
+// 민선9기 시정슬로건 가로형 로고타입 원본(DESIGN.md 0절)
+export const SLOGAN_LOGO = "/brand/osan-slogan-h.png";
 
 export type Layout = "cover" | "explain" | "cards" | "steps" | "table" | "questions";
 
