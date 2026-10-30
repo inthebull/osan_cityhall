@@ -17,53 +17,46 @@ import {
 import { unlockAudio } from "./audio";
 import { HallEngine, type Hud } from "./engine";
 import { directory, floorList, QUEST, type FloorId, type RoomKind, type Spot } from "./world";
-import { DEMO_CASES, DEPT_NAMES } from "@/lib/pingpong/demo";
-import { decide } from "@/lib/pingpong/score";
+import { DEPT_NAMES } from "@/lib/pingpong/demo";
+import { LOBBY_EXAMPLES, judgeLobby, type LobbyResult } from "@/lib/pingpong/lobby";
 
 type Overlay =
   | { kind: "talk"; spot: Spot; page: number }
   | { kind: "floors" }
-  | { kind: "pingpong"; phase: "ask" | "result"; caseIndex: number }
-  | { kind: "tool"; hours: number }
-  | { kind: "market" }
-  | { kind: "roof" }
+  | { kind: "lobby"; text: string; result: LobbyResult | null }
   | { kind: "minwon"; spot: Spot };
-
-const SHOPS = [
-  { name: "행사 준비 체크리스트", blurb: "시민의 날, 월례회, 현수막" },
-  { name: "예산 집행 점검표", blurb: "원인행위 전에 확인하는 한 장" },
-  { name: "협조 공문 서식", blurb: "주관·협조·근거가 빈칸으로 남음" },
-];
-
-const STOP_NAMES: Record<string, string> = {
-  guide: "안내데스크",
-  minwon: "민원여권과",
-  jachi: "자치행정과",
-  ping: "업무 핑퐁",
-  market: "도구 상가",
-  roof: "옥상 상황판",
-};
 
 const KIND_LABEL: Record<RoomKind, string> = {
   ai: "AI 주무관",
-  feature: "업무 기능",
+  feature: "AI 주무관",
   planned: "채용 예정",
-  facility: "시설",
+  place: "",
+  utility: "",
+  void: "",
+  facility: "",
 };
 
 const KIND_BADGE: Record<RoomKind, string> = {
   ai: "bg-osan-teal-tint text-osan-teal-deep",
-  feature: "bg-[#EBEEF9] text-osan-navy",
+  feature: "bg-osan-teal-tint text-osan-teal-deep",
   planned: "bg-surface text-slate-muted",
+  place: "bg-surface text-slate-muted",
+  utility: "bg-surface text-slate-muted",
+  void: "bg-surface text-slate-muted",
   facility: "bg-surface text-slate-muted",
 };
 
 const KIND_DOT: Record<RoomKind, string> = {
   ai: "bg-osan-teal",
-  feature: "bg-osan-navy",
+  feature: "bg-osan-teal",
   planned: "bg-[#C3CAD6]",
+  place: "bg-osan-navy/40",
+  utility: "bg-[#C3CAD6]",
+  void: "bg-[#C3CAD6]",
   facility: "bg-[#C3CAD6]",
 };
+
+const DEPT_LABEL: Record<string, string> = { ...DEPT_NAMES, "D-OTHER": "기타 시 부서" };
 
 const emptyHud: Hud = {
   floorId: "f1",
@@ -193,10 +186,7 @@ export function HallGame() {
     engine.lock();
     if (spot.stamp && spot.action !== "pingpong") engine.grant(spot.stamp);
     if (spot.action === "floors") setOverlay({ kind: "floors" });
-    else if (spot.action === "pingpong") setOverlay({ kind: "pingpong", phase: "ask", caseIndex: 0 });
-    else if (spot.action === "tool") setOverlay({ kind: "tool", hours: 4 });
-    else if (spot.action === "market") setOverlay({ kind: "market" });
-    else if (spot.action === "roof") setOverlay({ kind: "roof" });
+    else if (spot.action === "pingpong") setOverlay({ kind: "lobby", text: "", result: null });
     else if (spot.action === "minwon") setOverlay({ kind: "minwon", spot });
     else setOverlay({ kind: "talk", spot, page: 0 });
   }
@@ -375,7 +365,7 @@ export function HallGame() {
                 <span className={`flex-1 text-sm leading-tight ${place.kind === "planned" ? "text-slate-muted" : "font-semibold text-slate-ink"}`}>
                   {place.title}
                 </span>
-                {place.kind !== "facility" && <Badge tone={place.kind}>{KIND_LABEL[place.kind]}</Badge>}
+                {KIND_LABEL[place.kind] && <Badge tone={place.kind}>{KIND_LABEL[place.kind]}</Badge>}
               </button>
             ))}
           </div>
@@ -391,16 +381,6 @@ export function HallGame() {
               <div className="h-full rounded-full bg-osan-teal transition-[width] duration-500" style={{ width: `${progress}%` }} />
             </div>
             <p className="mt-2 text-xs leading-relaxed text-slate-muted">{hud.hint}</p>
-            {hud.tools.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {hud.tools.map((tool) => (
-                  <span key={tool} className="inline-flex items-center gap-1 rounded-md bg-osan-teal-tint px-1.5 py-0.5 text-[11px] font-medium text-osan-teal-deep">
-                    <Wrench size={11} />
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </aside>
       )}
@@ -410,7 +390,7 @@ export function HallGame() {
         <div className={`pointer-events-none absolute bottom-4 z-10 flex flex-col gap-1.5 ${railOpen ? "left-[312px]" : "left-4"}`}>
           <div className="flex items-center gap-3 rounded-xl border border-hairline bg-white/90 px-3 py-2 text-[11px] text-slate-muted shadow-sm backdrop-blur">
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-osan-teal" />AI 주무관 근무</span>
-            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-osan-navy" />업무 기능</span>
+            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-osan-navy/40" />기타 공간</span>
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#C3CAD6]" />채용 예정</span>
           </div>
           <p className="flex items-center gap-1.5 px-1 text-[11px] text-slate-muted">
@@ -430,7 +410,7 @@ export function HallGame() {
         <button
           type="button"
           onClick={() => engineRef.current?.interact()}
-          className="absolute bottom-36 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-hairline bg-white py-1.5 pr-4 pl-1.5 text-sm font-semibold text-slate-ink shadow-lg transition hover:border-osan-teal md:bottom-8"
+          className="absolute bottom-36 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-hairline bg-white py-1.5 pr-4 pl-1.5 text-sm font-semibold text-slate-ink shadow-lg transition hover:border-osan-teal md:bottom-24"
         >
           <kbd className="flex h-7 min-w-7 items-center justify-center rounded-full bg-osan-navy px-2 font-sans text-xs font-bold text-white">E</kbd>
           {hud.prompt}
@@ -449,8 +429,8 @@ export function HallGame() {
             <ul className="mt-5 grid gap-2">
               {[
                 { icon: <FileText size={16} />, title: "AI 인수인계", body: "업무 카드·달력·질의응답이 방에 쌓입니다" },
-                { icon: <Shuffle size={16} />, title: "AI 업무배분", body: "애매한 업무를 코드가 점수로 판정합니다" },
-                { icon: <Wrench size={16} />, title: "업무도구 축적", body: "만든 도구와 서식이 업무 선반에 남습니다" },
+                { icon: <Shuffle size={16} />, title: "AI 업무배분", body: "1층 로비에서 업무를 물으면 담당 부서를 판정합니다" },
+                { icon: <Wrench size={16} />, title: "업무도구 축적", body: "AI 주무관마다 만든 도구가 업무에 남습니다" },
               ].map((item) => (
                 <li key={item.title} className="flex items-start gap-3 rounded-xl bg-surface px-3 py-2.5">
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-osan-navy shadow-sm">{item.icon}</span>
@@ -488,7 +468,7 @@ export function HallGame() {
               <>
                 <div className="flex items-center gap-2 pr-10">
                   <h2 className="text-lg font-bold text-osan-navy">{overlay.spot.title}</h2>
-                  {overlay.spot.kind !== "facility" && <Badge tone={overlay.spot.kind}>{KIND_LABEL[overlay.spot.kind]}</Badge>}
+                  {KIND_LABEL[overlay.spot.kind] && <Badge tone={overlay.spot.kind}>{KIND_LABEL[overlay.spot.kind]}</Badge>}
                 </div>
                 <p className="mt-3 min-h-16 rounded-xl bg-surface p-4 text-sm leading-relaxed">{overlay.spot.lines[overlay.page]}</p>
                 <div className="mt-4 flex items-center justify-between gap-2">
@@ -553,184 +533,94 @@ export function HallGame() {
               </>
             )}
 
-            {overlay.kind === "tool" && (
+            {overlay.kind === "lobby" && (
               <>
-                <h2 className="pr-10 text-lg font-bold text-osan-navy">자치행정과</h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-muted">
-                  11월은 예산 편성 자료, 12월은 연말 정산 안내. 능력치는 사람이 아니라 업무입니다. 법률해석 4 · 복무인사 5 · 협업 4.
-                </p>
-                <label className="mt-4 block text-sm font-semibold text-slate-ink">
-                  초과 시간
-                  <input
-                    type="number"
-                    min={0}
-                    max={40}
-                    value={overlay.hours}
-                    onChange={(event) =>
-                      setOverlay({ kind: "tool", hours: Math.max(0, Math.min(40, Number(event.target.value) || 0)) })
-                    }
-                    className="mt-1 w-full rounded-lg border border-hairline bg-white px-3 py-2 outline-none focus:border-osan-teal focus:ring-2 focus:ring-osan-teal-tint"
+                <div className="flex flex-wrap items-center gap-2 pr-10">
+                  <h2 className="text-lg font-bold text-osan-navy">1층 로비 · AI 업무 안내</h2>
+                  <Badge tone="demo">시연용</Badge>
+                </div>
+                <p className="mt-1 text-sm text-slate-muted">어떤 업무로 오셨는지 적어 주시면 담당 부서를 판정해 안내합니다.</p>
+                <form
+                  className="mt-3"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    const text = overlay.text.trim();
+                    if (!text) return;
+                    const result = judgeLobby(text);
+                    engineRef.current?.markPingpong(result.decision.kind === "assign" ? result.decision.lead.dept_id : undefined);
+                    setOverlay({ kind: "lobby", text: overlay.text, result });
+                  }}
+                >
+                  <textarea
+                    value={overlay.text}
+                    onChange={(event) => setOverlay({ kind: "lobby", text: event.target.value, result: null })}
+                    rows={3}
+                    placeholder="예) 어머니 기초연금을 신청하려는데, 결정은 어디서 하나요?"
+                    className="w-full resize-none rounded-xl border border-hairline bg-white px-3 py-2.5 text-sm outline-none focus:border-osan-teal focus:ring-2 focus:ring-osan-teal-tint"
                   />
-                </label>
-                <p className="mt-3 rounded-xl bg-surface p-3 text-sm">
-                  가산 1.5 × 시급 15,000원 = <strong className="text-osan-navy">{Math.round(overlay.hours * 1.5 * 15000).toLocaleString("ko-KR")}원</strong>
-                  <span className="mt-1 flex gap-1">
-                    <Badge tone="demo">시연용</Badge>
-                    <Badge tone="draft">권고 초안 · 처분 아님</Badge>
-                  </span>
-                </p>
-                <div className="mt-4 flex gap-2">
-                  <button type="button" onClick={() => engineRef.current?.addTool("초과근무수당 계산기")} className={btnPrimary}>
-                    업무 선반에 남기기
-                  </button>
-                  <button type="button" onClick={close} className={btnSecondary}>
-                    나가기
-                  </button>
-                </div>
-              </>
-            )}
-
-            {overlay.kind === "pingpong" &&
-              (() => {
-                const demo = DEMO_CASES[overlay.caseIndex];
-                const decision = decide(demo.candidates);
-                const shown = overlay.phase === "result";
-                const notes = Object.fromEntries(demo.candidates.map((c) => [c.dept_id, c.note]));
-                return (
-                  <>
-                    <div className="flex flex-wrap items-center gap-2 pr-10">
-                      <h2 className="text-lg font-bold text-osan-navy">AI 업무배분</h2>
-                      <Badge tone="demo">시연용 점수</Badge>
-                    </div>
-                    <div className="mt-3 flex gap-1 rounded-xl bg-surface p-1">
-                      {DEMO_CASES.map((c, i) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          onClick={() => setOverlay({ kind: "pingpong", phase: "ask", caseIndex: i })}
-                          className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-semibold transition ${i === overlay.caseIndex ? "bg-white text-osan-navy shadow-sm" : "text-slate-muted"}`}
-                        >
-                          사례 {i + 1}
-                        </button>
-                      ))}
-                    </div>
-                    <p className="mt-3 text-sm leading-relaxed">
-                      「{demo.input}」{demo.stage ? ` (${demo.stage})` : ""}
-                    </p>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-muted">
-                      점수는 AI가 아니라 코드가 사무분장 40, 과거 사례 25, 의미 유사 20, 대상 일치 10, 조직 관계 5로 계산합니다.
-                    </p>
-                    <ul className="mt-4 space-y-3">
-                      {decision.ranked.map((c) => (
-                        <li key={c.dept_id}>
-                          <div className="flex items-baseline justify-between text-sm">
-                            <span className="font-semibold">{DEPT_NAMES[c.dept_id] ?? c.dept_id}</span>
-                            <span className="font-semibold text-osan-navy tabular-nums">{shown ? c.score : "—"}</span>
-                          </div>
-                          <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface">
-                            <div className="h-full rounded-full bg-osan-teal transition-[width] duration-700 ease-out" style={{ width: shown ? `${c.score}%` : "0%" }} />
-                          </div>
-                          <p className="mt-1 text-xs text-slate-muted">
-                            {notes[c.dept_id]}
-                            {shown &&
-                              ` · 사무분장 ${Math.round(c.breakdown.duty)} · 사례 ${Math.round(c.breakdown.case)} · 유사 ${Math.round(c.breakdown.semantic)} · 대상 ${Math.round(c.breakdown.target)} · 조직 ${Math.round(c.breakdown.org)}`}
-                            {!c.hasDirectEvidence && " · 직접 근거 없음"}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                    {shown && (
-                      <div className="mt-4 rounded-xl border-l-4 border-osan-teal bg-osan-teal-tint p-3 text-sm leading-relaxed">
-                        <Badge tone="draft">AI 초안 · 최종 판단은 담당자</Badge>
-                        <p className="mt-1.5">
-                          {decision.kind === "assign"
-                            ? `배정 초안: ${DEPT_NAMES[decision.lead.dept_id]}. 1·2위 차이가 10점 이상이고 직접 근거가 있습니다. 확정은 권한자가 합니다.`
-                            : decision.reason === "close_scores"
-                              ? "검토 필요: 1·2위 점수 차이가 10점 미만입니다. AI가 정하지 않고 조정 담당자에게 넘깁니다."
-                              : "검토 필요: 직접 근거가 확인되지 않았습니다. 근거를 보강한 뒤 다시 판정합니다."}
-                        </p>
-                      </div>
-                    )}
-                    <div className="mt-4 flex gap-2">
-                      {overlay.phase === "ask" ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            engineRef.current?.markPingpong();
-                            setOverlay({ kind: "pingpong", phase: "result", caseIndex: overlay.caseIndex });
-                          }}
-                          className={btnPrimary}
-                        >
-                          판정하기
-                        </button>
-                      ) : (
-                        <button type="button" onClick={close} className={btnPrimary}>
-                          회의 끝내기
-                        </button>
-                      )}
-                      <button type="button" onClick={close} className={btnSecondary}>
-                        닫기
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {LOBBY_EXAMPLES.map((example) => (
+                      <button
+                        key={example}
+                        type="button"
+                        onClick={() => setOverlay({ kind: "lobby", text: example, result: null })}
+                        className="rounded-full border border-hairline bg-surface px-2.5 py-1 text-left text-xs text-slate-ink hover:border-osan-teal"
+                      >
+                        {example}
                       </button>
-                    </div>
-                  </>
-                );
-              })()}
+                    ))}
+                  </div>
+                  <button type="submit" disabled={!overlay.text.trim()} className={`${btnPrimary} mt-3 w-full`}>
+                    담당 부서 판정
+                  </button>
+                </form>
 
-            {overlay.kind === "market" && (
-              <>
-                <h2 className="pr-10 text-lg font-bold text-osan-navy">업무도구 축적</h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-muted">발표가 끝나도 흩어지지 않게, 도구와 서식을 카드로 입주시킵니다.</p>
-                <ul className="mt-4 space-y-2">
-                  {SHOPS.map((shop) => {
-                    const owned = hud.tools.includes(shop.name);
+                {overlay.result &&
+                  (() => {
+                    const { decision, candidates } = overlay.result;
+                    const notes = Object.fromEntries(candidates.map((c) => [c.dept_id, c.note]));
                     return (
-                      <li key={shop.name} className="flex items-center justify-between gap-2 rounded-xl border border-hairline px-3 py-2.5">
-                        <div>
-                          <p className="text-sm font-semibold">{shop.name}</p>
-                          <p className="text-xs text-slate-muted">{shop.blurb}</p>
+                      <div className="mt-4 border-t border-hairline pt-4">
+                        {decision.ranked.length > 0 && (
+                          <>
+                            <p className="text-xs text-slate-muted">
+                              점수는 AI가 아니라 코드가 사무분장 40, 과거 사례 25, 의미 유사 20, 대상 일치 10, 조직 관계 5로 계산합니다.
+                            </p>
+                            <ul className="mt-3 space-y-3">
+                              {decision.ranked.map((c) => (
+                                <li key={c.dept_id}>
+                                  <div className="flex items-baseline justify-between text-sm">
+                                    <span className="font-semibold">{DEPT_LABEL[c.dept_id] ?? c.dept_id}</span>
+                                    <span className="font-semibold text-osan-navy tabular-nums">{c.score}</span>
+                                  </div>
+                                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface">
+                                    <div className="h-full rounded-full bg-osan-teal transition-[width] duration-700 ease-out" style={{ width: `${c.score}%` }} />
+                                  </div>
+                                  <p className="mt-1 text-xs text-slate-muted">
+                                    {notes[c.dept_id]}
+                                    {` · 사무분장 ${Math.round(c.breakdown.duty)} · 사례 ${Math.round(c.breakdown.case)} · 유사 ${Math.round(c.breakdown.semantic)} · 대상 ${Math.round(c.breakdown.target)} · 조직 ${Math.round(c.breakdown.org)}`}
+                                    {!c.hasDirectEvidence && " · 직접 근거 없음"}
+                                  </p>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        )}
+                        <div className="mt-4 rounded-xl border-l-4 border-osan-teal bg-osan-teal-tint p-3 text-sm leading-relaxed">
+                          <Badge tone="draft">AI 초안 · 최종 판단은 담당자</Badge>
+                          <p className="mt-1.5">
+                            {decision.kind === "assign"
+                              ? `${DEPT_LABEL[decision.lead.dept_id]}에서 처리하는 업무로 보입니다. 1·2위 차이가 10점 이상이고 직접 근거가 있습니다. 확정은 담당자가 합니다.`
+                              : decision.reason === "close_scores"
+                                ? "두 부서가 함께 걸려 있습니다. 1·2위 점수 차이가 10점 미만이라 AI가 정하지 않고 담당자 검토로 넘깁니다."
+                                : decision.reason === "no_candidates"
+                                  ? "담당 부서를 찾을 단서가 없습니다. 업무 내용을 조금 더 적어 주시거나 안내데스크 직원에게 문의해 주세요."
+                                  : "직접 근거가 확인되지 않았습니다. 근거를 보강한 뒤 다시 판정합니다."}
+                          </p>
                         </div>
-                        <button type="button" disabled={owned} onClick={() => engineRef.current?.addTool(shop.name)} className={`${btnSecondary} shrink-0 px-3 py-2`}>
-                          {owned ? "입주함" : "받기"}
-                        </button>
-                      </li>
+                      </div>
                     );
-                  })}
-                </ul>
-                <button type="button" onClick={close} className={`${btnPrimary} mt-4`}>
-                  나가기
-                </button>
-              </>
-            )}
-
-            {overlay.kind === "roof" && (
-              <>
-                <h2 className="pr-10 text-lg font-bold text-osan-navy">축적 현황</h2>
-                <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-                  {[
-                    { label: "둘러본 곳", value: `${hud.stamps.length}/${QUEST.length}` },
-                    { label: "업무배분 판정", value: `${hud.pingpongs}건` },
-                    { label: "남긴 도구", value: `${hud.tools.length}개` },
-                  ].map((m) => (
-                    <div key={m.label} className="rounded-xl bg-surface p-3">
-                      <p className="text-lg font-bold text-osan-navy tabular-nums">{m.value}</p>
-                      <p className="text-[11px] text-slate-muted">{m.label}</p>
-                    </div>
-                  ))}
-                </div>
-                <ul className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                  {QUEST.map((q) => {
-                    const on = hud.stamps.includes(q.stamp);
-                    return (
-                      <li key={q.stamp} className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${on ? "border-osan-teal bg-osan-teal-tint text-osan-teal-deep" : "border-hairline text-slate-muted"}`}>
-                        <CircleCheck size={14} className={on ? "text-osan-teal" : "text-[#C3CAD6]"} />
-                        {STOP_NAMES[q.stamp] ?? q.stamp}
-                      </li>
-                    );
-                  })}
-                </ul>
-                <button type="button" onClick={close} className={`${btnPrimary} mt-4`}>
-                  돌아가기
-                </button>
+                  })()}
               </>
             )}
           </section>

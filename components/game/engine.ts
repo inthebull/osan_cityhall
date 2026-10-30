@@ -3,33 +3,20 @@ import {
   FLOORS,
   MAP_H,
   MAP_W,
-  PING_TARGET,
+  DEPT_ROOMS,
   TILE,
   isSolidTile,
   questHint,
   tileAt,
-  type Decor,
   type FloorId,
   type FloorMap,
-  type Prop,
   type Spot,
 } from "./world";
-import {
-  ISO,
-  OFFICER_STYLE,
-  PLAYER_STYLE,
-  WALL_H,
-  box,
-  floorQuad,
-  fromIso,
-  iso,
-  person,
-  pill,
-  shadow,
-} from "./iso";
+import { ISO, OFFICER_STYLE, PLAYER_STYLE, floorQuad, fromIso, iso, person, pill, shadow } from "./iso";
+import { drawDecor, drawGround, drawProp, wallItems, type Item } from "./scene";
 
-const SAVE_KEY = "osan-ai-hall-v3";
-const SAVE_KEY_V2 = "osan-ai-hall-v2";
+// 층 배치를 안내도대로 다시 그리면서 저장 위치 형식이 바뀌어 새 키를 쓴다.
+const SAVE_KEY = "osan-ai-hall-v4";
 
 export type Hud = {
   floorId: FloorId;
@@ -62,12 +49,9 @@ type Envelope = { x: number; y: number; tx: number; ty: number; t: number };
 type Pt = { x: number; y: number };
 
 const STAMP_NAME: Record<string, string> = {
-  guide: "안내데스크",
+  lobby: "1층 로비 업무 안내",
   minwon: "민원여권과",
-  jachi: "자치행정과",
-  ping: "업무 핑퐁",
-  market: "도구 상가",
-  roof: "옥상 상황판",
+  senior: "노인장애인과",
 };
 
 const SPEED = 168;
@@ -245,10 +229,12 @@ export class HallEngine {
     return true;
   }
 
-  markPingpong() {
+  // 로비에서 업무를 판정하면 담당 부서 방으로 봉투가 날아간다(같은 층에 있을 때).
+  markPingpong(deptId?: string) {
     this.pingpongs += 1;
-    this.grant("ping");
-    const spot = this.floor.spots.find((s) => s.id === PING_TARGET);
+    this.grant("lobby");
+    const target = deptId ? DEPT_ROOMS[deptId] : undefined;
+    const spot = target && target.floor === this.floor.id ? this.floor.spots.find((s) => s.id === target.room) : undefined;
     if (spot) {
       this.envelopes.push({ x: this.x, y: this.y, tx: spot.x, ty: spot.y, t: 0 });
     }
@@ -308,10 +294,10 @@ export class HallEngine {
 
   private spotAt(wx: number, wy: number): Spot | null {
     for (const spot of this.floor.spots) {
-      if (spot.kind === "facility" && Math.hypot(spot.x - wx, spot.y - wy) < 30) return spot;
+      if ((spot.kind === "facility" || spot.kind === "feature") && Math.hypot(spot.x - wx, spot.y - wy) < 30) return spot;
     }
-    const room = this.floor.rooms.find(
-      (r) => wx >= r.x * TILE && wx < (r.x + r.w) * TILE && wy >= r.y * TILE && wy < (r.y + r.h) * TILE,
+    const room = this.floor.rooms.find((r) =>
+      r.parts.some((p) => wx >= p.x * TILE && wx < (p.x + p.w) * TILE && wy >= p.y * TILE && wy < (p.y + p.h) * TILE),
     );
     if (!room) return null;
     return this.floor.spots.find((s) => s.id === room.id) ?? null;
@@ -338,7 +324,7 @@ export class HallEngine {
 
   private load() {
     try {
-      const raw = localStorage.getItem(SAVE_KEY) ?? localStorage.getItem(SAVE_KEY_V2);
+      const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return;
       const data = JSON.parse(raw) as Save;
       const floor = FLOORS[data.floor];
@@ -779,82 +765,22 @@ export class HallEngine {
     ctx.imageSmoothingEnabled = true;
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const bg = ctx.createLinearGradient(0, 0, 0, cssH);
-    bg.addColorStop(0, "#F3F5F9");
-    bg.addColorStop(1, "#E4E8EF");
+    const bg = ctx.createRadialGradient(cssW / 2, cssH * 0.45, 0, cssW / 2, cssH * 0.45, Math.max(cssW, cssH) * 0.8);
+    bg.addColorStop(0, "#ECEDF0");
+    bg.addColorStop(1, "#CDD1D7");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, cssW, cssH);
 
     const zoom = this.zoom;
     ctx.setTransform(dpr * zoom, 0, 0, dpr * zoom, -this.camX * dpr * zoom, -this.camY * dpr * zoom);
-
-    const W = MAP_W * TILE;
-    const H = MAP_H * TILE;
     const floor = this.floor;
 
-    // 1) 층 바닥판: 두께가 있는 판 위에 층을 올린 모형처럼 보이게 한다.
-    ctx.save();
-    ctx.shadowColor = "rgba(22, 40, 70, 0.18)";
-    ctx.shadowBlur = 40;
-    ctx.shadowOffsetY = 24;
-    floorQuad(ctx, 0, 0, W, H, ISO.slabTop, undefined, 0);
-    ctx.restore();
-    box(ctx, 0, 0, W, H, 16, ISO.slabTop, -16, { left: ISO.slabLeft, right: ISO.slabRight });
-
-    // 2) 복도 바닥
-    for (let ty = 0; ty < MAP_H; ty++) {
-      for (let tx = 0; tx < MAP_W; tx++) {
-        const ch = floor.grid[ty][tx];
-        if (ch === "#") continue;
-        const fill = ch === "r" ? "#D5EEF0" : ch === "g" ? ISO.greenFloor : ISO.corridor;
-        floorQuad(ctx, tx * TILE, ty * TILE, TILE, TILE, fill, ISO.corridorLine);
-      }
-    }
-
-    // 3) 방 바닥: 불 켜진 방(AI 주무관)과 불 꺼진 방(채용 예정)을 색으로 나눈다.
+    // 1) 바닥판·방 바닥: 불 켜진 방(AI 주무관)은 밝게, 채용 예정 방은 어둡게.
     const near = this.mode === "play" ? this.nearest(TALK_RADIUS) : null;
-    for (const room of floor.rooms) {
-      const fill =
-        room.kind === "planned"
-          ? ISO.plannedFloor
-          : room.ground === "g"
-            ? ISO.greenFloor
-            : room.kind === "ai"
-              ? ISO.aiFloor
-              : ISO.featureFloor;
-      floorQuad(ctx, room.x * TILE, room.y * TILE, room.w * TILE, room.h * TILE, fill);
-      if (room.kind === "ai") {
-        const [cx, cy] = iso((room.x + room.w / 2) * TILE, (room.y + room.h / 2) * TILE);
-        const r = Math.max(room.w, room.h) * TILE * 0.9;
-        const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        glow.addColorStop(0, "rgba(0, 160, 173, 0.16)");
-        glow.addColorStop(1, "rgba(0, 160, 173, 0)");
-        ctx.save();
-        ctx.beginPath();
-        const pts = [
-          iso(room.x * TILE, room.y * TILE),
-          iso((room.x + room.w) * TILE, room.y * TILE),
-          iso((room.x + room.w) * TILE, (room.y + room.h) * TILE),
-          iso(room.x * TILE, (room.y + room.h) * TILE),
-        ];
-        ctx.moveTo(pts[0][0], pts[0][1]);
-        for (const p of pts.slice(1)) ctx.lineTo(p[0], p[1]);
-        ctx.closePath();
-        ctx.clip();
-        ctx.fillStyle = glow;
-        ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
-        ctx.restore();
-      }
-      const focus = this.hovered === room.id || near?.id === room.id;
-      if (focus) {
-        ctx.save();
-        ctx.setLineDash([6, 4]);
-        floorQuad(ctx, room.x * TILE + 3, room.y * TILE + 3, room.w * TILE - 6, room.h * TILE - 6, "rgba(0, 160, 173, 0.06)", ISO.teal);
-        ctx.restore();
-      }
-    }
+    const focusId = this.hovered ?? near?.id ?? null;
+    drawGround(ctx, floor, focusId);
 
-    // 4) 바닥 표시: 엘리베이터, 별관 통로, 목적지
+    // 2) 바닥 표시: 엘리베이터, 별관 통로, 목적지
     for (const spot of floor.spots) {
       if (spot.action === "floors") {
         floorQuad(ctx, spot.x - 14, spot.y - 22, 28, 28, "rgba(22, 40, 139, 0.10)", "rgba(22, 40, 139, 0.45)");
@@ -884,39 +810,29 @@ export class HallEngine {
       ctx.stroke();
     }
 
-    // 5) 벽·가구·사람을 깊이(x + y) 순서로 그린다.
-    type Item = { k: number; draw: () => void };
-    const items: Item[] = [];
-    const grid = floor.grid;
-    for (let ty = 0; ty < MAP_H; ty++) {
-      for (let tx = 0; tx < MAP_W; tx++) {
-        if (grid[ty][tx] !== "#") continue;
-        const southOpen = ty + 1 >= MAP_H || grid[ty + 1][tx] !== "#";
-        const eastOpen = tx + 1 >= MAP_W || grid[ty][tx + 1] !== "#";
-        items.push({
-          k: (tx + ty + 1) * TILE,
-          draw: () =>
-            box(ctx, tx * TILE, ty * TILE, TILE, TILE, WALL_H, ISO.wallTop, 0, {
-              left: ISO.wallLeft,
-              right: ISO.wallRight,
-              faces: { left: southOpen, right: eastOpen },
-            }),
-        });
-      }
-    }
+    // 3) 벽·가구·사람을 깊이(x + y) 순서로 그린다. 사람 앞 벽은 반투명.
+    const people: { x: number; y: number }[] = [{ x: this.x, y: this.y }];
+    for (const spot of floor.spots) if (spot.actor) people.push({ x: spot.x, y: spot.y });
+    const items: Item[] = wallItems(ctx, floor, people);
     for (const prop of floor.props) {
       if (prop.sprite === 2 || prop.sprite === 7) continue;
-      items.push({ k: prop.x + prop.y, draw: () => this.drawProp(ctx, prop) });
+      items.push({ k: prop.x + prop.y, draw: () => drawProp(ctx, prop) });
     }
     for (const decor of floor.decors) {
-      items.push({ k: decor.x + decor.w / 2 + decor.y + decor.h / 2, draw: () => this.drawDecor(ctx, decor) });
+      items.push({ k: decor.x + decor.w / 2 + decor.y + decor.h / 2, draw: () => drawDecor(ctx, decor) });
     }
     const playerScreenX = this.x - this.y;
+    const drawOfficers = () => {
+      for (const spot of floor.spots) {
+        if (!spot.actor) continue;
+        const dir = playerScreenX < spot.x - spot.y ? -1 : 1;
+        person(ctx, spot.x, spot.y, OFFICER_STYLE, 0, dir, false);
+      }
+    };
     for (const spot of floor.spots) {
       if (!spot.actor) continue;
       const dir = playerScreenX < spot.x - spot.y ? -1 : 1;
-      const breathe = Math.sin(this.time * 2 + spot.x) * 0.4;
-      items.push({ k: spot.x + spot.y, draw: () => person(ctx, spot.x, spot.y, OFFICER_STYLE, breathe, dir, false) });
+      items.push({ k: spot.x + spot.y, draw: () => person(ctx, spot.x, spot.y, OFFICER_STYLE, 0, dir, false) });
     }
     for (const env of this.envelopes) {
       const k = env.t * env.t * (3 - 2 * env.t);
@@ -945,10 +861,16 @@ export class HallEngine {
     }
     const moving = Math.hypot(this.vx, this.vy) > 8;
     const bob = moving ? Math.sin(this.time * 14) * 2 : 0;
-    items.push({ k: this.x + this.y, draw: () => person(ctx, this.x, this.y, PLAYER_STYLE, bob, this.sdir, this.sback) });
+    const drawPlayer = () => person(ctx, this.x, this.y, PLAYER_STYLE, bob, this.sdir, this.sback);
+    items.push({ k: this.x + this.y, draw: drawPlayer });
 
     items.sort((a, b) => a.k - b.k);
     for (const item of items) item.draw();
+    // 가구에 가려도 사람 윤곽은 옅게 보이게 한 번 더 그린다.
+    ctx.globalAlpha = 0.28;
+    drawOfficers();
+    drawPlayer();
+    ctx.globalAlpha = 1;
 
     // 6) 방 이름표는 확대와 상관없이 같은 크기로 화면 위에 띄운다.
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -957,6 +879,17 @@ export class HallEngine {
       return [(ix - this.camX) * zoom, (iy - this.camY) * zoom];
     };
     for (const room of floor.rooms) {
+      if (room.kind === "void") continue;
+      if (room.kind === "utility") {
+        const [ux, uy] = toScreen((room.x + room.w / 2) * TILE, (room.y + room.h / 2) * TILE, 4);
+        if (zoom < 0.42 || room.w < 1) continue;
+        ctx.font = "500 10px 'IBM Plex Sans KR', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(75, 85, 99, 0.75)";
+        ctx.fillText(room.name, ux, uy);
+        continue;
+      }
       // 이름표는 방 가운데에서 주무관 반대쪽으로 비켜 놓아 사람을 가리지 않게 한다.
       const cx = (room.x + room.w / 2) * TILE;
       const cy = (room.y + room.h / 2) * TILE;
@@ -966,11 +899,16 @@ export class HallEngine {
       const [sx, sy] = toScreen(lx, ly, 6);
       if (sx < -120 || sy < -40 || sx > cssW + 120 || sy > cssH + 40) continue;
       const focus = this.hovered === room.id || near?.id === room.id;
-      const tone = focus ? "focus" : room.kind === "facility" ? "feature" : room.kind;
+      const tone = focus ? "focus" : room.kind === "ai" || room.kind === "planned" ? room.kind : "place";
       const sub = room.kind === "ai" ? "AI 주무관" : room.kind === "planned" ? "채용 예정" : undefined;
       pill(ctx, sx, sy, room.name, tone, sub);
     }
     for (const spot of floor.spots) {
+      if (spot.kind === "feature") {
+        const [fx, fy] = toScreen(spot.x, spot.y, 78);
+        pill(ctx, fx, fy, spot.title, this.hovered === spot.id || near?.id === spot.id ? "focus" : "ai");
+        continue;
+      }
       if (spot.kind !== "facility") continue;
       const focus = this.hovered === spot.id || near?.id === spot.id;
       if (!focus) continue;
@@ -980,84 +918,6 @@ export class HallEngine {
     if (this.fade > 0.01) {
       ctx.fillStyle = `rgba(238, 241, 246, ${this.fade})`;
       ctx.fillRect(0, 0, cssW, cssH);
-    }
-  }
-
-  private drawProp(ctx: CanvasRenderingContext2D, prop: Prop) {
-    const { x, y } = prop;
-    switch (prop.sprite) {
-      case 0: {
-        // 책상과 모니터
-        shadow(ctx, x, y - 8, 22, 0.08);
-        box(ctx, x - 18, y - 16, 36, 16, 13, "#FFFFFF", 0, { left: "#E1E5EC", right: "#CDD3DD" });
-        box(ctx, x - 7, y - 15, 14, 3, 10, "#2A3448", 13, { left: "#3D4F6E", right: "#232C3D", top: "#2A3448" });
-        return;
-      }
-      case 3: {
-        // 민원 창구·안내 데스크
-        shadow(ctx, x, y - 6, 26, 0.08);
-        box(ctx, x - 22, y - 14, 44, 14, 15, "#FFFFFF", 0, { left: "#E7EBF1", right: "#D3D9E2" });
-        box(ctx, x - 22, y - 0.6, 44, 0.6, 3, ISO.teal, 10, { left: ISO.teal, right: ISO.tealDeep, top: ISO.teal });
-        return;
-      }
-      case 4: {
-        box(ctx, x - 5, y - 6, 10, 10, 2, "#9AA6B8", 5, { left: "#8995A8", right: "#788498" });
-        box(ctx, x - 5, y - 7, 10, 2, 11, "#A9B4C6", 5, { left: "#97A2B4", right: "#8692A5" });
-        return;
-      }
-      case 5: {
-        box(ctx, x - 9, y - 10, 18, 12, 26, "#ECEFF4", 0, { left: "#DCE1E9", right: "#C8CFDA" });
-        return;
-      }
-      case 1: {
-        box(ctx, x - 5, y - 5, 10, 10, 9, "#D7DCE4", 0, { left: "#C5CBD5", right: "#B4BBC7" });
-        const [sx, sy] = iso(x, y, 20);
-        ctx.fillStyle = "#3E9E70";
-        ctx.beginPath();
-        ctx.arc(sx + 3, sy + 2, 8, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#5DB98A";
-        ctx.beginPath();
-        ctx.arc(sx - 2, sy - 2, 8, 0, Math.PI * 2);
-        ctx.fill();
-        return;
-      }
-      case 6: {
-        box(ctx, x - 6, y - 6, 12, 9, 3, "#FFFFFF", 13, { left: "#E3E7ED", right: "#D3D9E2" });
-        return;
-      }
-      case 8: {
-        box(ctx, x - 7, y - 2, 14, 3, 20, ISO.navy, 0, { left: "#22369E", right: "#101E6B", top: "#2A3FAE" });
-        return;
-      }
-    }
-  }
-
-  private drawDecor(ctx: CanvasRenderingContext2D, decor: Decor) {
-    const { x, y, w, h } = decor;
-    switch (decor.kind) {
-      case "table":
-        box(ctx, x, y, w, h, 12, "#FFFFFF", 0, { left: "#E3E7ED", right: "#D0D6E0" });
-        return;
-      case "sofa":
-        box(ctx, x, y, w, h, 8, "#CBD5EA", 0);
-        box(ctx, x, y, w, 4, 14, "#BAC6E0", 0);
-        return;
-      case "shelf":
-        box(ctx, x, y, w, h, 24, "#ECEFF4", 0, { left: "#DCE1E9", right: "#C8CFDA" });
-        return;
-      case "bench":
-        box(ctx, x, y + 3, w, Math.max(4, h - 6), 7, "#D8DDE6", 0);
-        return;
-      case "cooler":
-        box(ctx, x, y + h - 10, w - 2, 10, 20, "#FFFFFF", 0, { left: "#E7EBF1", right: "#D3D9E2" });
-        box(ctx, x + 2, y + h - 8, w - 6, 6, 6, "#BFE6EA", 20);
-        return;
-      case "screen":
-        box(ctx, x, y, w, 4, 16, "#2A3448", 4, { left: "#3D4F6E", right: "#232C3D" });
-        return;
-      default:
-        return;
     }
   }
 }

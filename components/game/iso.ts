@@ -184,14 +184,14 @@ export function pill(
   sx: number,
   sy: number,
   text: string,
-  tone: "ai" | "feature" | "planned" | "facility" | "focus",
+  tone: "ai" | "feature" | "planned" | "place" | "facility" | "focus",
   sub?: string,
 ) {
   ctx.font = "600 12px 'IBM Plex Sans KR', sans-serif";
   const tw = ctx.measureText(text).width;
   ctx.font = "500 10.5px 'IBM Plex Sans KR', sans-serif";
   const sw = sub ? ctx.measureText(sub).width + 8 : 0;
-  const dot = tone === "planned" ? 0 : 12;
+  const dot = tone === "planned" || tone === "place" ? 0 : 12;
   const w = tw + sw + dot + 18;
   const h = 24;
   const x = Math.round(sx - w / 2);
