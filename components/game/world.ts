@@ -1,23 +1,33 @@
 import hall from "@/data/map/hall.json";
 
+// 본관 1~5층 배치는 오산시청 층별 안내도(public/floorplans/main-*.png)의 벽선 픽셀 좌표를 그대로 옮긴 것이다.
+// hall.json의 plan 좌표(안내도 픽셀)를 화면 격자(size.w × size.h)로 바꿔 벽·방·복도를 만든다.
+
 export const TILE = 32;
-export const MAP_W = 30;
-export const MAP_H = 18;
+export const MAP_W: number = hall.size.w;
+export const MAP_H: number = hall.size.h;
 
 export type FloorId = "f1" | "f2" | "f3" | "f4" | "f5" | "ax";
 
-export type Action =
-  | "talk"
-  | "floors"
-  | "pingpong"
-  | "tool"
-  | "minwon"
-  | "market"
-  | "roof"
-  | "portal";
+export type Action = "talk" | "floors" | "pingpong" | "minwon" | "portal";
+
+// ai: AI 주무관 근무(불 켜진 방), feature: 로비 업무 안내 등, planned: AI 주무관 채용 예정 부서(불 꺼진 방),
+// place: 부서가 아닌 이름 있는 공간(시장실·회의실 등), utility: 화장실·계단·공조실·창고, void: 안내도의 빈 칸, facility: 엘리베이터·통로
+export type RoomKind = "ai" | "feature" | "planned" | "place" | "utility" | "void" | "facility";
+
+export type Rect = { x: number; y: number; w: number; h: number };
+
+export type RoomRect = Rect & {
+  id: string;
+  name: string;
+  kind: RoomKind;
+  ground: string;
+  parts: Rect[];
+};
 
 export type Spot = {
   id: string;
+  kind: RoomKind;
   x: number;
   y: number;
   title: string;
@@ -38,12 +48,12 @@ export type Prop = {
 };
 
 export type Decor = {
-  kind: "rug" | "window" | "board" | "shelf" | "lamp" | "sofa" | "cooler" | "flag" | "screen" | "papers" | "mat" | "table" | "bench";
+  kind: "shelf" | "sofa" | "cooler" | "screen" | "table" | "bench" | "stairs";
   x: number;
   y: number;
   w: number;
   h: number;
-  tint?: string;
+  dir?: "x" | "y";
 };
 
 export type FloorMap = {
@@ -52,373 +62,365 @@ export type FloorMap = {
   grid: string[];
   props: Prop[];
   spots: Spot[];
-  labels: { x: number; y: number; text: string }[];
   decors: Decor[];
+  rooms: RoomRect[];
   spawn: { x: number; y: number };
 };
 
 type Door = "n" | "s" | "e" | "w";
-type FloorChar = "w" | "c" | "t" | "g";
+type PlanRect = [number, number, number, number];
 
-type Room = {
+type RoomJson = {
   id: string;
   name: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  floor: FloorChar;
+  plan: PlanRect | PlanRect[];
   door: Door;
-  action: Action;
-  lines: string[];
+  use: "dept" | "place" | "utility" | "void";
+  floor?: string;
+  action?: Action;
+  lines?: string[];
   stamp?: string;
-  portal?: FloorId;
-  actor?: boolean;
-  label?: string;
   dept_id?: string | null;
-  virtual_space?: string;
-  confirmed?: boolean;
 };
 
+type FloorJson = {
+  id: FloorId;
+  name: string;
+  outline: PlanRect[];
+  spawn: [number, number];
+  rooms: RoomJson[];
+  elevators?: [number, number][];
+  portals?: { at: [number, number]; to: FloorId; title: string; line: string }[];
+  npcs?: { id: string; title: string; at: [number, number]; action: Action; stamp?: string; lines: string[] }[];
+};
+
+const FRAME = hall.plan_frame;
 const FLOOR_ORDER: FloorId[] = ["f1", "f2", "f3", "f4", "f5", "ax"];
 
-export function floorList(): { id: FloorId; name: string }[] {
-  return FLOOR_ORDER.filter((id) => id !== "ax").map((id) => ({
-    id,
-    name: FLOORS[id].name,
-  }));
+export const PLANNED_LINE =
+  "이 부서는 AI 주무관 채용 예정입니다. 지금은 민원여권과, 노인장애인과, 동 행정복지센터에서 AI 주무관이 근무합니다.";
+
+// 안내도 픽셀 → 격자 칸(벽선이 놓이는 칸)
+function col(px: number) {
+  return Math.round(((px - FRAME.x0) / (FRAME.x1 - FRAME.x0)) * (MAP_W - 1));
+}
+function row(py: number) {
+  return Math.round(((py - FRAME.y0) / (FRAME.y1 - FRAME.y0)) * (MAP_H - 1));
+}
+function toWorld(p: [number, number]) {
+  return {
+    x: (((p[0] - FRAME.x0) / (FRAME.x1 - FRAME.x0)) * (MAP_W - 1) + 0.5) * TILE,
+    y: (((p[1] - FRAME.y0) / (FRAME.y1 - FRAME.y0)) * (MAP_H - 1) + 0.5) * TILE,
+  };
 }
 
-export function directory(): { id: FloorId; name: string; places: { id: string; title: string }[] }[] {
+function rectsOf(plan: PlanRect | PlanRect[]): PlanRect[] {
+  return Array.isArray(plan[0]) ? (plan as PlanRect[]) : [plan as PlanRect];
+}
+
+function kindOf(room: RoomJson): RoomKind {
+  if (room.use === "utility") return "utility";
+  if (room.use === "void") return "void";
+  if (room.use === "place") return "place";
+  return room.dept_id ? "ai" : "planned";
+}
+
+export function floorList(): { id: FloorId; name: string }[] {
+  return FLOOR_ORDER.filter((id) => id !== "ax").map((id) => ({ id, name: FLOORS[id].name }));
+}
+
+export function directory(): {
+  id: FloorId;
+  name: string;
+  places: { id: string; title: string; kind: RoomKind }[];
+}[] {
   return FLOOR_ORDER.map((id) => {
     const spots = FLOORS[id].spots;
     const elevator = spots.find((spot) => spot.action === "floors");
+    const order: Record<string, number> = { feature: 0, ai: 0, planned: 1, place: 2, facility: 3 };
     const places = spots
       .filter((spot) => spot.action !== "floors" || spot === elevator)
-      .map((spot) => ({ id: spot.id, title: spot.title }));
+      .map((spot) => ({ id: spot.id, title: spot.title, kind: spot.kind }))
+      .sort((a, b) => (order[a.kind] ?? 9) - (order[b.kind] ?? 9));
     return { id, name: id === "ax" ? "별관" : FLOORS[id].name.replace("본관 ", ""), places };
   });
 }
 
-function inside(x: number, y: number) {
-  return x > 0 && y > 0 && x < MAP_W - 1 && y < MAP_H - 1;
+const MEETING = /회의|상황실|교육장|다목적|본회의장|휴게|방송|송고|공유오피스|발간|작업장/;
+const EXEC = /시장실|부시장실|국장실|의장실|부의장실|전문위원실|정책자문실/;
+
+function propAt(x: number, y: number, sprite: number, solid = false): Prop {
+  return { sprite, x: x * TILE, y: y * TILE, solid, hw: solid ? 12 : 0, hh: solid ? 8 : 0 };
 }
 
-function doorCells(room: Room): [number, number][] {
-  const roomSpan = room.door === "n" || room.door === "s" ? room.w : room.h;
-  const width = roomSpan >= 4 ? 3 : 2;
-  const midX = room.x + Math.max(0, Math.floor((room.w - width) / 2));
-  const midY = room.y + Math.max(0, Math.floor((room.h - width) / 2));
-  const cells: [number, number][] = [];
-  if (room.door === "s" || room.door === "n") {
-    const y = room.door === "s" ? room.y + room.h : room.y - 1;
-    for (let i = 0; i < width; i++) cells.push([midX + i, y]);
-  } else {
-    const x = room.door === "e" ? room.x + room.w : room.x - 1;
-    for (let i = 0; i < width; i++) cells.push([x, midY + i]);
-  }
-  return cells;
+type Built = { props: Prop[]; decors: Decor[] };
+
+// 문 쪽에서 안쪽으로 향하는 축. 사람과 동선은 문 앞에 두고 책상은 그 바깥에 놓는다.
+function inward(door: Door): [number, number] {
+  if (door === "s") return [0, -1];
+  if (door === "n") return [0, 1];
+  if (door === "e") return [-1, 0];
+  return [1, 0];
 }
 
-function npcFeet(room: Room) {
-  const midX = room.x + room.w / 2;
-  const midY = room.y + room.h / 2;
-  if (room.door === "s") return { x: midX * TILE, y: (room.y + room.h - 1.15) * TILE };
-  if (room.door === "n") return { x: midX * TILE, y: (room.y + 1.15) * TILE };
-  if (room.door === "e") return { x: (room.x + room.w - 1.15) * TILE, y: midY * TILE };
-  return { x: (room.x + 1.15) * TILE, y: midY * TILE };
-}
-
-function deskFeet(room: Room) {
-  let tx = room.x + room.w / 2;
-  let ty = room.y + 1.3;
-  if (room.door === "n") ty = room.y + room.h - 1.4;
-  if (room.door === "e") {
-    tx = room.x + 1.5;
-    ty = room.y + room.h / 2;
-  }
-  if (room.door === "w") {
-    tx = room.x + room.w - 1.5;
-    ty = room.y + room.h / 2;
-  }
-  return { x: tx * TILE, y: ty * TILE };
-}
-
-const RUG_TINT: Record<string, string> = {
-  tax: "#e7c49a",
-  collect: "#e7c49a",
-  hope: "#f0c3cf",
-  nh: "#cfe3f6",
-  minwon: "#f6e7a8",
-  land: "#e7d3b0",
-  guide: "#f3d2a2",
-  hygiene: "#cfe8d4",
-  senior: "#f0c3cf",
-  advice: "#e6d5f2",
-  jachi: "#c9ddd6",
-  situ: "#c9d7e8",
-  mul: "#d5ecc8",
-  vice: "#e7d3a8",
-  mayor: "#f0d48a",
-  directors: "#e7d3a8",
-  press: "#f6d0dc",
-  sports: "#cfe8c0",
-  meet: "#f0c9b0",
-  climate: "#b7e0c2",
-  jobs: "#f6e1b0",
-  econ: "#f6e1b0",
-  budget: "#d5d8f0",
-  traffic: "#f6d7a8",
-  account: "#d5d8f0",
-  edu: "#c9e4f2",
-  safety: "#f6c9c4",
-  data: "#c9d4f0",
-  roof: "#9ed39a",
-  assembly: "#e6d3a4",
-  "council-office": "#e7dcc8",
-  members: "#e7dcc8",
-  chair: "#f0d48a",
-  family: "#f6d0dc",
-  child: "#f6e1a8",
-  lifelong: "#d4e6f6",
-  culture: "#e6d0f0",
-  market: "#f6e1b0",
-};
-
-function backSpot(room: Room, side: "a" | "b") {
-  const left = side === "a";
-  if (room.door === "s") return { x: room.x + (left ? 1.15 : room.w - 1.15), y: room.y + 1.2 };
-  if (room.door === "n") return { x: room.x + (left ? 1.15 : room.w - 1.15), y: room.y + room.h - 1.25 };
-  if (room.door === "e") return { x: room.x + 1.2, y: room.y + (left ? 1.25 : room.h - 1.25) };
-  return { x: room.x + room.w - 1.2, y: room.y + (left ? 1.25 : room.h - 1.25) };
-}
-
-function addWindows(room: Room, decors: Decor[]) {
-  if (room.door === "n" || room.door === "s") {
-    const wy = (room.door === "n" ? room.y + room.h - 0.15 : room.y + 0.15) * TILE;
-    for (let i = 1; i < room.w - 1; i += 2) {
-      decors.push({ kind: "window", x: (room.x + i) * TILE + 6, y: wy, w: 18, h: 12 });
+function furnish(room: RoomJson, kind: RoomKind, r: Rect, doorAt: { x: number; y: number } | null, out: Built) {
+  const { props, decors } = out;
+  const x0 = r.x;
+  const y0 = r.y;
+  const x1 = r.x + r.w;
+  const y1 = r.y + r.h;
+  if (kind === "void") return;
+  if (kind === "utility") {
+    if (room.name === "계단") {
+      const along: "x" | "y" = r.w >= r.h ? "x" : "y";
+      decors.push({ kind: "stairs", x: x0 * TILE + 4, y: y0 * TILE + 4, w: r.w * TILE - 8, h: r.h * TILE - 8, dir: along });
+    } else if (room.name === "공조실" || room.name === "창고") {
+      if (r.w >= 2 && r.h >= 2) {
+        props.push(propAt(x0 + 0.7, y0 + 0.9, 5, true));
+        if (r.w >= 3) props.push(propAt(x1 - 0.7, y0 + 0.9, 5, true));
+      }
     }
     return;
   }
-  const wx = (room.door === "w" ? room.x + room.w - 0.2 : room.x + 0.05) * TILE;
-  for (let i = 1; i < room.h - 1; i += 2) {
-    decors.push({ kind: "window", x: wx, y: (room.y + i) * TILE + 4, w: 12, h: 16 });
-  }
-}
+  if (r.w < 2 || r.h < 2) return;
+  const [ix, iy] = inward(room.door);
+  const dx = doorAt ? doorAt.x : x0 + r.w / 2;
+  const dy = doorAt ? doorAt.y : y0 + r.h / 2;
+  // 문에서 안쪽으로 이어지는 통로 근처는 비워 둔다.
+  const lane = (px: number, py: number) => {
+    const t = (px - dx) * ix + (py - dy) * iy;
+    const side = Math.abs((px - dx) * iy - (py - dy) * ix);
+    return t > -0.5 && t < 3.6 && side < 1.7;
+  };
+  const inside = (px: number, py: number, m = 0.9) => px > x0 + m && px < x1 - m && py > y0 + m && py < y1 - m;
 
-function propAt(room: Room, sprite: number, ox: number, oy: number, solid = false): Prop {
-  return { sprite, x: (room.x + ox) * TILE, y: (room.y + oy) * TILE, solid, hw: solid ? 10 : 0, hh: solid ? 8 : 0 };
-}
+  // 뒤쪽 모서리: 캐비닛과 화분
+  const corners: [number, number][] = [
+    [x0 + 0.7, y0 + 0.8],
+    [x1 - 0.7, y0 + 0.8],
+    [x0 + 0.7, y1 - 0.6],
+    [x1 - 0.7, y1 - 0.6],
+  ];
+  let c = 0;
+  for (const [px, py] of corners) {
+    if (lane(px, py) || !inside(px, py, 0.4)) continue;
+    props.push(propAt(px, py, c % 2 === 0 ? 1 : 5, c % 2 === 1));
+    c++;
+    if (c >= 2) break;
+  }
 
-function dress(room: Room, props: Prop[], decors: Decor[]) {
-  const id = room.id;
-  const paperish = ["tax", "collect", "account", "budget", "jachi", "land", "advice", "press", "econ", "jobs"];
-  if (paperish.includes(id)) {
-    decors.push({ kind: "papers", x: (room.x + room.w / 2 - 0.2) * TILE, y: (room.y + 1.7) * TILE, w: 18, h: 12 });
-  }
-  if (id === "situ" || id === "data" || id === "edu" || id === "traffic") {
-    decors.push({ kind: "screen", x: (room.x + 1.1) * TILE, y: (room.y + 1.5) * TILE, w: 26, h: 16 });
-  }
-  if (id === "mayor" || id === "vice" || id === "chair" || id === "directors" || id === "assembly") {
-    decors.push({ kind: "flag", x: (room.x + room.w - 0.85) * TILE, y: (room.y + 1.5) * TILE, w: 12, h: 22, tint: id === "mayor" ? "#c4524a" : "#2454a0" });
-  }
-  if (id === "hope" || id === "senior" || id === "family" || id === "child" || id === "mul") {
-    decors.push({ kind: "sofa", x: (room.x + 1.3) * TILE, y: (room.y + room.h / 2) * TILE, w: 30, h: 14, tint: "#f0c3cf" });
-  }
-  if (id === "hygiene" || id === "nh" || id === "minwon" || id === "edu") {
-    decors.push({ kind: "cooler", x: (room.x + room.w - 1.2) * TILE, y: (room.y + room.h - 1.3) * TILE, w: 14, h: 20 });
-  }
-  if (id === "meet") {
-    decors.push({
-      kind: "table",
-      x: (room.x + 1.5) * TILE,
-      y: (room.y + 1.7) * TILE,
-      w: (room.w - 3) * TILE,
-      h: Math.max(TILE, (room.h - 2.3) * TILE),
-    });
-    for (const ox of [2, room.w / 2, room.w - 2]) {
-      props.push(propAt(room, 4, ox, 2.05));
-      props.push(propAt(room, 4, ox, room.h - 0.7));
-    }
-  }
-  if (id === "assembly") {
-    decors.push({ kind: "table", x: (room.x + room.w - 2.4) * TILE, y: (room.y + 1.6) * TILE, w: 1.4 * TILE, h: (room.h - 2.8) * TILE, tint: "#8a5a32" });
-    for (let row = 1.5; row < room.h - 0.8; row += 1.15) {
-      props.push(propAt(room, 4, 2.2, row));
-      props.push(propAt(room, 4, 4.2, row));
-      props.push(propAt(room, 4, 6.2, row));
-    }
-  }
-  if (id === "market") {
-    for (const oy of [3.2, 6.2, 9.2, 12.2]) props.push(propAt(room, 3, room.w - 1.6, oy, true));
-    props.push(propAt(room, 8, 1.4, 3));
-    props.push(propAt(room, 8, 1.4, 8));
-    props.push(propAt(room, 6, room.w - 1.5, 5));
-  }
-  if (id === "roof" || id === "climate" || id === "mul") {
-    const spots: [number, number][] = [
-      [1.4, 2.4],
-      [room.w - 1.4, 2.6],
-      [2.4, room.h - 1.5],
-      [room.w / 2, 3.2],
-      [room.w - 2, room.h / 2],
-    ];
-    for (const [ox, oy] of spots) {
-      if (ox > 1 && oy > 1 && ox < room.w - 0.4 && oy < room.h - 0.4) props.push(propAt(room, 1, ox, oy));
-    }
-    decors.push({ kind: "bench", x: (room.x + 2) * TILE, y: (room.y + room.h / 2) * TILE, w: 28, h: 12 });
-  }
-  if (id === "sports") {
-    decors.push({ kind: "bench", x: (room.x + 1.4) * TILE, y: (room.y + room.h - 1.4) * TILE, w: 36, h: 12, tint: "#2f6f4e" });
-    props.push(propAt(room, 8, room.w - 1.3, room.h - 1.4));
-  }
-  if (id === "guide") {
-    props.push(propAt(room, 1, 1.3, room.h - 1.4));
-    props.push(propAt(room, 7, room.w - 1.2, 1.1));
-    decors.push({ kind: "bench", x: (room.x + 1.2) * TILE, y: (room.y + room.h - 1.2) * TILE, w: 34, h: 12 });
-  }
-  if (id === "minwon") {
-    props.push(propAt(room, 3, 1.5, room.h - 1.5, true));
-    props.push(propAt(room, 8, room.w / 2, 1.2));
-  }
-  if (id === "members" || id === "council-office") {
-    props.push(propAt(room, 5, 1.3, 1.4, true));
-    props.push(propAt(room, 0, room.w - 1.5, room.h - 1.5, true));
-  }
-}
-
-function furnish(room: Room, props: Prop[], decors: Decor[]) {
-  decors.push({
-    kind: "rug",
-    tint: RUG_TINT[room.id] ?? "#e7c9a4",
-    x: (room.x + 0.4) * TILE,
-    y: (room.y + 0.4) * TILE,
-    w: Math.max(TILE, (room.w - 0.8) * TILE),
-    h: Math.max(TILE, (room.h - 0.8) * TILE),
-  });
-  const cabinet = backSpot(room, "a");
-  props.push({ sprite: 5, x: cabinet.x * TILE, y: cabinet.y * TILE, solid: true, hw: 10, hh: 8 });
-  const plant = backSpot(room, "b");
-  props.push({ sprite: 1, x: plant.x * TILE, y: plant.y * TILE, solid: false, hw: 0, hh: 0 });
-  const chairX = room.door === "w" ? room.w / 2 - 0.8 : room.w / 2 + 0.75;
-  const chairY = room.door === "s" ? 2.15 : room.door === "n" ? room.h - 2.15 : room.h / 2;
-  props.push(propAt(room, 4, chairX, chairY));
-  if (room.w >= 5 && room.id !== "roof") {
-    props.push(propAt(room, 7, room.w - 0.75, 0.9));
-  }
-  addWindows(room, decors);
-  decors.push({
-    kind: "shelf",
-    x: (room.door === "e" ? room.x + 0.25 : room.x + room.w - 0.65) * TILE,
-    y: (room.y + 1.7) * TILE,
-    w: 12,
-    h: Math.max(20, (room.h - 3.1) * TILE),
-  });
-  decors.push({
-    kind: "board",
-    x: (room.x + 0.28) * TILE,
-    y: (room.y + Math.min(2.3, room.h - 1.4)) * TILE,
-    w: 26,
-    h: 16,
-  });
-  dress(room, props, decors);
-}
-
-function build(
-  id: FloorId,
-  name: string,
-  roomsIn: Room[],
-  spawnTile: { x: number; y: number },
-  extras?: {
-    elevators?: { x: number; y: number }[];
-    portals?: { x: number; y: number; to: FloorId; title: string; line: string }[];
-    seal?: [number, number][];
-  },
-): FloorMap {
-  const rooms = roomsIn;
-  for (let i = 0; i < rooms.length; i++) {
-    for (let j = i + 1; j < rooms.length; j++) {
-      const a = rooms[i];
-      const b = rooms[j];
-      if (!a || !b) continue;
-      if (a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y) {
-        throw new Error(`rooms overlap on ${id}: ${a.id} ${b.id}`);
+  if (room.floor === "g") {
+    for (let py = y0 + 1.5; py < y1 - 1; py += 2.6) {
+      for (let px = x0 + 1.5; px < x1 - 1; px += 2.8) {
+        if (lane(px, py)) continue;
+        props.push(propAt(px, py, 1));
       }
     }
-  }
-  const spawn = spawnTile;
-  const grid = Array.from({ length: MAP_H }, () => Array.from({ length: MAP_W }, () => "#"));
-  for (let y = 1; y < MAP_H - 1; y++) {
-    for (let x = 1; x < MAP_W - 1; x++) grid[y][x] = "m";
+    decors.push({ kind: "bench", x: (x0 + 1.2) * TILE, y: (y0 + r.h / 2) * TILE, w: 40, h: 12 });
+    return;
   }
 
-  const props: Prop[] = [];
-  const spots: Spot[] = [];
-  const labels: FloorMap["labels"] = [];
-  const decors: Decor[] = [];
-  const doors: [number, number][] = [];
+  if (room.id === "guide" || room.id === "nh") {
+    const cx = x0 + r.w / 2;
+    const cy = y0 + r.h / 2 + iy * 0.2;
+    props.push(propAt(cx, cy + 0.4, 3, true));
+    if (room.id === "nh") props.push(propAt(cx, cy + 2.4, 3, true));
+    return;
+  }
 
+  if (MEETING.test(room.name) && r.w >= 3 && r.h >= 3) {
+    const tw = Math.max(1, r.w - 3.2);
+    const th = Math.max(1, r.h - 3.2);
+    const tx = x0 + (r.w - tw) / 2;
+    const ty = y0 + (r.h - th) / 2;
+    if (room.name.includes("본회의장")) {
+      for (let py = y0 + 1.6; py < y1 - 1.6; py += 1.4) {
+        for (let px = x0 + 1.4; px < x1 - 2.4; px += 1.5) if (!lane(px, py)) props.push(propAt(px, py, 4));
+      }
+      decors.push({ kind: "table", x: (x1 - 1.6) * TILE, y: (y0 + 1.5) * TILE, w: TILE, h: (r.h - 3) * TILE });
+      return;
+    }
+    decors.push({ kind: "table", x: tx * TILE, y: ty * TILE, w: tw * TILE, h: th * TILE });
+    for (let px = tx + 0.5; px < tx + tw; px += 1.2) {
+      props.push(propAt(px, ty - 0.35, 4));
+      props.push(propAt(px, ty + th + 0.55, 4));
+    }
+    if (room.name.includes("상황실") || room.name.includes("영상")) {
+      decors.push({ kind: "screen", x: (x0 + 0.6) * TILE, y: (y0 + 0.3) * TILE, w: Math.min(3, r.w - 1.2) * TILE, h: 4 });
+    }
+    return;
+  }
+
+  if (EXEC.test(room.name)) {
+    const bx = x0 + r.w / 2;
+    const by = room.door === "n" ? y1 - 1.1 : y0 + 1.3;
+    if (!lane(bx, by)) props.push(propAt(bx, by, 0, true));
+    if (r.w >= 4 && r.h >= 4) {
+      decors.push({ kind: "sofa", x: (x0 + 0.8) * TILE, y: (y0 + r.h / 2 - 0.4) * TILE, w: 14, h: 40 });
+      decors.push({ kind: "table", x: (x0 + 1.6) * TILE, y: (y0 + r.h / 2 - 0.3) * TILE, w: 26, h: 30 });
+    }
+    return;
+  }
+
+  // 일반 사무실: 책상 줄. 문 앞 동선은 비운다.
+  let n = 0;
+  for (let py = y0 + 1.3; py < y1 - 0.7; py += 2.3) {
+    for (let px = x0 + 1.4; px < x1 - 0.9; px += 2.1) {
+      if (lane(px, py) || lane(px, py + 0.7) || !inside(px, py, 0.8)) continue;
+      props.push(propAt(px, py, 0, true));
+      props.push(propAt(px, py + 0.75, 4));
+      n++;
+      if (n > 18) return;
+    }
+  }
+  if (r.h >= 4 && r.w >= 5) {
+    const sx = room.door === "e" ? x0 + 0.25 : x1 - 0.65;
+    if (!lane(sx, y0 + r.h / 2)) decors.push({ kind: "shelf", x: sx * TILE, y: (y0 + 1.2) * TILE, w: 12, h: Math.max(20, (r.h - 2.6) * TILE) });
+  }
+}
+
+function build(f: FloorJson): FloorMap {
+  const W = MAP_W;
+  const H = MAP_H;
+  const inBounds = (x: number, y: number) => x >= 0 && y >= 0 && x < W && y < H;
+  const key = (x: number, y: number) => y * W + x;
+
+  // 1) 바닥 윤곽과 바깥벽
+  const footprint = new Set<number>();
+  for (const [ax, ay, bx, by] of f.outline) {
+    for (let y = row(ay); y <= row(by); y++) for (let x = col(ax); x <= col(bx); x++) if (inBounds(x, y)) footprint.add(key(x, y));
+  }
+  const grid: string[][] = Array.from({ length: H }, () => Array.from({ length: W }, () => " "));
+  const edge = (set: Set<number>, x: number, y: number) => {
+    for (let oy = -1; oy <= 1; oy++) {
+      for (let ox = -1; ox <= 1; ox++) {
+        if (!ox && !oy) continue;
+        if (!inBounds(x + ox, y + oy) || !set.has(key(x + ox, y + oy))) return true;
+      }
+    }
+    return false;
+  };
+  for (const k of footprint) {
+    const x = k % W;
+    const y = Math.floor(k / W);
+    grid[y][x] = edge(footprint, x, y) ? "#" : "m";
+  }
+
+  // 2) 방: 안내도 벽선 사각형(들)의 테두리는 벽, 안쪽은 방 바닥
+  const owner = new Map<number, string>();
+  const rooms: { json: RoomJson; kind: RoomKind; main: Rect; parts: Rect[]; cells: Set<number> }[] = [];
+  for (const room of f.rooms) {
+    const cells = new Set<number>();
+    const parts: Rect[] = [];
+    for (const [ax, ay, bx, by] of rectsOf(room.plan)) {
+      const x0 = col(ax);
+      const y0 = row(ay);
+      const x1 = col(bx);
+      const y1 = row(by);
+      parts.push({ x: x0 + 1, y: y0 + 1, w: x1 - x0 - 1, h: y1 - y0 - 1 });
+      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) if (inBounds(x, y)) cells.add(key(x, y));
+    }
+    const ground = room.floor ?? (room.use === "utility" ? "t" : "w");
+    for (const k of cells) {
+      const x = k % W;
+      const y = Math.floor(k / W);
+      if (edge(cells, x, y)) {
+        grid[y][x] = "#";
+      } else {
+        grid[y][x] = ground;
+        owner.set(k, room.id);
+      }
+    }
+    rooms.push({ json: room, kind: kindOf(room), main: parts[0], parts, cells });
+  }
+
+  // 3) 문: 방의 문 쪽 벽 가운데, 바깥이 복도인 칸을 연다.
+  const corridor = (x: number, y: number) => inBounds(x, y) && grid[y][x] === "m" && !owner.has(key(x, y));
+  const doors = new Map<string, { x: number; y: number }>();
   for (const room of rooms) {
-    for (let y = room.y - 1; y <= room.y + room.h; y++) {
-      for (let x = room.x - 1; x <= room.x + room.w; x++) {
-        if (!inside(x, y)) continue;
-        const edge =
-          x === room.x - 1 || x === room.x + room.w || y === room.y - 1 || y === room.y + room.h;
-        grid[y][x] = edge ? "#" : room.floor;
-      }
+    if (room.kind === "void") continue;
+    const r = room.main;
+    const [ix, iy] = inward(room.json.door);
+    const horizontal = room.json.door === "n" || room.json.door === "s";
+    const fixed = room.json.door === "s" ? r.y + r.h : room.json.door === "n" ? r.y - 1 : room.json.door === "e" ? r.x + r.w : r.x - 1;
+    const from = horizontal ? r.x : r.y;
+    const to = horizontal ? r.x + r.w - 1 : r.y + r.h - 1;
+    const ok: number[] = [];
+    for (let i = from; i <= to; i++) {
+      const x = horizontal ? i : fixed;
+      const y = horizontal ? fixed : i;
+      if (grid[y]?.[x] !== "#") continue;
+      if (!corridor(x - ix, y - iy)) continue;
+      if (owner.get(key(x + ix, y + iy)) !== room.json.id) continue;
+      ok.push(i);
     }
-    doors.push(...doorCells(room));
-    labels.push({
-      x: (room.x + room.w / 2) * TILE,
-      y: (room.y + 0.45) * TILE,
-      text: room.label ?? room.name,
-    });
-
-    const desk = deskFeet(room);
-    const counter = room.action === "minwon" || room.id === "guide" || room.action === "market";
-    props.push({
-      sprite: counter ? 3 : 0,
-      x: desk.x,
-      y: desk.y,
-      solid: true,
-      hw: 14,
-      hh: 9,
-    });
-    if (room.action === "pingpong" || room.action === "market") {
-      props.push({ sprite: 6, x: desk.x + 22, y: desk.y - 6, solid: false, hw: 0, hh: 0 });
+    if (!ok.length) continue;
+    const mid = (from + to) / 2;
+    ok.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid));
+    const first = ok[0];
+    const width = to - from + 1 >= 4 ? 2 : 1;
+    const cellsOpen = [first];
+    if (width === 2) {
+      if (ok.includes(first + 1)) cellsOpen.push(first + 1);
+      else if (ok.includes(first - 1)) cellsOpen.push(first - 1);
     }
-    furnish(room, props, decors);
+    for (const i of cellsOpen) {
+      const x = horizontal ? i : fixed;
+      const y = horizontal ? fixed : i;
+      grid[y][x] = "m";
+    }
+    const center = cellsOpen.reduce((a, b) => a + b, 0) / cellsOpen.length + 0.5;
+    doors.set(room.json.id, horizontal ? { x: center, y: fixed + 0.5 } : { x: fixed + 0.5, y: center });
+  }
 
-    const feet = npcFeet(room);
-    const actor = room.actor !== false && room.action !== "portal";
+  // 4) 가구, 사람 자리, 표시
+  const built: Built = { props: [], decors: [] };
+  const spots: Spot[] = [];
+  const rects: RoomRect[] = [];
+  for (const room of rooms) {
+    const json = room.json;
+    const door = doors.get(json.id) ?? null;
+    rects.push({ ...room.main, id: json.id, name: json.name, kind: room.kind, ground: json.floor ?? (json.use === "utility" ? "t" : "w"), parts: room.parts });
+    furnish(json, room.kind, room.main, door, built);
+    if (room.kind === "utility" || room.kind === "void") continue;
+    const [ix, iy] = inward(json.door);
+    const r = room.main;
+    const depth = Math.min(1.4, (json.door === "n" || json.door === "s" ? r.h : r.w) - 0.6);
+    const base = door ?? { x: r.x + r.w / 2, y: r.y + r.h / 2 };
+    const sx = door ? base.x + ix * (0.5 + depth) : base.x;
+    const sy = door ? base.y + iy * (0.5 + depth) : base.y;
+    const actor = room.kind === "ai";
+    if (actor) {
+      // 주무관 뒤에 창구를 둔다.
+      const cx = sx + ix * 1.1;
+      const cy = sy + iy * 1.1;
+      if (cx > r.x + 0.6 && cx < r.x + r.w - 0.6 && cy > r.y + 0.4 && cy < r.y + r.h - 0.4) built.props.push(propAt(cx, cy, 3, true));
+    }
     spots.push({
-      id: room.id,
-      x: feet.x,
-      y: feet.y,
-      title: room.name,
-      action: room.action,
-      lines: room.lines,
-      stamp: room.stamp,
-      portal: room.portal,
+      id: json.id,
+      kind: room.kind,
+      x: sx * TILE,
+      y: sy * TILE,
+      title: json.name,
+      action: room.kind === "planned" ? "talk" : (json.action ?? "talk"),
+      lines:
+        room.kind === "planned"
+          ? [PLANNED_LINE]
+          : json.lines?.length
+            ? json.lines
+            : [`${json.name}입니다. 이 공간에는 AI 주무관이 근무하지 않습니다.`],
+      stamp: json.stamp,
       actor,
     });
   }
 
-  for (const [x, y] of doors) {
-    if (inside(x, y)) grid[y][x] = "m";
-  }
-
-  for (const ev of extras?.elevators ?? []) {
-    const at = ev;
-    const x = (at.x + 0.5) * TILE;
-    const y = (at.y + 0.5) * TILE;
-    if (grid[at.y]?.[at.x] === "#") grid[at.y][at.x] = "m";
-    props.push({ sprite: 2, x, y, solid: false, hw: 0, hh: 0 });
+  for (const [i, at] of (f.elevators ?? []).entries()) {
+    const p = toWorld(at);
     spots.push({
-      id: `ev-${id}-${at.x}`,
-      x,
-      y: y + 8,
+      id: `ev-${f.id}-${i}`,
+      kind: "facility",
+      x: p.x,
+      y: p.y,
       title: "엘리베이터",
       action: "floors",
       lines: ["본관 1층부터 5층까지 이동합니다. 별관은 3층 연결통로입니다."],
@@ -426,85 +428,52 @@ function build(
     });
   }
 
-  for (const portal of extras?.portals ?? []) {
-    const at = portal;
-    const x = (at.x + 0.5) * TILE;
-    const y = (at.y + 0.5) * TILE;
-    if (inside(at.x, at.y)) grid[at.y][at.x] = "r";
-    if (inside(at.x + 1, at.y)) grid[at.y][at.x + 1] = "r";
-    props.push({ sprite: 8, x, y: y - 8, solid: false, hw: 0, hh: 0 });
-    spots.push({
-      id: `portal-${id}`,
-      x,
-      y,
-      title: portal.title,
-      action: "portal",
-      lines: [portal.line],
-      portal: portal.to,
-      actor: false,
-    });
+  for (const portal of f.portals ?? []) {
+    const p = toWorld(portal.at);
+    const tx = Math.floor(p.x / TILE);
+    const ty = Math.floor(p.y / TILE);
+    for (const [x, y] of [
+      [tx, ty],
+      [tx + 1, ty],
+    ]) {
+      if (grid[y]?.[x] === "m") grid[y][x] = "r";
+    }
+    built.props.push({ sprite: 8, x: p.x, y: p.y - 10, solid: false, hw: 0, hh: 0 });
+    spots.push({ id: `portal-${f.id}`, kind: "facility", x: p.x, y: p.y, title: portal.title, action: "portal", lines: [portal.line], portal: portal.to, actor: false });
   }
 
-  for (const [x, y] of extras?.seal ?? []) {
-    if (inside(x, y) && !doors.some(([dx, dy]) => dx === x && dy === y)) grid[y][x] = "#";
+  for (const npc of f.npcs ?? []) {
+    const p = toWorld(npc.at);
+    built.props.push({ sprite: 8, x: p.x + 26, y: p.y - 6, solid: false, hw: 0, hh: 0 });
+    spots.push({ id: npc.id, kind: "feature", x: p.x, y: p.y, title: npc.title, action: npc.action, lines: npc.lines, stamp: npc.stamp, actor: true });
   }
 
-  for (let y = 8; y <= 10; y++) {
-    for (let x = 2; x < MAP_W - 2; x++) {
-      const ch = grid[y]?.[x];
-      if (ch !== "m" && ch !== "r") continue;
-      if (x % 2 === 0) {
-        decors.push({ kind: "mat", x: x * TILE + 8, y: y * TILE + 10, w: 16, h: 12, tint: "#7ec8bc" });
-      }
-    }
-  }
-  for (let x = 3; x < MAP_W - 3; x += 4) {
-    if (grid[7]?.[x] === "#" && grid[8]?.[x] !== "#") {
-      decors.push({ kind: "lamp", x: x * TILE + 10, y: 7 * TILE + 18, w: 12, h: 16 });
-    }
-    if (grid[11]?.[x] === "#" && grid[10]?.[x] !== "#") {
-      decors.push({ kind: "lamp", x: x * TILE + 10, y: 11 * TILE + 8, w: 12, h: 16 });
-    }
-  }
-  decors.push({
-    kind: "rug",
-    tint: "#f3d2a2",
-    x: (spawn.x - 1) * TILE,
-    y: (spawn.y - 0.2) * TILE,
-    w: TILE * 2.4,
-    h: TILE * 1.6,
-  });
-
-  if (grid[spawn.y]?.[spawn.x] === "#") {
-    throw new Error(`spawn is a wall on ${id} @ ${spawn.x},${spawn.y}`);
-  }
+  const spawn = toWorld(f.spawn);
+  const st = grid[Math.floor(spawn.y / TILE)]?.[Math.floor(spawn.x / TILE)];
+  if (st === "#" || st === " ") throw new Error(`spawn is not walkable on ${f.id}`);
 
   return {
-    id,
-    name,
-    grid: grid.map((row) => row.join("")),
-    props,
+    id: f.id,
+    name: f.name,
+    grid: grid.map((g) => g.join("")),
+    props: built.props,
     spots,
-    labels,
-    decors,
-    spawn: { x: (spawn.x + 0.5) * TILE, y: (spawn.y + 0.5) * TILE },
+    decors: built.decors,
+    rooms: rects,
+    spawn,
   };
 }
 
-// 방 배치는 data/map/hall.json에서 읽는다. 본관 1~5층은 실제 층별 안내판 기준(팀 확인).
-type HallJson = {
-  floors: {
-    id: FloorId;
-    name: string;
-    spawn: { x: number; y: number };
-    rooms: Room[];
-    extras?: Parameters<typeof build>[4];
-  }[];
-};
-
 export const FLOORS = Object.fromEntries(
-  (hall as HallJson).floors.map((f) => [f.id, build(f.id, f.name, f.rooms, f.spawn, f.extras)]),
+  (hall.floors as unknown as FloorJson[]).map((f) => [f.id, build(f)]),
 ) as Record<FloorId, FloorMap>;
+
+// 부서 ID → 그 부서 방이 있는 층과 방 ID (업무 판정 뒤 봉투를 날릴 곳)
+export const DEPT_ROOMS: Record<string, { floor: FloorId; room: string }> = Object.fromEntries(
+  (hall.floors as unknown as FloorJson[]).flatMap((f) =>
+    f.rooms.filter((r) => r.dept_id).map((r) => [r.dept_id as string, { floor: f.id, room: r.id }]),
+  ),
+);
 
 export function tileAt(floor: FloorMap, px: number, py: number) {
   const x = Math.floor(px / TILE);
@@ -514,21 +483,16 @@ export function tileAt(floor: FloorMap, px: number, py: number) {
 }
 
 export function isSolidTile(ch: string) {
-  return ch === "#";
+  return ch === "#" || ch === " ";
 }
 
 export const QUEST: { stamp: string; hint: string }[] = [
-  { stamp: "guide", hint: "1층 안내데스크에서 청사 안내를 받으세요" },
-  { stamp: "minwon", hint: "민원여권과 창구에서 시민·공무원 안내를 보세요" },
-  { stamp: "jachi", hint: "2층 자치행정과에서 인수인계와 계산기를 받아 보세요" },
-  { stamp: "ping", hint: "3층 대회의실에서 업무 핑퐁을 돌려 보세요" },
-  { stamp: "market", hint: "별관 3층 AI 도구 상가에 들르세요" },
-  { stamp: "roof", hint: "5층 옥상 정원에서 상황판을 확인하세요" },
+  { stamp: "lobby", hint: "1층 로비의 AI 주무관에게 업무를 물어보세요" },
+  { stamp: "minwon", hint: "1층 민원여권과 창구에 들러 보세요" },
+  { stamp: "senior", hint: "1층 노인장애인과 AI 주무관을 만나 보세요" },
 ];
 
 export function questHint(stamps: string[]) {
   const next = QUEST.find((q) => !stamps.includes(q.stamp));
-  return next ? next.hint : "도장을 모두 모았습니다. 청사에 지식이 남았습니다.";
+  return next ? next.hint : "AI 주무관이 근무하는 곳을 모두 둘러보았습니다.";
 }
-
-export const PING_TARGET = "climate";

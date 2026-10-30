@@ -1,27 +1,25 @@
-const playerUrl = "/sprites/player.png";
-const npcUrl = "/sprites/npc.png";
-const propsUrl = "/sprites/props.png";
 import { sfx } from "./audio";
 import {
   FLOORS,
   MAP_H,
   MAP_W,
-  PING_TARGET,
+  DEPT_ROOMS,
   TILE,
   isSolidTile,
   questHint,
   tileAt,
-  type Decor,
   type FloorId,
   type FloorMap,
-  type Prop,
   type Spot,
 } from "./world";
+import { ISO, OFFICER_STYLE, PLAYER_STYLE, floorQuad, fromIso, iso, person, pill, shadow } from "./iso";
+import { drawDecor, drawGround, drawProp, wallItems, type Item } from "./scene";
 
-const SAVE_KEY = "osan-ai-hall-v3";
-const SAVE_KEY_V2 = "osan-ai-hall-v2";
+// 층 배치를 안내도대로 다시 그리면서 저장 위치 형식이 바뀌어 새 키를 쓴다.
+const SAVE_KEY = "osan-ai-hall-v4";
 
 export type Hud = {
+  floorId: FloorId;
   floorName: string;
   prompt: string | null;
   stamps: string[];
@@ -47,26 +45,17 @@ type Hooks = {
   onSpot: (spot: Spot) => void;
 };
 
-type Dust = { x: number; y: number; life: number };
 type Envelope = { x: number; y: number; tx: number; ty: number; t: number };
+type Pt = { x: number; y: number };
 
 const STAMP_NAME: Record<string, string> = {
-  guide: "안내데스크",
+  lobby: "1층 로비 업무 안내",
   minwon: "민원여권과",
-  jachi: "자치행정과",
-  ping: "업무 핑퐁",
-  market: "도구 상가",
-  roof: "옥상 상황판",
+  senior: "노인장애인과",
 };
 
-function loadImage(src: string) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`sprite ${src}`));
-    img.src = src;
-  });
-}
+const SPEED = 168;
+const TALK_RADIUS = 64;
 
 declare global {
   interface Window {
@@ -80,17 +69,33 @@ declare global {
   }
 }
 
+// 화면 방향(위·아래·좌·우) 입력을 세계 좌표 방향으로 바꾼다. 아이소 화면의 '위'는 세계의 (-1, -1).
+function screenToWorldDir(sx: number, sy: number): [number, number] {
+  const wx = sx + sy;
+  const wy = -sx + sy;
+  const len = Math.hypot(wx, wy);
+  if (len < 1e-6) return [0, 0];
+  const mag = Math.min(1, Math.hypot(sx, sy));
+  return [(wx / len) * mag, (wy / len) * mag];
+}
+
 export class HallEngine {
   keys = new Set<string>();
   joy = { x: 0, y: 0 };
   insetLeft = 0;
+  insetRight = 0;
   hasSave = false;
   mode: "title" | "play" = "title";
+  // "3d"이면 그리기는 React Three Fiber 장면(Hall3D)이 맡고 이 엔진은 이동·판정만 한다.
+  renderer: "2d" | "3d" = "2d";
+  hovered: string | null = null;
 
   private floor: FloorMap = FLOORS.f1;
   private x = FLOORS.f1.spawn.x;
   private y = FLOORS.f1.spawn.y;
   private face = 0;
+  private sdir = 1;
+  private sback = false;
   private vx = 0;
   private vy = 0;
   private stamps: string[] = [];
@@ -106,22 +111,30 @@ export class HallEngine {
   private fading = false;
   private fadeOut = false;
   private pending: FloorId | null = null;
+  private pendingSpot: string | null = null;
   private toast = "";
   private toastT = 0;
   private prompt: string | null = null;
   private lastHud = "";
-  private dust: Dust[] = [];
   private envelopes: Envelope[] = [];
-  private images: { player?: HTMLImageElement; npc?: HTMLImageElement; props?: HTMLImageElement } = {};
+  private path: Pt[] = [];
+  private pathSpot: Spot | null = null;
+  private marker: Pt | null = null;
+  private stuck = 0;
   private camX = 0;
   private camY = 0;
+  private camReady = false;
+  private zoom = 1;
+  private userZoom = 1;
+  private cssW = 1;
+  private cssH = 1;
+  private blockedTiles = new Map<FloorId, boolean[][]>();
 
   constructor(
     private canvas: HTMLCanvasElement,
     private hooks: Hooks,
   ) {
     this.load();
-    void this.loadArt();
   }
 
   start() {
@@ -153,67 +166,54 @@ export class HallEngine {
   lock() {
     this.locked = true;
     this.joy = { x: 0, y: 0 };
+    this.clearPath();
   }
 
   unlock() {
     this.locked = false;
   }
 
+  zoomBy(factor: number) {
+    this.userZoom = Math.max(this.renderer === "3d" ? 0.45 : 0.6, Math.min(1.9, this.userZoom * factor));
+  }
+
   interact() {
     if (this.mode !== "play" || this.locked || this.fading) return;
-    const spot = this.nearest(64);
+    const spot = this.nearest(TALK_RADIUS);
     if (!spot) return;
-    sfx.talk();
-    this.hooks.onSpot(spot);
+    this.open(spot);
   }
 
   go(id: FloorId) {
     if (this.fading || id === this.floor.id) return;
     this.pending = id;
+    this.pendingSpot = null;
     this.fading = true;
     this.fadeOut = true;
+    this.clearPath();
     sfx.floor();
   }
 
+  // 부서 목록에서 고르면: 같은 층이면 걸어가고, 다른 층이면 층을 옮긴 뒤 그 앞에 선다.
   visit(floorId: FloorId, spotId: string) {
     if (this.mode !== "play" || this.fading) return;
-    const floor = FLOORS[floorId];
-    const spot = floor.spots.find((item) => item.id === spotId);
-    if (!spot) return;
-    this.floor = floor;
-    const offsets: [number, number][] = [
-      [0, 28],
-      [0, -28],
-      [-28, 0],
-      [28, 0],
-      [0, 44],
-      [0, -44],
-      [-44, 0],
-      [44, 0],
-    ];
-    let x = floor.spawn.x;
-    let y = floor.spawn.y;
-    for (const [dx, dy] of offsets) {
-      if (!this.blocked(spot.x + dx, spot.y + dy)) {
-        x = spot.x + dx;
-        y = spot.y + dy;
-        break;
-      }
+    if (floorId !== this.floor.id) {
+      this.pending = floorId;
+      this.pendingSpot = spotId;
+      this.fading = true;
+      this.fadeOut = true;
+      this.clearPath();
+      sfx.floor();
+      return;
     }
-    this.x = x;
-    this.y = y;
-    if (Math.abs(spot.x - x) > Math.abs(spot.y - y)) this.face = spot.x < x ? 1 : 2;
-    else this.face = spot.y < y ? 3 : 0;
-    this.persist();
-    this.emit(true);
-    sfx.talk();
-    this.hooks.onSpot(spot);
+    const spot = this.floor.spots.find((item) => item.id === spotId);
+    if (spot) this.walkTo(spot, spot);
   }
 
   grant(stamp?: string) {
     if (!stamp || this.stamps.includes(stamp)) return;
     this.stamps = [...this.stamps, stamp];
-    this.toast = `${STAMP_NAME[stamp] ?? stamp} 도장`;
+    this.toast = `${STAMP_NAME[stamp] ?? stamp} 둘러보기 완료`;
     this.toastT = 2.4;
     sfx.stamp();
     this.persist();
@@ -231,22 +231,107 @@ export class HallEngine {
     return true;
   }
 
-  markPingpong() {
+  // 로비에서 업무를 판정하면 담당 부서 방으로 봉투가 날아간다(같은 층에 있을 때).
+  markPingpong(deptId?: string) {
     this.pingpongs += 1;
-    this.grant("ping");
-    const spot = this.floor.spots.find((s) => s.id === PING_TARGET);
+    this.grant("lobby");
+    const target = deptId ? DEPT_ROOMS[deptId] : undefined;
+    const spot = target && target.floor === this.floor.id ? this.floor.spots.find((s) => s.id === target.room) : undefined;
     if (spot) {
-      this.envelopes.push({
-        x: this.x,
-        y: this.y - 28,
-        tx: spot.x,
-        ty: spot.y - 36,
-        t: 0,
-      });
+      this.envelopes.push({ x: this.x, y: this.y, tx: spot.x, ty: spot.y, t: 0 });
     }
     sfx.ping();
     this.persist();
     this.emit(true);
+  }
+
+  // 화면 좌표(CSS px)에 있는 방을 찾아 마우스 모양을 바꾸는 데 쓴다.
+  pointerMove(cssX: number, cssY: number) {
+    const [wx, wy] = this.pick(cssX, cssY);
+    return this.hoverWorld(wx, wy);
+  }
+
+  pointerClick(cssX: number, cssY: number) {
+    const [wx, wy] = this.pick(cssX, cssY);
+    this.clickWorld(wx, wy);
+  }
+
+  // 세계 좌표(px)로 직접 가리키기. 3D 화면은 바닥면 광선 교차점으로 이것을 부른다.
+  hoverWorld(wx: number, wy: number) {
+    if (this.mode !== "play") {
+      this.hovered = null;
+      return null;
+    }
+    const spot = this.spotAt(wx, wy);
+    this.hovered = spot?.id ?? null;
+    return this.hovered;
+  }
+
+  clickWorld(wx: number, wy: number) {
+    if (this.mode !== "play" || this.locked || this.fading) return;
+    const spot = this.spotAt(wx, wy);
+    if (spot) {
+      if (Math.hypot(spot.x - this.x, spot.y - this.y) < TALK_RADIUS) {
+        this.open(spot);
+        return;
+      }
+      this.walkTo(spot, spot);
+      return;
+    }
+    const tx = Math.floor(wx / TILE);
+    const ty = Math.floor(wy / TILE);
+    if (tx < 0 || ty < 0 || tx >= MAP_W || ty >= MAP_H) return;
+    this.walkTo({ x: wx, y: wy }, null);
+  }
+
+  // 3D 화면이 매 프레임 읽는 현재 상태
+  view() {
+    const near = this.mode === "play" && !this.locked ? this.nearest(TALK_RADIUS) : null;
+    return {
+      floor: this.floor,
+      x: this.x,
+      y: this.y,
+      moving: Math.hypot(this.vx, this.vy) > 8,
+      vx: this.vx,
+      vy: this.vy,
+      time: this.time,
+      marker: this.marker,
+      envelopes: this.envelopes,
+      hovered: this.hovered,
+      nearId: near?.id ?? null,
+      zoom: this.userZoom,
+      fade: this.fade,
+    };
+  }
+
+  private open(spot: Spot) {
+    this.clearPath();
+    sfx.talk();
+    this.hooks.onSpot(spot);
+  }
+
+  private clearPath() {
+    this.path = [];
+    this.pathSpot = null;
+    this.marker = null;
+    this.stuck = 0;
+  }
+
+  private pick(cssX: number, cssY: number) {
+    const ix = cssX / this.zoom + this.camX;
+    const iy = cssY / this.zoom + this.camY;
+    return fromIso(ix, iy);
+  }
+
+  private spotAt(wx: number, wy: number): Spot | null {
+    for (const spot of this.floor.spots) {
+      if ((spot.kind === "facility" || spot.kind === "feature") && Math.hypot(spot.x - wx, spot.y - wy) < 30) return spot;
+    }
+    const room = this.floor.rooms.find((r) =>
+      r.parts.some((p) => wx >= p.x * TILE && wx < (p.x + p.w) * TILE && wy >= p.y * TILE && wy < (p.y + p.h) * TILE),
+    );
+    if (!room) return null;
+    return this.floor.spots.find((s) => s.id === room.id) ?? null;
   }
 
   private reset() {
@@ -258,6 +343,8 @@ export class HallEngine {
     this.tools = [];
     this.pingpongs = 0;
     this.envelopes = [];
+    this.clearPath();
+    this.camReady = false;
     this.hasSave = false;
     try {
       localStorage.removeItem(SAVE_KEY);
@@ -268,7 +355,7 @@ export class HallEngine {
 
   private load() {
     try {
-      const raw = localStorage.getItem(SAVE_KEY) ?? localStorage.getItem(SAVE_KEY_V2);
+      const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return;
       const data = JSON.parse(raw) as Save;
       const floor = FLOORS[data.floor];
@@ -309,15 +396,6 @@ export class HallEngine {
     }
   }
 
-  private async loadArt() {
-    const [player, npc, props] = await Promise.all([
-      loadImage(playerUrl),
-      loadImage(npcUrl),
-      loadImage(propsUrl),
-    ]);
-    this.images = { player, npc, props };
-  }
-
   private frame = (now: number) => {
     const dt = Math.min(0.05, (now - this.last) / 1000);
     this.last = now;
@@ -326,7 +404,7 @@ export class HallEngine {
       this.step(1 / 60);
       this.acc -= 1 / 60;
     }
-    this.draw();
+    if (this.renderer === "2d") this.draw();
     this.raf = requestAnimationFrame(this.frame);
   };
 
@@ -335,43 +413,66 @@ export class HallEngine {
     this.updateFade(dt);
     for (const env of this.envelopes) env.t = Math.min(1, env.t + dt * 0.55);
     this.envelopes = this.envelopes.filter((e) => e.t < 1);
-    for (const d of this.dust) d.life -= dt;
-    this.dust = this.dust.filter((d) => d.life > 0);
     if (this.toastT > 0) {
       this.toastT -= dt;
       if (this.toastT <= 0) this.toast = "";
     }
 
     const canMove = this.mode === "play" && !this.locked && !this.fading;
-    let ix = this.joy.x;
-    let iy = this.joy.y;
+    let sx = this.joy.x;
+    let sy = this.joy.y;
     if (canMove) {
-      if (this.keys.has("KeyA") || this.keys.has("ArrowLeft")) ix -= 1;
-      if (this.keys.has("KeyD") || this.keys.has("ArrowRight")) ix += 1;
-      if (this.keys.has("KeyW") || this.keys.has("ArrowUp")) iy -= 1;
-      if (this.keys.has("KeyS") || this.keys.has("ArrowDown")) iy += 1;
+      if (this.keys.has("KeyA") || this.keys.has("ArrowLeft")) sx -= 1;
+      if (this.keys.has("KeyD") || this.keys.has("ArrowRight")) sx += 1;
+      if (this.keys.has("KeyW") || this.keys.has("ArrowUp")) sy -= 1;
+      if (this.keys.has("KeyS") || this.keys.has("ArrowDown")) sy += 1;
     }
-    const mag = Math.hypot(ix, iy);
-    if (mag > 1) {
-      ix /= mag;
-      iy /= mag;
+    let [ix, iy] = screenToWorldDir(sx, sy);
+    const manual = Math.hypot(ix, iy) > 0.08;
+    if (manual && this.path.length) this.clearPath();
+
+    if (canMove && !manual && this.path.length) {
+      const wp = this.path[0];
+      const dx = wp.x - this.x;
+      const dy = wp.y - this.y;
+      const d = Math.hypot(dx, dy);
+      if (d < 5) {
+        this.path.shift();
+        if (!this.path.length) this.arrive();
+      } else {
+        ix = dx / d;
+        iy = dy / d;
+        // 마지막 구간에서는 살짝 감속해 부드럽게 멈춘다.
+        if (this.path.length === 1 && d < 24) {
+          ix *= Math.max(0.35, d / 24);
+          iy *= Math.max(0.35, d / 24);
+        }
+      }
     }
 
-    const speed = 156;
+    const mag = Math.hypot(ix, iy);
     const ox = this.x;
     const oy = this.y;
     if (canMove && mag > 0.08) {
-      const nx = this.x + ix * speed * dt;
-      const ny = this.y + iy * speed * dt;
+      const nx = this.x + ix * SPEED * dt;
+      const ny = this.y + iy * SPEED * dt;
       if (!this.blocked(nx, this.y)) this.x = nx;
       if (!this.blocked(this.x, ny)) this.y = ny;
+      const screenDx = ix - iy;
+      const screenDy = ix + iy;
+      if (Math.abs(screenDx) > 0.05) this.sdir = screenDx < 0 ? -1 : 1;
+      this.sback = screenDy < -0.05;
       if (Math.abs(ix) > Math.abs(iy)) this.face = ix < 0 ? 1 : 2;
       else this.face = iy < 0 ? 3 : 0;
       this.stepClock += dt;
-      if (this.stepClock > 0.28) {
+      if (this.stepClock > 0.32) {
         this.stepClock = 0;
         sfx.step();
-        this.dust.push({ x: this.x, y: this.y + 8, life: 0.28 });
+      }
+      if (this.path.length) {
+        const moved = Math.hypot(this.x - ox, this.y - oy);
+        this.stuck = moved < 0.4 ? this.stuck + dt : 0;
+        if (this.stuck > 0.45) this.clearPath();
       }
     } else {
       this.stepClock = 0;
@@ -379,7 +480,9 @@ export class HallEngine {
     this.vx = (this.x - ox) / dt;
     this.vy = (this.y - oy) / dt;
 
-    const near = this.mode === "play" && !this.locked ? this.nearest(64) : null;
+    this.updateCamera(dt);
+
+    const near = this.mode === "play" && !this.locked ? this.nearest(TALK_RADIUS) : null;
     const prompt = near ? near.title : null;
     if (prompt !== this.prompt) {
       this.prompt = prompt;
@@ -389,24 +492,63 @@ export class HallEngine {
     }
   }
 
+  private arrive() {
+    const spot = this.pathSpot;
+    this.marker = null;
+    this.pathSpot = null;
+    if (spot && Math.hypot(spot.x - this.x, spot.y - this.y) < TALK_RADIUS + 8) {
+      // 도착하면 상대 쪽을 바라보고 바로 말을 건다.
+      const sdx = spot.x - spot.y - (this.x - this.y);
+      if (Math.abs(sdx) > 1) this.sdir = sdx < 0 ? -1 : 1;
+      this.open(spot);
+    }
+    this.persist();
+  }
+
   private updateFade(dt: number) {
     if (this.fadeOut) {
-      this.fade = Math.min(1, this.fade + dt * 2.6);
+      this.fade = Math.min(1, this.fade + dt * 3);
       if (this.fade >= 1 && this.pending) {
         const next = FLOORS[this.pending];
         this.floor = next;
         this.x = next.spawn.x;
         this.y = next.spawn.y;
+        const spotId = this.pendingSpot;
         this.pending = null;
+        this.pendingSpot = null;
         this.fadeOut = false;
-        this.fading = false;
         this.envelopes = [];
+        this.camReady = false;
+        const spot = spotId ? next.spots.find((s) => s.id === spotId) : null;
+        if (spot) this.placeNear(spot);
+        this.fading = false;
         this.persist();
         this.emit(true);
+        if (spot) this.open(spot);
       }
       return;
     }
-    if (this.fade > 0) this.fade = Math.max(0, this.fade - dt * 2.2);
+    if (this.fade > 0) this.fade = Math.max(0, this.fade - dt * 2.4);
+  }
+
+  private placeNear(spot: Spot) {
+    const offsets: [number, number][] = [
+      [0, 30],
+      [0, -30],
+      [-30, 0],
+      [30, 0],
+      [0, 46],
+      [0, -46],
+      [-46, 0],
+      [46, 0],
+    ];
+    for (const [dx, dy] of offsets) {
+      if (!this.blocked(spot.x + dx, spot.y + dy)) {
+        this.x = spot.x + dx;
+        this.y = spot.y + dy;
+        return;
+      }
+    }
   }
 
   private nearest(radius: number) {
@@ -440,8 +582,138 @@ export class HallEngine {
     return false;
   }
 
+  // 길찾기용 막힘 지도: 벽 타일과 책상·창구가 놓인 타일.
+  private tileBlocks() {
+    const cached = this.blockedTiles.get(this.floor.id);
+    if (cached) return cached;
+    const grid: boolean[][] = [];
+    for (let ty = 0; ty < MAP_H; ty++) {
+      const row: boolean[] = [];
+      for (let tx = 0; tx < MAP_W; tx++) {
+        row.push(this.blocked((tx + 0.5) * TILE, (ty + 0.5) * TILE - 4));
+      }
+      grid.push(row);
+    }
+    this.blockedTiles.set(this.floor.id, grid);
+    return grid;
+  }
+
+  private walkTo(target: Pt, spot: Spot | null) {
+    if (this.locked || this.fading) return;
+    const blocks = this.tileBlocks();
+    const start = { x: Math.floor(this.x / TILE), y: Math.floor(this.y / TILE) };
+    const gx = Math.floor(target.x / TILE);
+    const gy = Math.floor(target.y / TILE);
+    // 목표 칸이 막혀 있으면(책상 앞 주무관 자리 등) 가장 가까운 빈 칸을 고른다.
+    const goals: { x: number; y: number; d: number }[] = [];
+    for (let dy = -2; dy <= 2; dy++) {
+      for (let dx = -2; dx <= 2; dx++) {
+        const x = gx + dx;
+        const y = gy + dy;
+        if (x < 0 || y < 0 || x >= MAP_W || y >= MAP_H || blocks[y][x]) continue;
+        const cx = (x + 0.5) * TILE;
+        const cy = (y + 0.5) * TILE;
+        const d = Math.hypot(cx - target.x, cy - target.y);
+        // 주무관 자리로 갈 때는 겹치지 않게 한 걸음 앞에서 멈춘다.
+        if (spot?.actor && d < 22) continue;
+        goals.push({ x, y, d });
+      }
+    }
+    goals.sort((a, b) => a.d - b.d);
+    for (const goal of goals.slice(0, 6)) {
+      const tiles = this.astar(blocks, start, goal);
+      if (!tiles) continue;
+      const pts = tiles.map((t) => ({ x: (t.x + 0.5) * TILE, y: (t.y + 0.5) * TILE }));
+      if (!spot && !this.blocked(target.x, target.y) && goal.x === gx && goal.y === gy) {
+        pts[pts.length - 1] = { x: target.x, y: target.y };
+      }
+      this.path = this.smooth(pts);
+      this.pathSpot = spot;
+      this.marker = spot ? { x: spot.x, y: spot.y } : pts[pts.length - 1];
+      this.stuck = 0;
+      if (!this.path.length) this.arrive();
+      return;
+    }
+  }
+
+  private astar(blocks: boolean[][], start: Pt, goal: Pt): Pt[] | null {
+    const key = (x: number, y: number) => y * MAP_W + x;
+    const open: { x: number; y: number; f: number }[] = [{ ...start, f: 0 }];
+    const g = new Map<number, number>([[key(start.x, start.y), 0]]);
+    const from = new Map<number, number>();
+    const h = (x: number, y: number) => {
+      const dx = Math.abs(x - goal.x);
+      const dy = Math.abs(y - goal.y);
+      return Math.max(dx, dy) + 0.414 * Math.min(dx, dy);
+    };
+    const dirs: [number, number, number][] = [
+      [1, 0, 1],
+      [-1, 0, 1],
+      [0, 1, 1],
+      [0, -1, 1],
+      [1, 1, 1.414],
+      [1, -1, 1.414],
+      [-1, 1, 1.414],
+      [-1, -1, 1.414],
+    ];
+    let guard = 0;
+    while (open.length && guard++ < 4000) {
+      open.sort((a, b) => a.f - b.f);
+      const cur = open.shift() as { x: number; y: number; f: number };
+      if (cur.x === goal.x && cur.y === goal.y) {
+        const out: Pt[] = [];
+        let k: number | undefined = key(cur.x, cur.y);
+        while (k !== undefined && k !== key(start.x, start.y)) {
+          out.unshift({ x: k % MAP_W, y: Math.floor(k / MAP_W) });
+          k = from.get(k);
+        }
+        return out;
+      }
+      const base = g.get(key(cur.x, cur.y)) ?? 0;
+      for (const [dx, dy, cost] of dirs) {
+        const nx = cur.x + dx;
+        const ny = cur.y + dy;
+        if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H || blocks[ny][nx]) continue;
+        if (dx && dy && (blocks[cur.y][nx] || blocks[ny][cur.x])) continue;
+        const ng = base + cost;
+        const nk = key(nx, ny);
+        if (ng >= (g.get(nk) ?? Infinity)) continue;
+        g.set(nk, ng);
+        from.set(nk, key(cur.x, cur.y));
+        open.push({ x: nx, y: ny, f: ng + h(nx, ny) });
+      }
+    }
+    return null;
+  }
+
+  // 막힘 없이 곧장 갈 수 있는 지점까지는 중간 칸을 건너뛰어 자연스럽게 걷게 한다.
+  private smooth(pts: Pt[]) {
+    const out: Pt[] = [];
+    let from: Pt = { x: this.x, y: this.y };
+    let i = 0;
+    while (i < pts.length) {
+      let j = pts.length - 1;
+      while (j > i && !this.clear(from, pts[j])) j--;
+      out.push(pts[j]);
+      from = pts[j];
+      i = j + 1;
+    }
+    return out;
+  }
+
+  private clear(a: Pt, b: Pt) {
+    const d = Math.hypot(b.x - a.x, b.y - a.y);
+    const n = Math.ceil(d / 6);
+    for (let k = 1; k <= n; k++) {
+      const t = k / n;
+      if (this.blocked(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t)) return false;
+    }
+    return true;
+  }
+
   private hud(): Hud {
     return {
+      floorId: this.floor.id,
       floorName: this.floor.name,
       prompt: this.prompt,
       stamps: this.stamps,
@@ -460,10 +732,57 @@ export class HallEngine {
     this.hooks.onHud(hud);
   }
 
+  private viewCenter() {
+    const left = this.insetLeft;
+    const right = this.insetRight;
+    return { cx: left + (this.cssW - left - right) / 2, cy: this.cssH / 2 };
+  }
+
+  private updateCamera(dt: number) {
+    const cssW = this.cssW;
+    const cssH = this.cssH;
+    // 넓은 화면은 한 층 전체가 한눈에 들어오게 맞추고, 좁은 화면은 주변만 크게 보여 준다.
+    const narrow = cssW < 720;
+    const availW = cssW - this.insetLeft - 120;
+    const fit = Math.min(availW / ((MAP_W + MAP_H) * TILE), (cssH - 140) / (((MAP_W + MAP_H) * TILE) / 2 + 60));
+    const base = narrow ? Math.max(0.55, Math.min(0.95, cssW / 600)) : Math.max(0.5, Math.min(1.2, fit));
+    const targetZoom = base * this.userZoom;
+    this.zoom += (targetZoom - this.zoom) * Math.min(1, dt * 10);
+    const zoom = this.zoom;
+    const { cx, cy } = this.viewCenter();
+    const [px, py] = iso(this.x, this.y, 20);
+    let tx = px - cx / zoom;
+    let ty = py - cy / zoom;
+    // 건물 바깥으로 너무 나가지 않게 붙잡는다.
+    const minX = -MAP_H * TILE - 80;
+    const maxX = MAP_W * TILE + 80;
+    const minY = -120;
+    const maxY = ((MAP_W + MAP_H) * TILE) / 2 + 80;
+    const viewW = cssW / zoom;
+    const viewH = cssH / zoom;
+    const leftPad = this.insetLeft / zoom;
+    const rightPad = this.insetRight / zoom;
+    if (maxX - minX < viewW - leftPad - rightPad) tx = (minX + maxX) / 2 - cx / zoom;
+    else tx = Math.max(minX - leftPad, Math.min(maxX - viewW + rightPad, tx));
+    if (maxY - minY < viewH) ty = (minY + maxY) / 2 - viewH / 2;
+    else ty = Math.max(minY, Math.min(maxY - viewH, ty));
+    if (!this.camReady) {
+      this.camX = tx;
+      this.camY = ty;
+      this.camReady = true;
+      return;
+    }
+    const k = Math.min(1, dt * 6);
+    this.camX += (tx - this.camX) * k;
+    this.camY += (ty - this.camY) * k;
+  }
+
   private draw() {
     const canvas = this.canvas;
     const cssW = canvas.clientWidth || 1;
     const cssH = canvas.clientHeight || 1;
+    this.cssW = cssW;
+    this.cssH = cssH;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const bw = Math.max(1, Math.round(cssW * dpr));
     const bh = Math.max(1, Math.round(cssH * dpr));
@@ -473,340 +792,163 @@ export class HallEngine {
     }
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.imageSmoothingEnabled = false;
+    if (!this.camReady) this.updateCamera(1);
+    ctx.imageSmoothingEnabled = true;
 
-    const tilesX = cssW < 720 ? 9 : 12;
-    const tilesY = cssW < 720 ? 11 : 10;
-    const zoom = Math.min(cssW / (tilesX * TILE), cssH / (tilesY * TILE));
-    const viewW = cssW / zoom;
-    const viewH = cssH / zoom;
-    const inset = this.insetLeft;
-    let camX = this.x - (cssW + inset) / (2 * zoom);
-    let camY = this.y - viewH / 2;
-    camX = Math.max(0, Math.min(MAP_W * TILE - viewW, camX));
-    camY = Math.max(0, Math.min(MAP_H * TILE - viewH, camY));
-    this.camX = camX;
-    this.camY = camY;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const bg = ctx.createRadialGradient(cssW / 2, cssH * 0.45, 0, cssW / 2, cssH * 0.45, Math.max(cssW, cssH) * 0.8);
+    bg.addColorStop(0, "#ECEDF0");
+    bg.addColorStop(1, "#CDD1D7");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, cssW, cssH);
 
-    ctx.setTransform(dpr * zoom, 0, 0, dpr * zoom, -camX * dpr * zoom, -camY * dpr * zoom);
-    ctx.fillStyle = "#1a2638";
-    ctx.fillRect(camX, camY, viewW, viewH);
+    const zoom = this.zoom;
+    ctx.setTransform(dpr * zoom, 0, 0, dpr * zoom, -this.camX * dpr * zoom, -this.camY * dpr * zoom);
+    const floor = this.floor;
 
-    const x0 = Math.max(0, Math.floor(camX / TILE) - 1);
-    const y0 = Math.max(0, Math.floor(camY / TILE) - 2);
-    const x1 = Math.min(MAP_W, Math.ceil((camX + viewW) / TILE) + 1);
-    const y1 = Math.min(MAP_H, Math.ceil((camY + viewH) / TILE) + 2);
+    // 1) 바닥판·방 바닥: 불 켜진 방(AI 주무관)은 밝게, 채용 예정 방은 어둡게.
+    const near = this.mode === "play" ? this.nearest(TALK_RADIUS) : null;
+    const focusId = this.hovered ?? near?.id ?? null;
+    drawGround(ctx, floor, focusId);
 
-    for (let y = y0; y < y1; y++) {
-      for (let x = x0; x < x1; x++) {
-        const ch = this.floor.grid[y][x];
-        if (ch !== "#") this.drawFloor(ctx, x, y, ch);
+    // 2) 바닥 표시: 엘리베이터, 별관 통로, 목적지
+    for (const spot of floor.spots) {
+      if (spot.action === "floors") {
+        floorQuad(ctx, spot.x - 14, spot.y - 22, 28, 28, "rgba(22, 40, 139, 0.10)", "rgba(22, 40, 139, 0.45)");
+        const [sx, sy] = iso(spot.x, spot.y - 8);
+        ctx.fillStyle = ISO.navy;
+        ctx.font = "700 11px 'IBM Plex Sans KR', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("▲▼", sx, sy);
+      }
+      if (spot.action === "portal") {
+        const [sx, sy] = iso(spot.x + 16, spot.y);
+        ctx.fillStyle = ISO.tealDeep;
+        ctx.font = "700 14px 'IBM Plex Sans KR', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(spot.portal === "ax" ? "→" : "←", sx, sy);
       }
     }
-    for (const decor of this.floor.decors) {
-      if (decor.kind === "rug" || decor.kind === "mat") this.drawDecor(ctx, decor);
+    if (this.marker) {
+      const pulse = (Math.sin(this.time * 6) + 1) / 2;
+      const [mx, my] = iso(this.marker.x, this.marker.y);
+      ctx.strokeStyle = `rgba(0, 160, 173, ${0.5 + pulse * 0.4})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(mx, my, 12 + pulse * 4, 6 + pulse * 2, 0, 0, Math.PI * 2);
+      ctx.stroke();
     }
 
-    type Item = { y: number; draw: () => void };
-    const items: Item[] = [];
-
-    for (let y = y0; y < y1; y++) {
-      for (let x = x0; x < x1; x++) {
-        if (this.floor.grid[y][x] !== "#") continue;
-        const px = x * TILE;
-        const py = y * TILE;
-        items.push({ y: py + TILE, draw: () => this.drawWall(ctx, px, py) });
+    // 3) 벽·가구·사람을 깊이(x + y) 순서로 그린다. 사람 앞 벽은 반투명.
+    const people: { x: number; y: number }[] = [{ x: this.x, y: this.y }];
+    for (const spot of floor.spots) if (spot.actor) people.push({ x: spot.x, y: spot.y });
+    const items: Item[] = wallItems(ctx, floor, people);
+    for (const prop of floor.props) {
+      if (prop.sprite === 2 || prop.sprite === 7) continue;
+      items.push({ k: prop.x + prop.y, draw: () => drawProp(ctx, prop) });
+    }
+    for (const decor of floor.decors) {
+      items.push({ k: decor.x + decor.w / 2 + decor.y + decor.h / 2, draw: () => drawDecor(ctx, decor) });
+    }
+    const playerScreenX = this.x - this.y;
+    const drawOfficers = () => {
+      for (const spot of floor.spots) {
+        if (!spot.actor) continue;
+        const dir = playerScreenX < spot.x - spot.y ? -1 : 1;
+        person(ctx, spot.x, spot.y, OFFICER_STYLE, 0, dir, false);
       }
-    }
-
-    for (const prop of this.floor.props) {
-      items.push({
-        y: prop.y,
-        draw: () => this.drawProp(ctx, prop),
-      });
-    }
-    for (const decor of this.floor.decors) {
-      if (decor.kind === "rug" || decor.kind === "mat") continue;
-      items.push({
-        y: decor.y + decor.h,
-        draw: () => this.drawDecor(ctx, decor),
-      });
-    }
-
-    for (const spot of this.floor.spots) {
+    };
+    for (const spot of floor.spots) {
       if (!spot.actor) continue;
-      const bob = Math.floor(this.time * 2) % 2;
-      items.push({
-        y: spot.y,
-        draw: () => {
-          this.drawShadow(ctx, spot.x, spot.y);
-          this.blit(ctx, this.images.npc, 4, 4, bob, 0, spot.x, spot.y, 46, 58);
-        },
-      });
+      const dir = playerScreenX < spot.x - spot.y ? -1 : 1;
+      items.push({ k: spot.x + spot.y, draw: () => person(ctx, spot.x, spot.y, OFFICER_STYLE, 0, dir, false) });
     }
-
     for (const env of this.envelopes) {
       const k = env.t * env.t * (3 - 2 * env.t);
       const x = env.x + (env.tx - env.x) * k;
-      const y = env.y + (env.ty - env.y) * k - Math.sin(env.t * Math.PI) * 36;
+      const y = env.y + (env.ty - env.y) * k;
+      const h = 40 + Math.sin(env.t * Math.PI) * 60;
       items.push({
-        y,
-        draw: () => this.blit(ctx, this.images.props, 3, 3, 0, 2, x, y, 28, 28),
-      });
-    }
-
-    const moving = Math.hypot(this.vx, this.vy) > 8;
-    const frame = moving ? Math.floor(this.time * 9) % 4 : 0;
-    items.push({
-      y: this.y,
-      draw: () => {
-        this.drawShadow(ctx, this.x, this.y);
-        this.blit(ctx, this.images.player, 4, 4, frame, this.face, this.x, this.y, 48, 60);
-      },
-    });
-
-    for (const d of this.dust) {
-      items.push({
-        y: d.y,
+        k: x + y + 1000,
         draw: () => {
-          ctx.globalAlpha = Math.max(0, d.life / 0.28);
-          ctx.fillStyle = "#c4a574";
-          ctx.fillRect(d.x - 2, d.y, 3, 2);
-          ctx.globalAlpha = 1;
+          shadow(ctx, x, y, 6, 0.12);
+          const [sx, sy] = iso(x, y, h);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.strokeStyle = ISO.teal;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.rect(sx - 9, sy - 6, 18, 12);
+          ctx.fill();
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(sx - 9, sy - 6);
+          ctx.lineTo(sx, sy + 1);
+          ctx.lineTo(sx + 9, sy - 6);
+          ctx.stroke();
         },
       });
     }
+    const moving = Math.hypot(this.vx, this.vy) > 8;
+    const bob = moving ? Math.sin(this.time * 14) * 2 : 0;
+    const drawPlayer = () => person(ctx, this.x, this.y, PLAYER_STYLE, bob, this.sdir, this.sback);
+    items.push({ k: this.x + this.y, draw: drawPlayer });
 
-    items.sort((a, b) => a.y - b.y);
+    items.sort((a, b) => a.k - b.k);
     for (const item of items) item.draw();
+    // 가구에 가려도 사람 윤곽은 옅게 보이게 한 번 더 그린다.
+    ctx.globalAlpha = 0.28;
+    drawOfficers();
+    drawPlayer();
+    ctx.globalAlpha = 1;
 
-    ctx.font = "700 13px 'IBM Plex Sans KR', sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    for (const label of this.floor.labels) {
-      if (label.x < camX - 40 || label.x > camX + viewW + 40) continue;
-      if (label.y < camY - 20 || label.y > camY + viewH + 20) continue;
-      const w = Math.max(52, ctx.measureText(label.text).width + 14);
-      ctx.fillStyle = "#fbf7f0";
-      ctx.fillRect(label.x - w / 2, label.y - 9, w, 18);
-      ctx.strokeStyle = "#24344c";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(label.x - w / 2, label.y - 9, w, 18);
-      ctx.fillStyle = "#24344c";
-      ctx.fillText(label.text, label.x, label.y + 1);
-    }
-
+    // 6) 방 이름표는 확대와 상관없이 같은 크기로 화면 위에 띄운다.
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const toScreen = (wx: number, wy: number, h = 0): [number, number] => {
+      const [ix, iy] = iso(wx, wy, h);
+      return [(ix - this.camX) * zoom, (iy - this.camY) * zoom];
+    };
+    for (const room of floor.rooms) {
+      if (room.kind === "void") continue;
+      if (room.kind === "utility") {
+        const [ux, uy] = toScreen((room.x + room.w / 2) * TILE, (room.y + room.h / 2) * TILE, 4);
+        if (zoom < 0.42 || room.w < 1) continue;
+        ctx.font = "500 10px 'IBM Plex Sans KR', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(75, 85, 99, 0.75)";
+        ctx.fillText(room.name, ux, uy);
+        continue;
+      }
+      // 이름표는 방 가운데에서 주무관 반대쪽으로 비켜 놓아 사람을 가리지 않게 한다.
+      const cx = (room.x + room.w / 2) * TILE;
+      const cy = (room.y + room.h / 2) * TILE;
+      const spot = floor.spots.find((s) => s.id === room.id);
+      const lx = spot ? cx - (spot.x - cx) * 0.7 : cx;
+      const ly = spot ? cy - (spot.y - cy) * 0.7 : cy;
+      const [sx, sy] = toScreen(lx, ly, 6);
+      if (sx < -120 || sy < -40 || sx > cssW + 120 || sy > cssH + 40) continue;
+      const focus = this.hovered === room.id || near?.id === room.id;
+      const tone = focus ? "focus" : room.kind === "ai" || room.kind === "planned" ? room.kind : "place";
+      const sub = room.kind === "ai" ? "AI 주무관" : room.kind === "planned" ? "채용 예정" : undefined;
+      pill(ctx, sx, sy, room.name, tone, sub);
+    }
+    for (const spot of floor.spots) {
+      if (spot.kind === "feature") {
+        const [fx, fy] = toScreen(spot.x, spot.y, 78);
+        pill(ctx, fx, fy, spot.title, this.hovered === spot.id || near?.id === spot.id ? "focus" : "ai");
+        continue;
+      }
+      if (spot.kind !== "facility") continue;
+      const focus = this.hovered === spot.id || near?.id === spot.id;
+      if (!focus) continue;
+      const [sx, sy] = toScreen(spot.x, spot.y, 34);
+      pill(ctx, sx, sy, spot.title, "focus");
+    }
     if (this.fade > 0.01) {
-      ctx.fillStyle = `rgba(26, 38, 56, ${this.fade})`;
+      ctx.fillStyle = `rgba(238, 241, 246, ${this.fade})`;
       ctx.fillRect(0, 0, cssW, cssH);
     }
-  }
-
-  private drawFloor(ctx: CanvasRenderingContext2D, x: number, y: number, ch: string) {
-    const px = x * TILE;
-    const py = y * TILE;
-    if (ch === "w") {
-      ctx.fillStyle = ((x + y) & 1) === 0 ? "#e7c48a" : "#e0ba7c";
-      ctx.fillRect(px, py, TILE, TILE);
-      ctx.fillStyle = "#d0a868";
-      ctx.fillRect(px, py + 15, TILE, 1);
-    } else if (ch === "c") {
-      ctx.fillStyle = ((x + y) & 1) === 0 ? "#7ec8bc" : "#72bfb2";
-      ctx.fillRect(px, py, TILE, TILE);
-      ctx.fillStyle = "#f4efe6";
-      ctx.fillRect(px + 4, py + 4, 2, 2);
-    } else if (ch === "t") {
-      ctx.fillStyle = "#f3efe6";
-      ctx.fillRect(px, py, TILE, TILE);
-      ctx.strokeStyle = "#e3d9c8";
-      ctx.strokeRect(px + 0.5, py + 0.5, TILE - 1, TILE - 1);
-    } else if (ch === "g") {
-      ctx.fillStyle = ((x * 3 + y) & 3) === 0 ? "#6fb56a" : "#7dc476";
-      ctx.fillRect(px, py, TILE, TILE);
-      ctx.fillStyle = "#4f8f55";
-      ctx.fillRect(px + 6, py + 18, 3, 3);
-      ctx.fillRect(px + 20, py + 8, 3, 3);
-    } else if (ch === "r") {
-      ctx.fillStyle = "#e7a39a";
-      ctx.fillRect(px, py, TILE, TILE);
-      ctx.fillStyle = "#f6d2cb";
-      ctx.fillRect(px + 6, py, TILE - 12, TILE);
-    } else {
-      ctx.fillStyle = ((x + y) & 1) === 0 ? "#f7f1e6" : "#f3ecdf";
-      ctx.fillRect(px, py, TILE, TILE);
-      ctx.strokeStyle = "#e6dccb";
-      ctx.strokeRect(px + 0.5, py + 0.5, TILE - 1, TILE - 1);
-    }
-  }
-
-  private drawDecor(ctx: CanvasRenderingContext2D, decor: Decor) {
-    const { x, y, w, h, kind } = decor;
-    if (w < 8 || h < 8) return;
-    if (kind === "rug" || kind === "mat") {
-      ctx.save();
-      ctx.globalAlpha = kind === "mat" ? 0.9 : 0.5;
-      ctx.fillStyle = decor.tint ?? "#c45c4a";
-      ctx.fillRect(x, y, w, h);
-      ctx.restore();
-      ctx.strokeStyle = "rgba(36, 52, 76, 0.35)";
-      ctx.strokeRect(x + 2.5, y + 2.5, Math.max(1, w - 5), Math.max(1, h - 5));
-      return;
-    }
-    if (kind === "window") {
-      ctx.fillStyle = "#9fd4ea";
-      ctx.fillRect(x, y, w, h);
-      ctx.fillStyle = "#f7fbff";
-      ctx.fillRect(x + 2, y + 2, w / 2 - 3, h - 4);
-      ctx.strokeStyle = "#24344c";
-      ctx.lineWidth = 1;
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-      return;
-    }
-    if (kind === "board") {
-      ctx.fillStyle = "#c9843a";
-      ctx.fillRect(x, y, w, h);
-      ctx.strokeStyle = "#24344c";
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-      ctx.fillStyle = "#fbf7f0";
-      ctx.fillRect(x + 3, y + 3, 8, 6);
-      ctx.fillStyle = "#7ec8bc";
-      ctx.fillRect(x + 13, y + 4, 9, 5);
-      ctx.fillStyle = "#b84b45";
-      ctx.fillRect(x + 4, y + 11, 14, 3);
-      return;
-    }
-    if (kind === "lamp") {
-      ctx.fillStyle = "#8a5a32";
-      ctx.fillRect(x + w / 2 - 1, y, 3, h);
-      ctx.fillStyle = "#f0d48a";
-      ctx.fillRect(x, y, w, 6);
-      ctx.strokeStyle = "#24344c";
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, 5);
-      return;
-    }
-    if (kind === "sofa") {
-      ctx.fillStyle = decor.tint ?? "#f0c3cf";
-      ctx.fillRect(x, y + 4, w, h - 4);
-      ctx.fillStyle = "#24344c";
-      ctx.fillRect(x, y, 4, h);
-      ctx.fillRect(x + w - 4, y, 4, h);
-      ctx.fillRect(x, y, w, 4);
-      return;
-    }
-    if (kind === "cooler") {
-      ctx.fillStyle = "#d7f3ea";
-      ctx.fillRect(x, y, w, h);
-      ctx.fillStyle = "#1f9a7c";
-      ctx.fillRect(x, y, w, 5);
-      ctx.fillStyle = "#9fd4ea";
-      ctx.fillRect(x + 3, y + 8, w - 6, h - 12);
-      ctx.strokeStyle = "#24344c";
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-      return;
-    }
-    if (kind === "flag") {
-      ctx.fillStyle = "#8a5a32";
-      ctx.fillRect(x, y, 3, h);
-      ctx.fillStyle = decor.tint ?? "#c4524a";
-      ctx.fillRect(x + 3, y + 1, w - 3, h * 0.45);
-      ctx.fillStyle = "#fbf7f0";
-      ctx.fillRect(x + 3, y + 1 + h * 0.15, w - 3, 3);
-      return;
-    }
-    if (kind === "screen") {
-      ctx.fillStyle = "#24344c";
-      ctx.fillRect(x, y, w, h);
-      ctx.fillStyle = "#d7f3ea";
-      ctx.fillRect(x + 3, y + 3, w - 6, h - 8);
-      ctx.fillStyle = "#1f9a7c";
-      ctx.fillRect(x + 5, y + 6, w * 0.4, 3);
-      ctx.fillStyle = "#8a5a32";
-      ctx.fillRect(x + w / 2 - 4, y + h - 4, 8, 4);
-      return;
-    }
-    if (kind === "papers") {
-      ctx.fillStyle = "#fbf7f0";
-      ctx.fillRect(x, y, w, h);
-      ctx.fillStyle = "#efe2cc";
-      ctx.fillRect(x + 4, y + 2, w - 6, h - 2);
-      ctx.fillStyle = "#24344c";
-      ctx.fillRect(x + 4, y + 4, w * 0.5, 2);
-      ctx.fillRect(x + 4, y + 8, w * 0.35, 2);
-      ctx.strokeStyle = "#24344c";
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-      return;
-    }
-    if (kind === "bench") {
-      ctx.fillStyle = decor.tint ?? "#c9843a";
-      ctx.fillRect(x, y + 3, w, h - 6);
-      ctx.fillStyle = "#8a5a32";
-      ctx.fillRect(x + 2, y + h - 4, 4, 6);
-      ctx.fillRect(x + w - 6, y + h - 4, 4, 6);
-      ctx.strokeStyle = "#24344c";
-      ctx.strokeRect(x + 0.5, y + 3.5, w - 1, h - 7);
-      return;
-    }
-    if (kind === "table") {
-      ctx.fillStyle = decor.tint ?? "#e7c49a";
-      ctx.fillRect(x, y, w, h);
-      ctx.strokeStyle = "#8a5a32";
-      ctx.lineWidth = 3;
-      ctx.strokeRect(x + 2, y + 2, Math.max(1, w - 4), Math.max(1, h - 4));
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "#24344c";
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-      return;
-    }
-    ctx.fillStyle = "#8a5a32";
-    ctx.fillRect(x, y, w, h);
-    const colors = ["#c4524a", "#2f6f4e", "#2454a0", "#e0b15a"];
-    for (let i = 0; i < 4; i++) {
-      ctx.fillStyle = colors[i] ?? "#c4524a";
-      ctx.fillRect(x + 2, y + 3 + i * (h / 4), w - 4, Math.max(3, h / 5));
-    }
-  }
-
-  private drawWall(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    const lift = 14;
-    ctx.fillStyle = "#8a6844";
-    ctx.fillRect(x, y - lift, TILE, TILE + lift);
-    ctx.fillStyle = "#f6ecda";
-    ctx.fillRect(x + 2, y - lift + 2, TILE - 4, 7);
-    ctx.fillStyle = "#efe0c8";
-    ctx.fillRect(x + 2, y - lift + 10, TILE - 4, TILE + lift - 14);
-    ctx.fillStyle = "#d9c4a4";
-    ctx.fillRect(x + 2, y + TILE - 6, TILE - 4, 4);
-  }
-
-  private drawShadow(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    ctx.fillStyle = "rgba(44, 36, 22, 0.22)";
-    ctx.beginPath();
-    ctx.ellipse(x, y + 2, 10, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  private drawProp(ctx: CanvasRenderingContext2D, prop: Prop) {
-    const col = prop.sprite % 3;
-    const row = Math.floor(prop.sprite / 3);
-    this.blit(ctx, this.images.props, 3, 3, col, row, prop.x, prop.y, 42, 42);
-  }
-
-  private blit(
-    ctx: CanvasRenderingContext2D,
-    img: HTMLImageElement | undefined,
-    cols: number,
-    rows: number,
-    col: number,
-    row: number,
-    x: number,
-    y: number,
-    dw: number,
-    dh: number,
-  ) {
-    if (!img) return;
-    const sw = img.width / cols;
-    const sh = img.height / rows;
-    ctx.drawImage(img, col * sw, row * sh, sw, sh, x - dw / 2, y - dh + 6, dw, dh);
   }
 }

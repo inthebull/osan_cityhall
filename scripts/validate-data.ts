@@ -22,14 +22,18 @@ for (const f of readdirSync(join(root, "data/map/floors"))) {
   }
 }
 
-// 게임 청사 배치(hall.json): 방 ID 중복, 격자 범위, 부서 연결
+// 게임 청사 배치(hall.json): 방 ID 중복, 안내도 좌표 범위, 부서 연결
 const hall = read("data/map/hall.json");
 const seen = new Set<string>();
 for (const f of hall.floors) {
   for (const r of f.rooms) {
     if (seen.has(r.id)) errors.push(`hall.json: 방 ID ${r.id} 중복`);
     seen.add(r.id);
-    if (r.x < 1 || r.y < 1 || r.x + r.w > hall.size.w - 1 || r.y + r.h > hall.size.h - 1) errors.push(`hall.json: ${f.id}/${r.id} 격자 범위 밖`);
+    const fr = hall.plan_frame;
+    const rects: number[][] = Array.isArray(r.plan[0]) ? r.plan : [r.plan];
+    for (const [x1, y1, x2, y2] of rects) {
+      if (x1 < fr.x0 || y1 < fr.y0 || x2 > fr.x1 || y2 > fr.y1 || x1 >= x2 || y1 >= y2) errors.push(`hall.json: ${f.id}/${r.id} 안내도 좌표 범위 밖`);
+    }
     if (r.dept_id && !deptIds.has(r.dept_id)) errors.push(`hall.json: ${r.id}의 dept_id ${r.dept_id}가 orgs.json에 없음`);
   }
 }

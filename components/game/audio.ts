@@ -20,25 +20,24 @@ function tone(freq: number, dur: number, type: OscillatorType, gain: number, del
   osc.stop(t0 + dur + 0.02);
 }
 
+// 게임 효과음 대신 앱 알림처럼 짧고 부드러운 사인파만 쓴다.
 export const sfx = {
   step() {
-    tone(160 + Math.random() * 30, 0.04, "square", 0.015);
+    tone(220, 0.03, "sine", 0.006);
   },
   talk() {
-    tone(523, 0.07, "square", 0.03);
-    tone(784, 0.09, "square", 0.03, 0.06);
+    tone(880, 0.08, "sine", 0.025);
   },
   floor() {
-    tone(330, 0.1, "triangle", 0.04);
-    tone(494, 0.14, "triangle", 0.04, 0.08);
+    tone(523, 0.12, "sine", 0.025);
+    tone(784, 0.16, "sine", 0.02, 0.09);
   },
   stamp() {
-    tone(659, 0.08, "square", 0.035);
-    tone(880, 0.12, "square", 0.035, 0.08);
+    tone(660, 0.1, "sine", 0.025);
+    tone(990, 0.14, "sine", 0.02, 0.08);
   },
   ping() {
-    tone(440, 0.06, "square", 0.03);
-    tone(554, 0.06, "square", 0.03, 0.07);
-    tone(659, 0.12, "square", 0.03, 0.14);
+    tone(587, 0.08, "sine", 0.025);
+    tone(880, 0.12, "sine", 0.02, 0.08);
   },
 };
