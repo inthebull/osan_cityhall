@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Building2, MessageCircle } from "lucide-react";
 import { unlockAudio } from "./audio";
+import { OfficerChat } from "./OfficerChat";
 import { HallEngine, type Hud } from "./engine";
 import { directory, floorList, type FloorId, type Spot } from "./world";
 import { DEMO_CASES, DEPT_NAMES } from "@/lib/pingpong/demo";
@@ -15,7 +16,8 @@ type Overlay =
   | { kind: "tool"; hours: number }
   | { kind: "market" }
   | { kind: "roof" }
-  | { kind: "minwon"; spot: Spot };
+  | { kind: "minwon"; spot: Spot }
+  | { kind: "officer"; spot: Spot; dept: string };
 
 
 const SHOPS = [
@@ -23,6 +25,9 @@ const SHOPS = [
   { name: "예산 집행 점검표", blurb: "원인행위 전에 확인하는 한 장" },
   { name: "협조 공문 서식", blurb: "주관·협조·근거가 빈칸으로 남음" },
 ];
+
+// AI 주무관이 일하는 부서. 나머지 방은 기존 안내 대사만 보여 준다.
+const OFFICER_DEPTS = new Set(["D-CIVIL", "D-ELDER"]);
 
 const emptyHud: Hud = {
   floorName: "본관 1층",
@@ -59,6 +64,8 @@ export function HallGame() {
     engine.start();
 
     const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
       if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(event.code)) {
         event.preventDefault();
       }
@@ -130,6 +137,7 @@ export function HallGame() {
     else if (spot.action === "market") setOverlay({ kind: "market" });
     else if (spot.action === "roof") setOverlay({ kind: "roof" });
     else if (spot.action === "minwon") setOverlay({ kind: "minwon", spot });
+    else if (spot.dept && OFFICER_DEPTS.has(spot.dept)) setOverlay({ kind: "officer", spot, dept: spot.dept });
     else setOverlay({ kind: "talk", spot, page: 0 });
   }
 
@@ -360,10 +368,26 @@ export function HallGame() {
                     <p className="mt-1 text-sm leading-relaxed">{overlay.spot.lines[1]}</p>
                   </article>
                 </div>
-                <button type="button" onClick={close} className="mt-3 rounded-md border-2 border-navy bg-mint px-4 py-2 font-semibold text-foam">
-                  창구 닫기
-                </button>
+                <div className="mt-3 flex gap-2">
+                  {overlay.spot.dept && (
+                    <button
+                      type="button"
+                      onClick={() => setOverlay({ kind: "officer", spot: overlay.spot, dept: overlay.spot.dept as string })}
+                      className="flex items-center gap-1 rounded-md border-2 border-navy bg-navy px-4 py-2 font-semibold text-foam"
+                    >
+                      <MessageCircle size={16} />
+                      AI 주무관에게 묻기
+                    </button>
+                  )}
+                  <button type="button" onClick={close} className="rounded-md border-2 border-navy bg-mint px-4 py-2 font-semibold text-foam">
+                    창구 닫기
+                  </button>
+                </div>
               </>
+            )}
+
+            {overlay.kind === "officer" && (
+              <OfficerChat deptId={overlay.dept} deptName={overlay.spot.title} onClose={close} />
             )}
 
             {overlay.kind === "tool" && (

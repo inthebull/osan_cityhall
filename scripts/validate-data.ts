@@ -40,6 +40,19 @@ for (const o of orgs as { dept_id: string; room_ids?: string[] }[]) {
   }
 }
 
+// 공개 지침 목록(data/manuals/index.json)과 쪽 텍스트 파일
+const manualSchema = ajv.compile(read("data/schema/manual.schema.json"));
+const manuals = read("data/manuals/index.json");
+if (!manualSchema(manuals)) errors.push(`manuals/index.json: ${ajv.errorsText(manualSchema.errors)}`);
+for (const m of manuals as { doc_id: string; dept_id: string }[]) {
+  if (!deptIds.has(m.dept_id)) errors.push(`manuals/index.json: ${m.doc_id}의 dept_id ${m.dept_id}가 orgs.json에 없음`);
+  try {
+    read(`data/manuals/pages/${m.doc_id}.json`);
+  } catch {
+    errors.push(`manuals: pages/${m.doc_id}.json이 없거나 읽을 수 없음`);
+  }
+}
+
 // 개인정보 패턴: 주민번호, 휴대전화, 이메일
 const pii: [string, RegExp][] = [
   ["주민번호", /\b\d{6}-[1-4]\d{6}\b/],
