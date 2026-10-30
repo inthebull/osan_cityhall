@@ -168,5 +168,55 @@
     "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000252156",
     "fetched_at": "2026-10-30",
     "pages": 1
+  },
+  {
+    "doc_id": "family-register-act",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계의 등록 등에 관한 법률 [시행 2026. 10. 2.] [법률 제21857호, 2026. 8. 4., 타법개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290741",
+    "fetched_at": "2026-10-30",
+    "pages": 16
+  },
+  {
+    "doc_id": "family-register-rule",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계의 등록 등에 관한 규칙 [시행 2025. 7. 19.] [대법원규칙 제3220호, 2025. 6. 26., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=272659",
+    "fetched_at": "2026-10-30",
+    "pages": 17
+  },
+  {
+    "doc_id": "family-certificate-guideline",
+    "dept_id": "D-CIVIL",
+    "title": "등록사항별 증명서의 발급 등에 관한 사무처리지침 [시행 2025. 7. 19.] [가족관계등록예규 제641호, 2025. 7. 7., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000107577",
+    "fetched_at": "2026-10-30",
+    "pages": 4
+  },
+  {
+    "doc_id": "family-report-identity-check",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계등록신고사건 접수시 신고인 등 확인방법 [시행 2022. 7. 22.] [가족관계등록예규 제600호, 2022. 7. 20., 일부개정]",
+    "year": 2022,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000103565",
+    "fetched_at": "2026-10-30",
+    "pages": 2
+  },
+  {
+    "doc_id": "family-name-record-method",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계등록부에 성명을 기록하는 방법 [시행 2017. 6. 29.] [가족관계등록예규 제510호, 2017. 6. 29., 일부개정]",
+    "year": 2017,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000103581",
+    "fetched_at": "2026-10-30",
+    "pages": 1
   }
 ]
