@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Download, Lock, MessageCircle, Sparkles } from "lucide-react";
 import { OfficerChat } from "@/components/game/OfficerChat";
 import type { Slide } from "@/lib/handover/deck";
+import { BADGE, HEADER, basisLabel, basisTone, chipsOf, gridOf, layoutOf, sourceRefs, splitRow, type Tone } from "@/lib/handover/layout";
 
 export type SeatSummary = { seat_id: string; dept_id: string; team: string | null; label: string; count: number; packs: number };
 export type PackSummary = { pack_id: string; dept_id: string; title: string; team: string };
@@ -12,59 +13,192 @@ type Deck = { seat: { seat_id: string; label: string; dept_name: string }; slide
 
 const SOURCE_NOTE = "출처: 오산시 홈페이지 직원 업무 목록(성명 가림), 오산시 행정기구 및 정원 조례 시행규칙 분장사무";
 
-function SlideView({ slide, index, total }: { slide: Slide; index: number; total: number }) {
-  const cover = slide.kind === "cover";
+const TONE_CLASS: Record<Tone, string> = {
+  ok: "border-mint bg-mint-2 text-[#14634f]",
+  warn: "border-wood bg-[#fcebd3] text-[#7a4a12]",
+  bad: "border-rose bg-[#fde2e1] text-[#8a2e2a]",
+  plain: "border-line bg-foam text-navy",
+};
+
+// PPT(lib/handover/pptx.ts)와 같은 배치 규칙(lib/handover/layout.ts)으로 그린다.
+function Card({ tone = "plain", className = "", children }: { tone?: Tone; className?: string; children: ReactNode }) {
+  return <div className={`min-h-0 overflow-y-auto rounded-sm border border-l-4 p-2 sm:p-3 ${TONE_CLASS[tone]} ${className}`}>{children}</div>;
+}
+
+function Dot({ n, className = "" }: { n: number | string; className?: string }) {
   return (
-    <div className={`relative flex aspect-video w-full flex-col rounded-md border-4 border-navy p-5 sm:p-8 ${cover ? "bg-navy text-foam" : "bg-paper text-navy"}`}>
-      <span className={`absolute right-3 top-3 rounded-sm px-2 py-0.5 text-[10px] font-semibold sm:text-xs ${cover ? "bg-paper text-navy" : "bg-mint text-foam"}`}>
-        AI 초안 · 최종 판단은 담당자
-      </span>
-      <div className={cover ? "my-auto" : ""}>
-        <h2 className={`font-display ${cover ? "text-3xl sm:text-5xl" : "text-xl sm:text-3xl"}`}>{slide.title}</h2>
-        {(slide.tag || slide.subtitle) && (
-          <p className={`mt-1 text-xs font-semibold sm:text-sm ${cover ? "text-mint-2" : "text-mint"}`}>
-            {[slide.tag, slide.subtitle].filter(Boolean).join(" · ")}
-          </p>
-        )}
-      </div>
-      <ul
-        className={`mt-3 min-h-0 flex-1 space-y-1.5 overflow-y-auto text-sm leading-relaxed sm:text-base ${slide.kind === "firstweek" ? "list-decimal pl-5" : cover ? "" : "list-disc pl-5"} ${slide.bullets.length > 8 ? "sm:columns-2 sm:text-sm" : ""}`}
-      >
+    <span className={`inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-mint text-[10px] font-bold text-foam sm:size-6 sm:text-xs ${className}`}>{n}</span>
+  );
+}
+
+function SlideBody({ slide }: { slide: Slide }) {
+  const layout = layoutOf(slide);
+  const basis = slide.basis && (
+    <Card tone={basisTone(slide.basis.strength)} className="mt-2 shrink-0 text-xs sm:text-sm">
+      <b>근거 · {basisLabel(slide.basis.strength)}</b>
+      <p className="text-navy">{slide.basis.text}</p>
+    </Card>
+  );
+  if (layout === "explain") {
+    const [main, ...rest] = slide.bullets;
+    return (
+      <>
+        <div className="flex min-h-0 flex-1 gap-2">
+          <Card tone="ok" className={rest.length ? "basis-3/5" : "flex-1"}>
+            <p className="text-xs font-bold text-mint">이 업무는</p>
+            <p className="text-sm leading-relaxed text-navy sm:text-lg">{main}</p>
+          </Card>
+          {rest.length > 0 && (
+            <Card className="flex-1">
+              <p className="text-xs font-bold text-wood">{slide.id === "summary" ? "이어서 볼 내용" : "유의할 점"}</p>
+              {rest.map((r, i) => (
+                <p key={i} className="text-xs leading-relaxed sm:text-sm">{r}</p>
+              ))}
+            </Card>
+          )}
+        </div>
+        {basis}
+      </>
+    );
+  }
+  if (layout === "steps") {
+    return (
+      <ol className="relative flex min-h-0 flex-1 gap-2 pt-1">
+        <span aria-hidden className="absolute left-[8%] right-[8%] top-[18px] h-0.5 bg-mint sm:top-[22px]" />
         {slide.bullets.map((b, i) => (
-          <li key={i}>{b}</li>
+          <li key={i} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+            <Dot n={i + 1} className="relative size-7 text-sm sm:size-9" />
+            <Card className="min-h-[40%] w-full text-xs leading-relaxed sm:text-sm">{b}</Card>
+          </li>
+        ))}
+      </ol>
+    );
+  }
+  if (layout === "table") {
+    return (
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <table className="w-full border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr className="bg-navy text-left text-foam">
+              <th className="w-1/4 border border-line px-2 py-1">자리·부서</th>
+              <th className="border border-line px-2 py-1">함께 볼 내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            {slide.bullets.map(splitRow).map(([a, b], i) => (
+              <tr key={i} className={i % 2 ? "bg-white" : "bg-foam"}>
+                <td className="border border-line px-2 py-1 font-semibold">{a || "관련"}</td>
+                <td className="border border-line px-2 py-1">{b}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  if (layout === "questions") {
+    return (
+      <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
+        {slide.bullets.map((q, i) => (
+          <li key={i} className="flex items-center gap-2">
+            <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-navy text-xs font-bold text-foam sm:size-9">Q</span>
+            <span className="flex-1 rounded-lg border border-mint bg-mint-2 px-3 py-2 text-sm sm:text-base">{q}</span>
+          </li>
         ))}
       </ul>
-      {slide.basis && (
-        <div className={`mt-2 rounded-sm p-2 text-xs sm:text-sm ${slide.basis.strength === "direct" ? "bg-mint-2" : "bg-red-100 text-red-900"}`}>
-          <b>근거 ({slide.basis.strength === "direct" ? "근거 확인" : slide.basis.strength === "review" ? "근거 검토 필요" : "확인 필요"})</b> {slide.basis.text}
+    );
+  }
+  const { cols } = gridOf(slide.bullets.length);
+  const numbered = slide.kind !== "overview" || slide.bullets.length <= 16;
+  return (
+    <>
+      <ul className={`grid min-h-0 flex-1 auto-rows-min gap-1.5 overflow-y-auto ${cols === 3 ? "sm:grid-cols-3" : cols === 2 ? "sm:grid-cols-2" : ""}`}>
+        {slide.bullets.map((b, i) => (
+          <li key={i} className="flex items-center gap-2 rounded-sm border border-l-4 border-line bg-foam p-1.5 text-xs sm:p-2 sm:text-sm">
+            {numbered && <Dot n={i + 1} />}
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+      {basis}
+    </>
+  );
+}
+
+function SlideView({ slide, index, total }: { slide: Slide; index: number; total: number }) {
+  if (slide.kind === "cover") {
+    return (
+      <div className="relative flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-navy bg-navy p-5 pl-8 text-foam sm:p-8 sm:pl-12">
+        <span aria-hidden className="absolute inset-y-0 left-0 w-2 bg-mint sm:w-3" />
+        <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs">
+          <span className="text-mint-2">{HEADER}</span>
+          <span className="rounded-sm bg-foam px-2 py-0.5 font-semibold text-navy">{BADGE}</span>
         </div>
-      )}
-      {slide.sources && slide.sources.length > 0 && (
-        <details className="mt-2 rounded-sm bg-foam/80 p-2 text-xs">
-          <summary className="cursor-pointer font-semibold text-mint">
-            지침 근거 {slide.sources.length}곳: {[...new Set(slide.sources.map((x) => `${x.title} ${x.page}쪽`))].slice(0, 2).join(", ")}
-            {slide.sources.length > 2 ? " 외" : ""}
-          </summary>
-          <ul className="mt-1 space-y-1">
-            {slide.sources.map((x, i) => (
-              <li key={i}>
-                <b>
-                  {x.title} {x.page}쪽
-                </b>{" "}
-                &ldquo;{x.quote}&rdquo;{" "}
-                {x.url && (
-                  <a href={x.url} target="_blank" rel="noreferrer" className="underline">
-                    원문
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
-      <p className={`mt-2 text-[10px] ${cover ? "text-mint-2" : "text-navy/60"}`}>
-        {index + 1}/{total}
-      </p>
+        <div className="my-auto">
+          <h2 className="font-display text-3xl sm:text-5xl">{slide.title}</h2>
+          <span aria-hidden className="mt-2 block h-1 w-16 bg-mint" />
+          {slide.subtitle && <p className="mt-2 text-sm text-mint-2 sm:text-lg">{slide.subtitle}</p>}
+          {slide.bullets.map((b, i) => (
+            <p key={i} className="mt-3 text-xs leading-relaxed sm:text-base">{b}</p>
+          ))}
+        </div>
+        <p className="text-[10px] text-mint-2">
+          {index + 1} / {total}
+        </p>
+      </div>
+    );
+  }
+  const chips = slide.kind === "overview" ? chipsOf(slide.subtitle) : [];
+  return (
+    <div className="flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-navy bg-white text-navy">
+      <div className="flex shrink-0 items-center justify-between gap-2 bg-navy px-3 py-1 text-[10px] sm:px-5 sm:text-xs">
+        <span className="text-mint-2">{HEADER}</span>
+        <span className="rounded-sm bg-mint px-2 py-0.5 font-semibold text-foam">{BADGE}</span>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col px-3 pb-2 pt-2 sm:px-5 sm:pt-3">
+        <h2 className="font-display text-lg sm:text-3xl">{slide.title}</h2>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <span aria-hidden className="h-1 w-10 bg-mint" />
+          {chips.length
+            ? chips.map((c) => (
+                <span key={c.text} className={`rounded-sm border px-1.5 text-[10px] font-semibold sm:text-xs ${TONE_CLASS[c.tone]}`}>
+                  {c.text}
+                </span>
+              ))
+            : (slide.tag || slide.subtitle) && (
+                <span className="text-xs font-semibold text-mint sm:text-sm">{[slide.tag, slide.subtitle].filter(Boolean).join(" · ")}</span>
+              )}
+        </div>
+        <div className="mt-2 flex min-h-0 flex-1 flex-col sm:mt-3">
+          <SlideBody slide={slide} />
+        </div>
+        {slide.sources && slide.sources.length > 0 && (
+          <details className="mt-2 shrink-0 text-[10px] sm:text-xs">
+            <summary className="cursor-pointer">
+              <b className="text-mint">근거</b> {sourceRefs(slide).slice(0, 2).join(" · ")}
+              {sourceRefs(slide).length > 2 ? " 외" : ""}
+            </summary>
+            <ul className="mt-1 max-h-24 space-y-1 overflow-y-auto">
+              {slide.sources.map((x, i) => (
+                <li key={i}>
+                  <b>
+                    {x.title} {x.page}쪽
+                  </b>{" "}
+                  &ldquo;{x.quote}&rdquo;{" "}
+                  {x.url && (
+                    <a href={x.url} target="_blank" rel="noreferrer" className="underline">
+                      원문
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+        <p className="mt-1 shrink-0 border-t border-line pt-1 text-right text-[10px] font-semibold">
+          {index + 1} / {total}
+        </p>
+      </div>
     </div>
   );
 }
