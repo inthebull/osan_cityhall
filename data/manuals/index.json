@@ -368,5 +368,25 @@
     "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1480763",
     "fetched_at": "2026-10-30",
     "pages": 392
+  },
+  {
+    "doc_id": "elderly-welfare-guide-2026-1",
+    "dept_id": "D-ELDER",
+    "title": "2026년 노인보건복지 사업안내(Ⅰ) 발췌: 2-3 경로당 운영·2-4 노인복지관 설치·운영·2-5 노인교실 (PDF 64~130쪽, 책 쪽수 60~126)",
+    "year": 2026,
+    "publisher": "보건복지부 노인정책과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1488990",
+    "fetched_at": "2026-10-30",
+    "pages": 67
+  },
+  {
+    "doc_id": "elderly-welfare-act-rule",
+    "dept_id": "D-ELDER",
+    "title": "노인복지법 시행규칙 [시행 2025. 12. 29.] [보건복지부령 제1143호, 2025. 12. 29., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=282119",
+    "fetched_at": "2026-10-30",
+    "pages": 51
   }
 ]
