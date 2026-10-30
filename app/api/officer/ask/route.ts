@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   const cite = (id: string) => {
     const p = index.get(id);
     const doc = p && docs.find((d) => d.doc_id === p.doc_id);
-    return p && doc ? { id, title: doc.title, page: p.page, source_url: doc.source_url, text: p.text } : null;
+    return p && doc ? { id, title: doc.title, page: p.page, kind: doc.kind ?? "manual", source_url: doc.source_url, text: p.text } : null;
   };
 
   if (hits.length === 0) return NextResponse.json({ found: false, answer: NOT_FOUND, citations: [], draft: true });

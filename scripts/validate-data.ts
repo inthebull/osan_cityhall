@@ -53,6 +53,17 @@ for (const m of manuals as { doc_id: string; dept_id: string }[]) {
   }
 }
 
+// 자리별 업무(data/kb/duties.json): 성명·전화번호 없이 업무와 근거만
+const dutySchema = ajv.compile(read("data/schema/duty.schema.json"));
+const duties = read("data/kb/duties.json");
+if (!dutySchema(duties)) errors.push(`kb/duties.json: ${ajv.errorsText(dutySchema.errors)}`);
+const seatIds = new Set<string>();
+for (const s of (duties as { seats: { seat_id: string }[] }).seats ?? []) {
+  if (seatIds.has(s.seat_id)) errors.push(`kb/duties.json: seat_id ${s.seat_id} 중복`);
+  seatIds.add(s.seat_id);
+}
+if (/\b0\d{1,2}-?\d{3,4}-?\d{4}\b/.test(JSON.stringify(duties))) errors.push("kb/duties.json: 전화번호가 들어 있음");
+
 // 개인정보 패턴: 주민번호, 휴대전화, 이메일
 const pii: [string, RegExp][] = [
   ["주민번호", /\b\d{6}-[1-4]\d{6}\b/],

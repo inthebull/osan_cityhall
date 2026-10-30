@@ -1,0 +1,4046 @@
+{
+  "source": "오산시 홈페이지 직원 업무 목록(성명 가림) + 오산시 행정기구 및 정원 조례 시행규칙 별표 분장사무, pingpong_zero 정리본",
+  "source_url": "https://www.osan.go.kr/portal/staff/list.do",
+  "law_url": "https://www.law.go.kr/자치법규/오산시행정기구및정원조례시행규칙",
+  "fetched_at": "2026-10-30",
+  "seats": [
+    {
+      "seat_id": "S-CIVIL-01",
+      "dept_id": "D-CIVIL",
+      "team": null,
+      "role": "과장",
+      "label": "과장",
+      "tasks": [
+        {
+          "task_id": "T00815",
+          "title": "민원여권과 업무총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-02",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "팀장",
+      "label": "민원행정팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T00816",
+          "title": "민원행정팀 업무 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00817",
+          "title": "민원실 환경개선 및 국민행복민원실 관련",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 4,
+            "item": "민원행정 및 제도개선",
+            "score": 0.1632
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00818",
+          "title": "민원조정 및 상담(국민신문고 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 12,
+            "item": "국민신문고 운영",
+            "score": 0.5471
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00819",
+          "title": "민원조정위원회 운영",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 15,
+            "item": "민원조정위원회 운영",
+            "score": 1.05
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-03",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T00820",
+          "title": "국민신문고 민원접수·배부 및 관리 (민원서비스 종합평가 분야 포함)",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 2,
+            "item": "국민신문고 민원접수 처리",
+            "score": 0.6277
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00821",
+          "title": "시스템 사용자 권한관리 및 현행화 (행정정보공동이용, 국민신문고, 공공서비스 통합관리,외국인정보공동이용, 민원처리운영창구)",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 17,
+            "item": "행정정보 공동이용 시스템 운영",
+            "score": 0.5469
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00822",
+          "title": "청원심의위원회 운영",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 16,
+            "item": "청원심의회 운영",
+            "score": 0.7541
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-04",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T00823",
+          "title": "서무, 회계",
+          "kind": "서무·공통",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00824",
+          "title": "기록물관리",
+          "kind": "서무·공통",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00825",
+          "title": "민원서비스 종합평가",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 1,
+            "item": "민원서류(법정민원)의 접수ㆍ심사",
+            "score": 0.2346
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00826",
+          "title": "민원제도 개선 및 민원취약계층보호",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 4,
+            "item": "민원행정 및 제도개선",
+            "score": 0.3706
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00827",
+          "title": "부서 SNS 홍보",
+          "kind": "고유업무",
+          "label": "공통사무(총괄부서 근거)",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 20,
+            "item": "SNS 홍보 계획 수립",
+            "score": 0.7061
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00828",
+          "title": "친절행정 추진",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "친절도 향상에 관한 사항",
+            "score": 0.2255
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-05",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T00829",
+          "title": "주민등록 업무 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00830",
+          "title": "주민등록 사실조사 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00831",
+          "title": "주민전산자료제공",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 6,
+            "item": "주민등록 인구 통계",
+            "score": 0.1072
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00832",
+          "title": "민원담당자 보호 (민원서비스종합평가 분야 포함)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 1,
+            "item": "민원서류(법정민원)의 접수ㆍ심사",
+            "score": 0.2098
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00833",
+          "title": "통합민원 발급(등초본, 인감 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 14,
+            "item": "무인민원발급창구 운영",
+            "score": 0.2463
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-06",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T00834",
+          "title": "인감(본인서명사실증명) 업무 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00835",
+          "title": "무인민원발급기 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 14,
+            "item": "무인민원발급창구 운영",
+            "score": 0.6399
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00836",
+          "title": "통합민원 발급(등초본, 인감 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 14,
+            "item": "무인민원발급창구 운영",
+            "score": 0.2463
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-07",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 5",
+      "tasks": [
+        {
+          "task_id": "T00837",
+          "title": "Fax 민원(어디서나 민원)",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 11,
+            "item": "정부24민원 및 어디서나 민원",
+            "score": 0.6458
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00838",
+          "title": "사실증명서 발급(출입국, 외국인,거소)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 10,
+            "item": "외국인등록 사실증명 발급",
+            "score": 0.5143
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00839",
+          "title": "외국인 체류지 변경",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 9,
+            "item": "외국인 거주지 변경신고",
+            "score": 0.5132
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-08",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 6",
+      "tasks": [
+        {
+          "task_id": "T00840",
+          "title": "통합민원 발급(등초본, 인감 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 14,
+            "item": "무인민원발급창구 운영",
+            "score": 0.2463
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00841",
+          "title": "개인정보 제3자 제공 고시",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 20,
+            "item": "민원편람 등 민원인 편의 제공",
+            "score": 0.121
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00842",
+          "title": "세외수입(증지수입) 관리",
+          "kind": "고유업무",
+          "label": "공통사무(총괄부서 근거)",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "차량 세외수입 체납관리에 관한 사항",
+            "score": 0.3981
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-09",
+      "dept_id": "D-CIVIL",
+      "team": "민원행정팀",
+      "role": "주무관",
+      "label": "민원행정팀 주무관 7",
+      "tasks": [
+        {
+          "task_id": "T00843",
+          "title": "각종 인·허가 등 민원서류 접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 1,
+            "item": "민원서류(법정민원)의 접수ㆍ심사",
+            "score": 0.4491
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00844",
+          "title": "민원불편신고 접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 1,
+            "item": "민원서류(법정민원)의 접수ㆍ심사",
+            "score": 0.2566
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00845",
+          "title": "유기한 민원처리 분석",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 3,
+            "item": "민원처리상황 확인·점검",
+            "score": 0.2433
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00846",
+          "title": "민원마일리지제 운영",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 19,
+            "item": "사전심사청구제 운영",
+            "score": 0.1442
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-10",
+      "dept_id": "D-CIVIL",
+      "team": "가족관계팀",
+      "role": "팀장",
+      "label": "가족관계팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T00847",
+          "title": "가족관계팀 업무총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00848",
+          "title": "가족관계등록(제적부) 신고서 교합",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "가족관계등록부(제적부) 정정",
+            "score": 0.5729
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00849",
+          "title": "가족관계등록사무 제도개선 및 혁신과제 발굴",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.3138
+          },
+          "other_dept": "기획재정국 기획예산과"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-11",
+      "dept_id": "D-CIVIL",
+      "team": "가족관계팀",
+      "role": "주무관",
+      "label": "가족관계팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T00850",
+          "title": "가족관계등록신고서 기재",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.788
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00851",
+          "title": "가족관계등록부(제적부) 정정",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "가족관계등록부(제적부) 정정",
+            "score": 1.15
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00852",
+          "title": "가족관계등록 사무 일반",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.5263
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-12",
+      "dept_id": "D-CIVIL",
+      "team": "가족관계팀",
+      "role": "주무관",
+      "label": "가족관계팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T00853",
+          "title": "가족관계등록신고서 접수",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.8854
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00854",
+          "title": "동 신고 접수 및 기재 (중앙동, 신장1동, 신장2동, 세마동)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.2847
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00855",
+          "title": "재산조회 통합처리 신청접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3044
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00856",
+          "title": "가족관계등록사무 예산",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.4757
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00857",
+          "title": "결격사유조회 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 26,
+            "item": "결격사유 조회 및 회보",
+            "score": 0.8505
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00858",
+          "title": "가족관계등록 증명서 발급",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 1.15
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-13",
+      "dept_id": "D-CIVIL",
+      "team": "가족관계팀",
+      "role": "주무관",
+      "label": "가족관계팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T00859",
+          "title": "가족관계등록 신고서 접수",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.8354
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00860",
+          "title": "동 신고 접수 및 기재 (대원1동, 대원2동. 남촌동, 초평동)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.3082
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00861",
+          "title": "재산조회 통합처리 신청접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3044
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00862",
+          "title": "가족관계등록 증명서 발급 및 타기관(경찰서 등) 업무협조",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.7774
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00863",
+          "title": "세외수입(증지, 과태료) 관리",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-14",
+      "dept_id": "D-CIVIL",
+      "team": "가족관계팀",
+      "role": "주무관",
+      "label": "가족관계팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T00864",
+          "title": "가족관계등록신고(인터넷) 접수",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.5583
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00865",
+          "title": "가족관계등록사무 기록물관리",
+          "kind": "서무·공통",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00866",
+          "title": "법원송부 신고서류 편철관리",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.1213
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00867",
+          "title": "통계청 인구동태시스템 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 22,
+            "item": "인구동태조사 및 통계",
+            "score": 0.4947
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00868",
+          "title": "가족관계등록신고 처리결과 문자발송",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "가족관계등록신고서 접수 및 기재, 교합",
+            "score": 0.3754
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-15",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "팀장",
+      "label": "여권팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T00869",
+          "title": "여권팀 업무총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T00870",
+          "title": "여권사무의 자체진단 ․ 평가",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.2109
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00871",
+          "title": "여권사무 제도개선",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 4,
+            "item": "민원행정 및 제도개선",
+            "score": 0.4367
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00872",
+          "title": "여권심사",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3132
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-16",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "주무관",
+      "label": "여권팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T00873",
+          "title": "여권심사",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3132
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00874",
+          "title": "여권사무일반",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.309
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00875",
+          "title": "여권 개인정보보호 및 보안에 관한 사항",
+          "kind": "고유업무",
+          "label": "공통사무(총괄부서 근거)",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 3,
+            "item": "보안업무 및 충무계획에 관한 사항",
+            "score": 0.1228
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00876",
+          "title": "여권 처리현황 및 세외수입 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.1535
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00877",
+          "title": "관용(긴급)여권 및 보관여권 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.2322
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00878",
+          "title": "여권 직권(오류재발급 등) 폐기",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.2117
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-17",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "주무관",
+      "label": "여권팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T00879",
+          "title": "여권접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3302
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00880",
+          "title": "법규심사 및 영문변경신고",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 9,
+            "item": "외국인 거주지 변경신고",
+            "score": 0.257
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00881",
+          "title": "여권 분실(회수)신고·개인반납·기재사항 변경",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.1267
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00882",
+          "title": "재발급사유서 및 취하원",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 26,
+            "item": "결격사유 조회 및 회보",
+            "score": 0.1204
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00883",
+          "title": "각종 증명서 발급",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.6248
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-18",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "주무관",
+      "label": "여권팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T00884",
+          "title": "여권접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3302
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00885",
+          "title": "법규심사 및 영문변경신고",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 9,
+            "item": "외국인 거주지 변경신고",
+            "score": 0.257
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00886",
+          "title": "여권 분실(회수)신고‧개인반납‧기재사항 변경",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.1267
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00887",
+          "title": "재발급사유서 및 취하원",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 26,
+            "item": "결격사유 조회 및 회보",
+            "score": 0.1204
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00888",
+          "title": "각종 증명서 발급",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.6248
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-19",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "주무관",
+      "label": "여권팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T00889",
+          "title": "여권접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.3302
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00890",
+          "title": "법규심사 및 영문변경신고",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 9,
+            "item": "외국인 거주지 변경신고",
+            "score": 0.257
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00891",
+          "title": "여권 분실(회수)신고·개인반납·기재사항 변경",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "여권 사실 증명 서류 발급",
+            "score": 0.1267
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00892",
+          "title": "재발급사유서 및 취하원",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 26,
+            "item": "결격사유 조회 및 회보",
+            "score": 0.1204
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00893",
+          "title": "각종 증명서 발급",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.6248
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-20",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "주무관",
+      "label": "여권팀 주무관 5",
+      "tasks": [
+        {
+          "task_id": "T00894",
+          "title": "여권교부",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.359
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00895",
+          "title": "여권교부 전 검사 및 분류",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.2198
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00896",
+          "title": "여권 접수",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "여권 신청 접수ㆍ심사ㆍ교부",
+            "score": 0.4302
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00897",
+          "title": "재발급사유서 및 취하원",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 26,
+            "item": "결격사유 조회 및 회보",
+            "score": 0.1204
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T00898",
+          "title": "각종 증명서 발급",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "가족관계등록 증명서 발급",
+            "score": 0.6248
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-CIVIL-21",
+      "dept_id": "D-CIVIL",
+      "team": "여권팀",
+      "role": "주무관",
+      "label": "여권팀 주무관 6",
+      "tasks": [
+        {
+          "task_id": "T00899",
+          "title": "휴직",
+          "kind": "근무상태",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-01",
+      "dept_id": "D-ELDER",
+      "team": null,
+      "role": "과장",
+      "label": "과장",
+      "tasks": [
+        {
+          "task_id": "T01502",
+          "title": "노인장애인과 업무 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-02",
+      "dept_id": "D-ELDER",
+      "team": "노인정책팀",
+      "role": "팀장",
+      "label": "노인정책팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T01503",
+          "title": "노인복지 중장기계획 수립",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 8,
+            "item": "노인복지기금 지원 및 관리",
+            "score": 0.3311
+          },
+          "other_dept": "기획재정국 기획예산과"
+        },
+        {
+          "task_id": "T01504",
+          "title": "노인의 날 행사 추진",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 1,
+            "item": "노인의 날 기념행사 추진",
+            "score": 0.7183
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01505",
+          "title": "장사 시설 확충",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 19,
+            "item": "장사(葬事)에 관련된 사항",
+            "score": 0.35
+          },
+          "other_dept": "복지교육국 평생교육과"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-03",
+      "dept_id": "D-ELDER",
+      "team": "노인정책팀",
+      "role": "주무관",
+      "label": "노인정책팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T01506",
+          "title": "장애인 인권 및 차별금지 관련사업",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "장애인 활동지원 사업",
+            "score": 0.2387
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01507",
+          "title": "장애인복지위원회 운영 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.4952
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01508",
+          "title": "장애인의 날 행사운영",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "장애인의 날 기념행사 추진",
+            "score": 0.579
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01509",
+          "title": "사회복지사업보조금 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 8,
+            "item": "노인복지기금 지원 및 관리",
+            "score": 0.357
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01510",
+          "title": "장애인활동지원사업 운영 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "장애인 활동지원 사업",
+            "score": 0.8476
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01511",
+          "title": "장애아가족지원 사업 운영 및 관리 (발달재활, 언어발달 바우처 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.382
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01512",
+          "title": "장애인 자립생활 주택, 체험홈 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 35,
+            "item": "장애인 자립지원 사업",
+            "score": 0.4543
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01513",
+          "title": "최중증 발달장애인 통합돌봄서비스 사업 운영 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 2,
+            "item": "노인맞춤돌봄서비스 사업",
+            "score": 0.4158
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-04",
+      "dept_id": "D-ELDER",
+      "team": "노인정책팀",
+      "role": "주무관",
+      "label": "노인정책팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T01514",
+          "title": "노인일자리사업 운영·관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 17,
+            "item": "노인일자리 전담기관 운영에 관한 사항",
+            "score": 0.4439
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01515",
+          "title": "시니어클럽 운영",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 13,
+            "item": "노인종합복지관 운영 및 관리",
+            "score": 0.0244
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01516",
+          "title": "쉼터공원 관리 및 운영 지원",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 20,
+            "item": "쉼터공원 수입 관리 및 운영 지원",
+            "score": 0.773
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01517",
+          "title": "화장장려금 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 8,
+            "item": "노인복지기금 지원 및 관리",
+            "score": 0.1716
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01518",
+          "title": "노인복지사업(경로효도잔치, 독거노인 효도관광) 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 8,
+            "item": "노인복지기금 지원 및 관리",
+            "score": 0.2982
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01519",
+          "title": "노인보호 학대 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 6,
+            "item": "노인단체 지원 및 관리",
+            "score": 0.1706
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-05",
+      "dept_id": "D-ELDER",
+      "team": "노인정책팀",
+      "role": "주무관",
+      "label": "노인정책팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T01520",
+          "title": "아동학대 신고접수 및 현장조사",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.0471
+          },
+          "other_dept": "복지교육국 아동복지과"
+        },
+        {
+          "task_id": "T01521",
+          "title": "아동학대 조사 ·판단 지원",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.0558
+          },
+          "other_dept": "복지교육국 아동복지과"
+        },
+        {
+          "task_id": "T01522",
+          "title": "피해아동보호계획수립 및 보호조치",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 36,
+            "item": "장애인 이용시설 건립 및 지원",
+            "score": 0.0503
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01523",
+          "title": "피해아동 사례관리 지도감독 및 종결",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 32,
+            "item": "장애인일자리 지원 관리",
+            "score": 0.1102
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01524",
+          "title": "아동학대 당직근무(야간·공휴일)",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.0421
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01525",
+          "title": "임시신생아 및 임시관리번호 아동 전수조사",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.0354
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01526",
+          "title": "아동학대대응 차량 관리",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.0551
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01527",
+          "title": "아동보호사건 및 임시조치 통계 관리",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.0437
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01528",
+          "title": "상담실 관리(영상정보처리기기 등 포함)",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 18,
+            "item": "노인상담센터 지원 및 관리",
+            "score": 0.1133
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01529",
+          "title": "아동학대 사례 종결 처리 및 관리(전담)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 17,
+            "item": "노인일자리 전담기관 운영에 관한 사항",
+            "score": 0.2171
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-06",
+      "dept_id": "D-ELDER",
+      "team": "노인정책팀",
+      "role": "주무관",
+      "label": "노인정책팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T01530",
+          "title": "기초연금 운영 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 4,
+            "item": "기초연금제도 운영에 관한 사항",
+            "score": 0.5677
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01531",
+          "title": "저소득 노인 월동난방비 및 건강보험료 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 7,
+            "item": "저소득 노인가구 지원에 관한 사항",
+            "score": 0.3577
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01532",
+          "title": "무료경로식당 및 식사배달 사업",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 10,
+            "item": "저소득 노인 무료급식(경로식당, 식사배달 등) 지원 및 관리",
+            "score": 0.5321
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01533",
+          "title": "노인보호 학대 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 6,
+            "item": "노인단체 지원 및 관리",
+            "score": 0.1706
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-07",
+      "dept_id": "D-ELDER",
+      "team": "노인시설팀",
+      "role": "팀장",
+      "label": "노인시설팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T01534",
+          "title": "경로당 및 노인관련시설 건립·확충",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 36,
+            "item": "장애인 이용시설 건립 및 지원",
+            "score": 0.2675
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01535",
+          "title": "장기요양 세부시행계획 수립",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.3712
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01536",
+          "title": "노인시설팀 관련 조례 제·개정",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 12,
+            "item": "노인주거ㆍ의료ㆍ재가노인 복지시설 운영 및 관리",
+            "score": 0.1194
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01537",
+          "title": "장기요양요원 처우개선 종합계획 수립",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.2942
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01538",
+          "title": "경로당 임원 연수 추진",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2421
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-08",
+      "dept_id": "D-ELDER",
+      "team": "노인시설팀",
+      "role": "주무관",
+      "label": "노인시설팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T01539",
+          "title": "노인(의료·재가·주거) 복지시설 운영지원 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 12,
+            "item": "노인주거ㆍ의료ㆍ재가노인 복지시설 운영 및 관리",
+            "score": 0.7048
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01540",
+          "title": "장기요양기관 심사위원회 운영(지정‧갱신‧지정취소)",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 22,
+            "item": "장기요양기관 지정심사위원회 운영",
+            "score": 0.667
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01541",
+          "title": "장기요양기관 현지조사 및 행정처분·소송",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.5001
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01542",
+          "title": "장기요양기관 기능보강사업",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.5742
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01543",
+          "title": "장기요양기관 운영지원 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.7066
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01544",
+          "title": "노인의료시설 인권지킴이, 역량강화 등 지원",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 1,
+            "item": "노인의 날 기념행사 추진",
+            "score": 0.1401
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01545",
+          "title": "장기요양기관 현지조사 및 행정처분,소송",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.5001
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-09",
+      "dept_id": "D-ELDER",
+      "team": "노인시설팀",
+      "role": "주무관",
+      "label": "노인시설팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T01546",
+          "title": "오산노인종합복지관(실버케어센터) 운영·관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 14,
+            "item": "실버케어센터 운영 및 관리",
+            "score": 0.6564
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01547",
+          "title": "경로당 운영 계획수립 및 추진",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2638
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01548",
+          "title": "경로당 실태조사 및 지도점검",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2452
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01549",
+          "title": "경로당 설치·변경신고 업무",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2411
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01550",
+          "title": "경로당 민원처리 업무 및 순회간담회 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 40,
+            "item": "경로당 방문민원처리(전기, 수도, 시설물, 출입문 등 소규모 수리)",
+            "score": 0.2735
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01551",
+          "title": "경로당 환경개선(개보수) 및 그린리모델링사업",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.1854
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-10",
+      "dept_id": "D-ELDER",
+      "team": "노인시설팀",
+      "role": "주무관",
+      "label": "노인시설팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T01552",
+          "title": "모범경로당 선정 및 지원·관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2191
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01553",
+          "title": "경로당 활성화 사업(프로그램비) 운영지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2215
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01554",
+          "title": "경로당 활성화사업(사회활동비) 운영지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2238
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01555",
+          "title": "재가노인지원서비스센터 운영 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 3,
+            "item": "재가노인지원서비스 사업",
+            "score": 0.7198
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01556",
+          "title": "노인상담센터 운영관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 18,
+            "item": "노인상담센터 지원 및 관리",
+            "score": 0.7822
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01557",
+          "title": "지역봉사지도원 운영관리",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 38,
+            "item": "지역사회재활시설 지원 및 관리",
+            "score": 0.0825
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01558",
+          "title": "1472 살펴드림 사업 업무 추진",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "장애인 활동지원 사업",
+            "score": 0.0781
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-11",
+      "dept_id": "D-ELDER",
+      "team": "노인시설팀",
+      "role": "주무관",
+      "label": "노인시설팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T01559",
+          "title": "경로당 공유재산 관리 및 임차 지원사업",
+          "kind": "고유업무",
+          "label": "공통사무(총괄부서 근거)",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 18,
+            "item": "공유재산 관리계획 수립 및 공유재산심의회 운영",
+            "score": 0.3911
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01560",
+          "title": "경로당 보조금 지원 관리(운영비, 냉난방비, 양곡비 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.1967
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01561",
+          "title": "경로당 기자재 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 5,
+            "item": "경로당, 카네이션하우스 지원 및 관리에 관한 사항",
+            "score": 0.2875
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01562",
+          "title": "노인여가복지시설(노인교실)운영지원‧관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 15,
+            "item": "노인여가복지시설 운영 및 관리",
+            "score": 0.6886
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-12",
+      "dept_id": "D-ELDER",
+      "team": "노인시설팀",
+      "role": "주무관",
+      "label": "노인시설팀 주무관 5",
+      "tasks": [
+        {
+          "task_id": "T01563",
+          "title": "노인의료복지시설 시설생계비 지급",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 12,
+            "item": "노인주거ㆍ의료ㆍ재가노인 복지시설 운영 및 관리",
+            "score": 0.2709
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01564",
+          "title": "장기요양기관 입소이용신청처리 및 입‧퇴소자 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.4348
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01565",
+          "title": "장기요양기관 종사자 처우개선비 및 입‧퇴사 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 21,
+            "item": "장기요양기관 관리 감독",
+            "score": 0.44
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-13",
+      "dept_id": "D-ELDER",
+      "team": "장애인정책팀",
+      "role": "팀장",
+      "label": "장애인정책팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T01566",
+          "title": "장애인복지 중장기계획 수립",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "장애인복지 기금 지원 및 관리",
+            "score": 0.4421
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01567",
+          "title": "장애인 복지정책 개발",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.5248
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01568",
+          "title": "장애인 단체 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "장애인 단체 지원 및 관리",
+            "score": 0.7806
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01569",
+          "title": "장애인복지타운 건립",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.3923
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-14",
+      "dept_id": "D-ELDER",
+      "team": "장애인정책팀",
+      "role": "주무관",
+      "label": "장애인정책팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T01570",
+          "title": "장애인 인권 및 차별금지 관련사업",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "장애인 활동지원 사업",
+            "score": 0.2387
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01571",
+          "title": "장애인복지위원회 운영 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.4952
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01572",
+          "title": "장애인의 날 행사운영",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 23,
+            "item": "장애인의 날 기념행사 추진",
+            "score": 0.579
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01573",
+          "title": "사회복지사업보조금 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 8,
+            "item": "노인복지기금 지원 및 관리",
+            "score": 0.357
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01574",
+          "title": "장애인활동지원사업 운영 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "장애인 활동지원 사업",
+            "score": 0.8476
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01575",
+          "title": "장애아가족지원 사업 운영 및 관리(발달재활, 언어발달 바우처 등)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 29,
+            "item": "장애아동 재활치료 바우처 사업",
+            "score": 0.382
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01576",
+          "title": "장애인 자립생활 주택, 체험홈 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 35,
+            "item": "장애인 자립지원 사업",
+            "score": 0.4543
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01577",
+          "title": "최중증 발달장애인 통합돌봄서비스 사업 운영 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 2,
+            "item": "노인맞춤돌봄서비스 사업",
+            "score": 0.4158
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-15",
+      "dept_id": "D-ELDER",
+      "team": "장애인정책팀",
+      "role": "주무관",
+      "label": "장애인정책팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T01578",
+          "title": "장애인 등록 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 31,
+            "item": "장애인 등록 및 관리",
+            "score": 1.1
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01579",
+          "title": "장애인연금, 장애수당 지원",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 26,
+            "item": "장애수당, 장애인연금에 관한 사항",
+            "score": 0.8368
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01580",
+          "title": "재가장애인 지원사업 (의료비, 진단비․검사비, 보조기기 지원 등)",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "재가장애인 지원에 관한 사항",
+            "score": 0.4738
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01581",
+          "title": "장애인일자리 및 복지일자리사업 지원 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 32,
+            "item": "장애인일자리 지원 관리",
+            "score": 0.6533
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01582",
+          "title": "장애인 누림통장, 기회소득 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "장애인 단체 지원 및 관리",
+            "score": 0.3524
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01583",
+          "title": "중증장애인 생산품 운영관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 30,
+            "item": "장애인 생활안정 지원 사업에 관한 사항",
+            "score": 0.2731
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01584",
+          "title": "여성장애인 출산비용 지원",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "장애인 단체 지원 및 관리",
+            "score": 0.2152
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01585",
+          "title": "특정후견(공공후견)지원사업",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 28,
+            "item": "장애인 활동지원 사업",
+            "score": 0.1152
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01586",
+          "title": "장애인 택시요금 감면사업 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "장애인 단체 지원 및 관리",
+            "score": 0.3472
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01587",
+          "title": "장애인가구 냉․난방비 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "장애인 단체 지원 및 관리",
+            "score": 0.3196
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01588",
+          "title": "장애인복지기금 운영·관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "장애인복지 기금 지원 및 관리",
+            "score": 0.7042
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-16",
+      "dept_id": "D-ELDER",
+      "team": "장애인정책팀",
+      "role": "주무관",
+      "label": "장애인정책팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T01589",
+          "title": "장애인전용주차구역 관련 민원처리 (신문고 민원, 현장점검 및 단속, 의견진술 등)",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 33,
+            "item": "장애인전용주차구역 관리",
+            "score": 0.567
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01590",
+          "title": "과태료 부과, 징수, 체납 관리",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 31,
+            "item": "장애인 등록 및 관리",
+            "score": 0.0205
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01591",
+          "title": "의견진술, 이의신청처리, 전화민원상담",
+          "kind": "고유업무",
+          "label": "근거없음",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 40,
+            "item": "경로당 방문민원처리(전기, 수도, 시설물, 출입문 등 소규모 수리)",
+            "score": 0.1092
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-17",
+      "dept_id": "D-ELDER",
+      "team": "장애인시설팀",
+      "role": "팀장",
+      "label": "장애인시설팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T01592",
+          "title": "장애인 사회복지법인 지도감독",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 27,
+            "item": "재가장애인 지원에 관한 사항",
+            "score": 0.3015
+          },
+          "other_dept": "복지교육국 복지교육국장(국 총괄)"
+        },
+        {
+          "task_id": "T01593",
+          "title": "장애인복지시설 확충",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.6659
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01594",
+          "title": "장애인 이용시설 건립",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 36,
+            "item": "장애인 이용시설 건립 및 지원",
+            "score": 1.0669
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-18",
+      "dept_id": "D-ELDER",
+      "team": "장애인시설팀",
+      "role": "주무관",
+      "label": "장애인시설팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T01595",
+          "title": "장애인 거주시설 지원 및 관리",
+          "kind": "고유업무",
+          "label": "직접근거",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.5844
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01596",
+          "title": "장애인복지관 운영지원 및 관리 (하나울복지센터, 장애인종합복지관)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 13,
+            "item": "노인종합복지관 운영 및 관리",
+            "score": 0.497
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01597",
+          "title": "장애인 직업재활시설 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.5231
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01598",
+          "title": "중증장애인자립생활센터 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 35,
+            "item": "장애인 자립지원 사업",
+            "score": 0.4395
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-ELDER-19",
+      "dept_id": "D-ELDER",
+      "team": "장애인시설팀",
+      "role": "주무관",
+      "label": "장애인시설팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T01599",
+          "title": "장애인지역사회재활시설 지원 및 관리(시각장애인등생활지원센터, 수어통역센터, 주간보호센터, 장애아재활치료교육센터)",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 38,
+            "item": "지역사회재활시설 지원 및 관리",
+            "score": 0.3981
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01600",
+          "title": "보조기기수리센터 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 18,
+            "item": "노인상담센터 지원 및 관리",
+            "score": 0.3288
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01601",
+          "title": "장애인편의증진기술지원센터 지원 및 관리",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 24,
+            "item": "장애인 단체 지원 및 관리",
+            "score": 0.3243
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T01602",
+          "title": "장애인 편의시설 관련 업무 협의 및 장애인 편의시설 심의위원회 운영",
+          "kind": "고유업무",
+          "label": "후보",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 37,
+            "item": "장애인 복지시설 지원 및 관리",
+            "score": 0.283
+          },
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-01",
+      "dept_id": "D-DONG",
+      "team": null,
+      "role": "동장",
+      "label": "동장",
+      "tasks": [
+        {
+          "task_id": "T05812",
+          "title": "동 업무 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05813",
+          "title": "찾아가는 복지상담 서비스",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        },
+        {
+          "task_id": "T05814",
+          "title": "복지사각지대 발굴",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05815",
+          "title": "민간 자원 연계 추진",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-02",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "팀장",
+      "label": "행정팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T05816",
+          "title": "단체 및 여론 동향 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05817",
+          "title": "지역 민원 상담 및 건의 사항 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05818",
+          "title": "주민자치센터 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05819",
+          "title": "선거사무(간사)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-03",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T05820",
+          "title": "일반 서무 및 타 부서 지원",
+          "kind": "서무·공통",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05821",
+          "title": "민방위 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05822",
+          "title": "보안 및 기록물관리",
+          "kind": "서무·공통",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-04",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T05823",
+          "title": "통합민원 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05824",
+          "title": "전입신고",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05825",
+          "title": "외국인 국적취득",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05826",
+          "title": "주민등록 전‧출입․말소",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05827",
+          "title": "선거업무 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "자치행정국 자치행정과"
+        },
+        {
+          "task_id": "T05828",
+          "title": "가족관계 등록사항 신고",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "자치행정국 자치행정국장(국 총괄)"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-05",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T05829",
+          "title": "통합민원 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05830",
+          "title": "고령 운전면허 자진 반납 통합처리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05831",
+          "title": "인증기 수입 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05832",
+          "title": "무인민원발급기 관리(수입관리)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "자치행정국 민원여권과"
+        },
+        {
+          "task_id": "T05833",
+          "title": "출생ㆍ사망신고",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05834",
+          "title": "세입세출외 현금 출납 및 보관",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "기획재정국 회계과"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-06",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T05835",
+          "title": "총무 및 감사",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05836",
+          "title": "단체 및 지역 여론 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05837",
+          "title": "행사 및 시책사업 추진",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05838",
+          "title": "통장선출 및 통장회의 운영",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05839",
+          "title": "민원 사항 처리 및 이첩",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05840",
+          "title": "재난관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05841",
+          "title": "선거관리(서기)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05842",
+          "title": "공익요원 복무 및 업무관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05843",
+          "title": "타 부서 지원(기획예산담당관, 홍보담당관)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-07",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 5",
+      "tasks": [
+        {
+          "task_id": "T05844",
+          "title": "예산 및 회계",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05845",
+          "title": "청사 시설물 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "기획재정국 회계과"
+        },
+        {
+          "task_id": "T05846",
+          "title": "세입세출 외 현금출납원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "기획재정국 회계과"
+        },
+        {
+          "task_id": "T05847",
+          "title": "보안등 유지관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05848",
+          "title": "폐기물마대 판매",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05849",
+          "title": "공공근로 등 일자리 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-08",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 6",
+      "tasks": [
+        {
+          "task_id": "T05850",
+          "title": "통합민원 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05851",
+          "title": "전입세대 열람",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05852",
+          "title": "확정일자",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05853",
+          "title": "인감업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-09",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 7",
+      "tasks": [
+        {
+          "task_id": "T05854",
+          "title": "차량운행 및 문서사송",
+          "kind": "서무·공통",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05855",
+          "title": "청사 및 주차장 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "시민안전국 도로과"
+        },
+        {
+          "task_id": "T05856",
+          "title": "단체사업 및 현장업무 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05857",
+          "title": "복지서비스 연계 및 배분",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-10",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 8",
+      "tasks": [
+        {
+          "task_id": "T05858",
+          "title": "통합민원 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05859",
+          "title": "가족관계증명서 발급",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "자치행정국 민원여권과"
+        },
+        {
+          "task_id": "T05860",
+          "title": "취학업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-11",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 9",
+      "tasks": [
+        {
+          "task_id": "T05861",
+          "title": "주민자치센터(문화강좌) 운영",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "자치행정국 자치행정과"
+        },
+        {
+          "task_id": "T05862",
+          "title": "주민자치회 사무지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05863",
+          "title": "자치계획 수립, 시행, 주민총회 개최 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05864",
+          "title": "주민자치 관련 제도 개선 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05865",
+          "title": "주민자치회 주민대표기구 구성, 운영 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-12",
+      "dept_id": "D-DONG",
+      "team": "행정팀",
+      "role": "주무관",
+      "label": "행정팀 주무관 10",
+      "tasks": [
+        {
+          "task_id": "T05866",
+          "title": "통합민원 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05867",
+          "title": "주민등록 등ㆍ초본 발급",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05868",
+          "title": "주민등록증 발급",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05869",
+          "title": "취학업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05870",
+          "title": "G4C",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-13",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "팀장",
+      "label": "찾아가는 보건복지팀 팀장",
+      "tasks": [
+        {
+          "task_id": "T05871",
+          "title": "찾아가는 보건복지팀 업무총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05872",
+          "title": "복지사각지대 및 민간자원발굴 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05873",
+          "title": "서비스연계 및 자원배분 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05874",
+          "title": "사례회의 총괄",
+          "kind": "총괄",
+          "label": "해당없음",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05875",
+          "title": "동 지역사회보장협의체 운영·관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        },
+        {
+          "task_id": "T05876",
+          "title": "찾아가는 복지상담 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05877",
+          "title": "아동 급식지원 신청 접수 및 대상자 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 아동복지과"
+        },
+        {
+          "task_id": "T05878",
+          "title": "긴급복지 및 무한돌봄사업",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-14",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 1",
+      "tasks": [
+        {
+          "task_id": "T05879",
+          "title": "민관협력 및 동 특화사업 추진",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05880",
+          "title": "마을복지계획 수립",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05881",
+          "title": "자원발굴(인적 및 물적) 및 착한가게 발굴",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05882",
+          "title": "동 지역사회보장협의체 운영",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        },
+        {
+          "task_id": "T05883",
+          "title": "공동모금회 사업연계(후원금 등)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05884",
+          "title": "찾아가는 복지상담 및 복지상담실 운영",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05885",
+          "title": "민간자원 이웃돕기 배분 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05886",
+          "title": "관용차량 관리",
+          "kind": "고유업무",
+          "label": "공통사무(총괄부서 근거)",
+          "basis": {
+            "law": "오산시 행정기구 및 정원 조례 시행규칙",
+            "article": "별표 1(제3조 관련)",
+            "item_no": 25,
+            "item": "차량관리 및 통제",
+            "score": 0.4471
+          },
+          "other_dept": null
+        },
+        {
+          "task_id": "T05887",
+          "title": "경로당 지원 업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05888",
+          "title": "e아동 행복지원사업",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-15",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 2",
+      "tasks": [
+        {
+          "task_id": "T05889",
+          "title": "복지사각지대 발굴 및 초기상담",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05890",
+          "title": "찾아가는 복지 종합상담",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05891",
+          "title": "사례관리 계획·실행·점검",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05892",
+          "title": "사례관리자 사후관리(모니터링)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 아동복지과"
+        },
+        {
+          "task_id": "T05893",
+          "title": "지역자원서비스 발굴‧연계‧제공관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05894",
+          "title": "동 맞춤형복지 업무 안정화 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05895",
+          "title": "주민망 관리 운영(명예사회복지공무원 등)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05896",
+          "title": "누구나 돌봄 및 통합돌봄 사업 추진",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-16",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 3",
+      "tasks": [
+        {
+          "task_id": "T05897",
+          "title": "국민기초(맞춤형급여) 지원 및 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05898",
+          "title": "의료급여 관리 및 자활지원사업",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        },
+        {
+          "task_id": "T05899",
+          "title": "주거복지",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05900",
+          "title": "차상위계층 관리 및 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05901",
+          "title": "초중고 교육비지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05902",
+          "title": "한부모가정 지원 및 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 가족보육과"
+        },
+        {
+          "task_id": "T05903",
+          "title": "희망복지과 업무지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05904",
+          "title": "보훈대상자 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-17",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 4",
+      "tasks": [
+        {
+          "task_id": "T05905",
+          "title": "찾아가는 복지상담 추진",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05906",
+          "title": "사회적 고립 및 고독사 예방·관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        },
+        {
+          "task_id": "T05907",
+          "title": "긴급복지 및 무한돌봄사업",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 희망복지과"
+        },
+        {
+          "task_id": "T05908",
+          "title": "긴급복지지원 자원 발굴 및 연계",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05909",
+          "title": "복지사각지대 발굴 및 초기상담",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05910",
+          "title": "무한나르미 신청 현장조사 및 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-18",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 5",
+      "tasks": [
+        {
+          "task_id": "T05911",
+          "title": "복지대상자 초기상담",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05912",
+          "title": "장애인등록, 재판정, 장애인연금 및 장애인서비스 지원관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 노인장애인과"
+        },
+        {
+          "task_id": "T05913",
+          "title": "발달재활‧활동지원서비스",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 노인장애인과"
+        },
+        {
+          "task_id": "T05914",
+          "title": "장애아동 가족지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05915",
+          "title": "장애인일자리 지원관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 노인장애인과"
+        },
+        {
+          "task_id": "T05916",
+          "title": "노인기초연금,노인돌봄서비스,장기요양",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05917",
+          "title": "노인장애인과 업무지원(경로당 업무 제외)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05918",
+          "title": "장사업무",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-19",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 6",
+      "tasks": [
+        {
+          "task_id": "T05919",
+          "title": "청소년복지(청소년증 발급 등)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05920",
+          "title": "바우처 사업",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "보건소 건강증진과"
+        },
+        {
+          "task_id": "T05921",
+          "title": "아동수당 접수",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 아동복지과"
+        },
+        {
+          "task_id": "T05922",
+          "title": "보육료, 양육수당, 아이돌봄서비스",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05923",
+          "title": "아동 급식지원 신청 접수 및 대상자 관리",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": "복지교육국 아동복지과"
+        },
+        {
+          "task_id": "T05924",
+          "title": "아동복지과 업무 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05925",
+          "title": "가족보육과 업무 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05926",
+          "title": "문화누리카드 지원사업",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    },
+    {
+      "seat_id": "S-DONG-20",
+      "dept_id": "D-DONG",
+      "team": "찾아가는 보건복지팀",
+      "role": "주무관",
+      "label": "찾아가는 보건복지팀 주무관 7",
+      "tasks": [
+        {
+          "task_id": "T05927",
+          "title": "의료·요양 통합돌봄 업무 추진",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05928",
+          "title": "돌봄대상자 발굴 및 조사",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05929",
+          "title": "돌봄서비스 연계 및 지원 (가사·이동·일상생활·AI·주거 등)",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05930",
+          "title": "통합돌봄 대상자 기타서비스 연계 및 조사",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        },
+        {
+          "task_id": "T05931",
+          "title": "희망복지과(통합돌봄관련) 업무 지원",
+          "kind": "고유업무",
+          "label": "동위임사무",
+          "basis": null,
+          "other_dept": null
+        }
+      ]
+    }
+  ]
+}

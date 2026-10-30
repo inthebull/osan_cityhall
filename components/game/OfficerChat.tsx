@@ -1,20 +1,34 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { BookOpen, Lock, Send } from "lucide-react";
 
-type Citation = { id: string; title: string; page: number; source_url: string; text: string };
+type Citation = { id: string; title: string; page: number; kind?: "manual" | "duty"; source_url: string; text: string };
 type Answer = { found: boolean; answer: string; citations: Citation[]; locked?: boolean; error?: string };
 type Turn = { q: string; a: Answer | null };
 
 // 부서 방의 AI 주무관 대화창. 답은 모두 초안이며 근거 쪽을 함께 보여 준다.
-export function OfficerChat({ deptId, deptName, onClose }: { deptId: string; deptName: string; onClose: () => void }) {
+export function OfficerChat({
+  deptId,
+  deptName,
+  onClose,
+  prefill,
+}: {
+  deptId: string;
+  deptName: string;
+  onClose?: () => void;
+  prefill?: { text: string; n: number };
+}) {
   const [question, setQuestion] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
   const [passcode, setPasscode] = useState("");
   const [passError, setPassError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (prefill) setQuestion(prefill.text);
+  }, [prefill]);
 
   async function ask(q: string) {
     setBusy(true);
@@ -68,7 +82,10 @@ export function OfficerChat({ deptId, deptName, onClose }: { deptId: string; dep
         <h2 className="font-display text-2xl text-navy">{deptName} AI 주무관</h2>
         <span className="rounded-sm border-2 border-navy bg-paper-2 px-2 text-xs font-semibold text-navy">답변은 초안</span>
       </div>
-      <p className="mt-1 text-sm leading-relaxed">내려받은 업무 지침에서 근거를 찾아 답합니다. 지침에 없으면 없다고 말씀드리고, 최종 판단은 담당자가 합니다.</p>
+      <p className="mt-1 text-sm leading-relaxed">자리별 업무 목록·분장사무와 내려받은 지침에서 근거를 찾아 답합니다. 자료에 없으면 없다고 말씀드리고, 최종 판단은 담당자가 합니다.</p>
+      <a href={`/handover?dept=${deptId}`} className="mt-1 inline-block text-xs font-semibold text-mint underline">
+        이 부서 인수인계 슬라이드 보기
+      </a>
 
       <div className="mt-3 max-h-64 space-y-3 overflow-y-auto pr-1">
         {turns.map((turn, i) => (
@@ -89,7 +106,7 @@ export function OfficerChat({ deptId, deptName, onClose }: { deptId: string; dep
                           className="flex items-center gap-1 text-left text-xs font-semibold text-mint"
                         >
                           <BookOpen size={14} />
-                          {c.title} {c.page}쪽
+                          {c.title}{c.kind === "duty" ? "" : ` ${c.page}쪽`}
                         </button>
                         {open === `${i}:${c.id}` && (
                           <div className="mt-1 rounded-sm bg-foam p-2 text-xs leading-relaxed">
@@ -137,9 +154,11 @@ export function OfficerChat({ deptId, deptName, onClose }: { deptId: string; dep
         <button type="submit" disabled={busy} className="rounded-md border-2 border-navy bg-mint px-3 py-2 text-foam disabled:opacity-50" aria-label="질문 보내기">
           <Send size={18} />
         </button>
-        <button type="button" onClick={onClose} className="rounded-md border-2 border-navy bg-foam px-3 py-2 text-sm font-semibold text-navy">
-          닫기
-        </button>
+        {onClose && (
+          <button type="button" onClick={onClose} className="rounded-md border-2 border-navy bg-foam px-3 py-2 text-sm font-semibold text-navy">
+            닫기
+          </button>
+        )}
       </form>
     </>
   );
