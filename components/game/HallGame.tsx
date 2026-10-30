@@ -5,21 +5,18 @@ import { Building2, MessageCircle } from "lucide-react";
 import { unlockAudio } from "./audio";
 import { HallEngine, type Hud } from "./engine";
 import { directory, floorList, type FloorId, type Spot } from "./world";
+import { DEMO_CASES, DEPT_NAMES } from "@/lib/pingpong/demo";
+import { decide } from "@/lib/pingpong/score";
 
 type Overlay =
   | { kind: "talk"; spot: Spot; page: number }
   | { kind: "floors" }
-  | { kind: "pingpong"; phase: "ask" | "result" }
+  | { kind: "pingpong"; phase: "ask" | "result"; caseIndex: number }
   | { kind: "tool"; hours: number }
   | { kind: "market" }
   | { kind: "roof" }
   | { kind: "minwon"; spot: Spot };
 
-const BARS = [
-  { name: "기후환경정책과", score: 78, note: "가로수·낙엽 · 사무분장" },
-  { name: "안전정책과", score: 54, note: "배수구 · 보도" },
-  { name: "민원여권과", score: 31, note: "접수 창구" },
-];
 
 const SHOPS = [
   { name: "행사 준비 체크리스트", blurb: "시민의 날, 월례회, 현수막" },
@@ -128,7 +125,7 @@ export function HallGame() {
     engine.lock();
     if (spot.stamp && spot.action !== "pingpong") engine.grant(spot.stamp);
     if (spot.action === "floors") setOverlay({ kind: "floors" });
-    else if (spot.action === "pingpong") setOverlay({ kind: "pingpong", phase: "ask" });
+    else if (spot.action === "pingpong") setOverlay({ kind: "pingpong", phase: "ask", caseIndex: 0 });
     else if (spot.action === "tool") setOverlay({ kind: "tool", hours: 4 });
     else if (spot.action === "market") setOverlay({ kind: "market" });
     else if (spot.action === "roof") setOverlay({ kind: "roof" });
@@ -408,32 +405,53 @@ export function HallGame() {
               </>
             )}
 
-            {overlay.kind === "pingpong" && (
+            {overlay.kind === "pingpong" && (() => {
+              const demo = DEMO_CASES[overlay.caseIndex];
+              const decision = decide(demo.candidates);
+              const shown = overlay.phase === "result";
+              const notes = Object.fromEntries(demo.candidates.map((c) => [c.dept_id, c.note]));
+              return (
               <>
-                <h2 className="font-display text-2xl text-navy">업무 핑퐁 제로</h2>
+                <div className="flex items-center justify-between gap-2">
+                  <h2 className="font-display text-2xl text-navy">AI 업무배분</h2>
+                  <span className="rounded-sm border-2 border-navy bg-paper-2 px-2 text-xs font-semibold text-navy">시연용 점수</span>
+                </div>
+                <div className="mt-2 flex gap-1">
+                  {DEMO_CASES.map((c, i) => (
+                    <button key={c.id} type="button" onClick={() => setOverlay({ kind: "pingpong", phase: "ask", caseIndex: i })}
+                      className={`rounded-sm border-2 border-navy px-2 py-1 text-xs font-semibold ${i === overlay.caseIndex ? "bg-mint text-foam" : "bg-foam text-navy"}`}>
+                      사례 {i + 1}
+                    </button>
+                  ))}
+                </div>
                 <p className="mt-2 text-sm leading-relaxed">
-                  「가로수가 간판을 가리고, 낙엽이 배수구를 막아요.」 점수는 사무분장 40, 과거 사례 25, 의미 유사 20, 대상 일치 10, 조직 관계 5로 계산합니다.
+                  「{demo.input}」{demo.stage ? ` (${demo.stage})` : ""} 점수는 AI가 아니라 코드가 사무분장 40, 과거 사례 25, 의미 유사 20, 대상 일치 10, 조직 관계 5로 계산합니다.
                 </p>
                 <ul className="mt-3 space-y-2">
-                  {BARS.map((bar) => (
-                    <li key={bar.name}>
+                  {decision.ranked.map((c) => (
+                    <li key={c.dept_id}>
                       <div className="flex items-baseline justify-between text-sm">
-                        <span className="font-semibold">{bar.name}</span>
-                        <span className="text-navy">{overlay.phase === "result" ? bar.score : "—"}</span>
+                        <span className="font-semibold">{DEPT_NAMES[c.dept_id] ?? c.dept_id}</span>
+                        <span className="text-navy">{shown ? c.score : "—"}</span>
                       </div>
                       <div className="mt-1 h-3 overflow-hidden rounded-sm border-2 border-navy bg-foam">
-                        <div
-                          className="h-full bg-mint transition-[width] duration-700 ease-out"
-                          style={{ width: overlay.phase === "result" ? `${bar.score}%` : "0%" }}
-                        />
+                        <div className="h-full bg-mint transition-[width] duration-700 ease-out" style={{ width: shown ? `${c.score}%` : "0%" }} />
                       </div>
-                      <p className="text-xs text-navy">{bar.note}</p>
+                      <p className="text-xs text-navy">
+                        {notes[c.dept_id]}
+                        {shown && ` · 사무분장 ${Math.round(c.breakdown.duty)} · 사례 ${Math.round(c.breakdown.case)} · 유사 ${Math.round(c.breakdown.semantic)} · 대상 ${Math.round(c.breakdown.target)} · 조직 ${Math.round(c.breakdown.org)}`}
+                        {!c.hasDirectEvidence && " · 직접 근거 없음"}
+                      </p>
                     </li>
                   ))}
                 </ul>
-                {overlay.phase === "result" && (
+                {shown && (
                   <p className="mt-3 text-sm leading-relaxed">
-                    주관은 기후환경정책과, 협조는 안전정책과. 1·2위 차이가 10점 이상이라 바로 배정 초안이 나갑니다. 확정은 권한자가 합니다. 봉투가 그 방으로 날아갑니다.
+                    {decision.kind === "assign"
+                      ? `배정 초안: ${DEPT_NAMES[decision.lead.dept_id]}. 1·2위 차이가 10점 이상이고 직접 근거가 있습니다. 확정은 권한자가 합니다.`
+                      : decision.reason === "close_scores"
+                        ? "검토 필요: 1·2위 점수 차이가 10점 미만입니다. AI가 정하지 않고 조정 담당자에게 넘깁니다."
+                        : "검토 필요: 직접 근거가 확인되지 않았습니다. 근거를 보강한 뒤 다시 판정합니다."}
                   </p>
                 )}
                 <div className="mt-3 flex gap-2">
@@ -442,7 +460,7 @@ export function HallGame() {
                       type="button"
                       onClick={() => {
                         engineRef.current?.markPingpong();
-                        setOverlay({ kind: "pingpong", phase: "result" });
+                        setOverlay({ kind: "pingpong", phase: "result", caseIndex: overlay.caseIndex });
                       }}
                       className="rounded-md border-2 border-navy bg-rose px-4 py-2 font-semibold text-foam"
                     >
@@ -458,7 +476,8 @@ export function HallGame() {
                   </button>
                 </div>
               </>
-            )}
+              );
+            })()}
 
             {overlay.kind === "market" && (
               <>
