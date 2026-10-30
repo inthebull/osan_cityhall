@@ -1,5 +1,5 @@
 // 브라우저에서 인수인계 슬라이드를 .pptx로 저장한다.
-// 배치 규칙은 layout.ts와 같고, 여기서는 16:9(13.33 x 7.5 in) 좌표로 그리기만 한다.
+// 색·서체·격자는 DESIGN.md, 배치 규칙은 layout.ts와 같고, 여기서는 16:9(13.33 x 7.5 in) 좌표로 그리기만 한다.
 import type PptxGenJS from "pptxgenjs";
 import type { Slide } from "./deck";
 import { BADGE, HEADER, basisLabel, basisTone, chipsOf, gridOf, layoutOf, sourceRefs, splitRow, type Tone } from "./layout";
@@ -7,6 +7,7 @@ import { BADGE, HEADER, basisLabel, basisTone, chipsOf, gridOf, layoutOf, source
 const NAVY = "24344C";
 const MINT = "1F9A7C";
 const MINT_2 = "D7F3EA";
+const MINT_DEEP = "14634F"; // 작은 글자용(흰 바탕 대비 7:1)
 const FOAM = "FBF7F0";
 const LINE = "DDCFB6";
 const MUTED = "6B7280";
@@ -37,7 +38,7 @@ function sizeFor(h: number, len: number): number {
 }
 
 function numberDot(slide: PSlide, S: Shapes, n: number, x: number, y: number, d = 0.42) {
-  slide.addText(String(n), t({ shape: S.ellipse, x, y, w: d, h: d, fill: { color: MINT }, color: "FFFFFF", fontSize: 12, bold: true, align: "center", valign: "middle" }));
+  slide.addText(String(n), t({ shape: S.ellipse, x, y, w: d, h: d, fill: { color: MINT_DEEP }, color: "FFFFFF", fontSize: 12, bold: true, align: "center", valign: "middle" }));
 }
 
 function card(slide: PSlide, S: Shapes, b: Box, tone: Tone = "plain") {
@@ -50,7 +51,7 @@ function chrome(slide: PSlide, S: Shapes, s: Slide) {
   slide.background = { color: "FFFFFF" };
   slide.addShape(S.rect, { x: 0, y: 0, w: 13.33, h: 0.5, fill: { color: NAVY }, line: { color: NAVY, width: 0 } });
   slide.addText(HEADER, t({ x: X, y: 0.08, w: 6, h: 0.34, fontSize: 11, color: MINT_2, valign: "middle" }));
-  slide.addText(BADGE, t({ x: 9.75, y: 0.09, w: 3.0, h: 0.32, fontSize: 11, bold: true, color: "FFFFFF", fill: { color: MINT }, align: "center", valign: "middle" }));
+  slide.addText(BADGE, t({ x: 9.75, y: 0.09, w: 3.0, h: 0.32, fontSize: 11, bold: true, color: "FFFFFF", fill: { color: MINT_DEEP }, align: "center", valign: "middle" }));
 
   slide.addText(s.title, t({ x: X, y: 0.75, w: W, h: 0.75, fontSize: 28, bold: true, color: NAVY, valign: "middle", fit: "shrink" }));
   slide.addShape(S.rect, { x: X, y: 1.55, w: 1.1, h: 0.07, fill: { color: MINT }, line: { color: MINT, width: 0 } });
@@ -64,7 +65,7 @@ function chrome(slide: PSlide, S: Shapes, s: Slide) {
       cx += w + 0.15;
     }
   } else if (s.tag || s.subtitle) {
-    slide.addText([s.tag, s.subtitle].filter(Boolean).join("  ·  "), t({ x: X + 1.3, y: 1.4, w: W - 1.3, h: 0.38, fontSize: 14, bold: true, color: MINT, valign: "middle", fit: "shrink" }));
+    slide.addText([s.tag, s.subtitle].filter(Boolean).join("  ·  "), t({ x: X + 1.3, y: 1.4, w: W - 1.3, h: 0.38, fontSize: 14, bold: true, color: MINT_DEEP, valign: "middle", fit: "shrink" }));
   }
 }
 
@@ -72,7 +73,7 @@ function footer(slide: PSlide, S: Shapes, s: Slide, i: number, total: number, no
   const refs = sourceRefs(s);
   if (refs.length) {
     slide.addText(
-      [{ text: "근거  ", options: { bold: true, color: MINT } }, { text: refs.join(" · "), options: { color: NAVY } }],
+      [{ text: "근거  ", options: { bold: true, color: MINT_DEEP } }, { text: refs.join(" · "), options: { color: NAVY } }],
       t({ x: X, y: 6.3, w: W, h: 0.42, fontSize: 10, valign: "top", fit: "shrink" }),
     );
   }
@@ -118,7 +119,7 @@ function explain(slide: PSlide, S: Shapes, s: Slide) {
   card(slide, S, { x: X, y: TOP, w: mainW, h }, "ok");
   slide.addText(
     [
-      { text: "이 업무는", options: { bold: true, color: MINT, fontSize: 13, breakLine: true } },
+      { text: "이 업무는", options: { bold: true, color: MINT_DEEP, fontSize: 13, breakLine: true } },
       { text: main ?? "", options: { color: NAVY, fontSize: (main ?? "").length > 160 ? 16 : 20 } },
     ],
     t({ x: X + 0.35, y: TOP + 0.2, w: mainW - 0.6, h: h - 0.4, valign: "top", paraSpaceBefore: 4, fit: "shrink" }),
@@ -129,7 +130,7 @@ function explain(slide: PSlide, S: Shapes, s: Slide) {
     card(slide, S, { x: rx, y: TOP, w: rw, h });
     slide.addText(
       [
-        { text: s.id === "summary" ? "이어서 볼 내용" : "유의할 점", options: { bold: true, color: "C9843A", fontSize: 13, breakLine: true } },
+        { text: s.id === "summary" ? "이어서 볼 내용" : "유의할 점", options: { bold: true, color: TONE.warn.ink, fontSize: 13, breakLine: true } },
         ...rest.map((r, k) => ({ text: r, options: { color: NAVY, fontSize: 14, breakLine: k < rest.length - 1 } })),
       ],
       t({ x: rx + 0.35, y: TOP + 0.2, w: rw - 0.55, h: h - 0.4, valign: "top", paraSpaceBefore: 4, fit: "shrink" }),

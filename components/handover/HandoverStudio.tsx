@@ -20,14 +20,14 @@ const TONE_CLASS: Record<Tone, string> = {
   plain: "border-line bg-foam text-navy",
 };
 
-// PPT(lib/handover/pptx.ts)와 같은 배치 규칙(lib/handover/layout.ts)으로 그린다.
+// 색·서체는 DESIGN.md, PPT(lib/handover/pptx.ts)와 같은 배치 규칙(lib/handover/layout.ts)으로 그린다.
 function Card({ tone = "plain", className = "", children }: { tone?: Tone; className?: string; children: ReactNode }) {
   return <div className={`min-h-0 overflow-y-auto rounded-sm border border-l-4 p-2 sm:p-3 ${TONE_CLASS[tone]} ${className}`}>{children}</div>;
 }
 
 function Dot({ n, className = "" }: { n: number | string; className?: string }) {
   return (
-    <span className={`inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-mint text-[10px] font-bold text-foam sm:size-6 sm:text-xs ${className}`}>{n}</span>
+    <span className={`inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-mint-deep text-[10px] font-bold text-foam sm:size-6 sm:text-xs ${className}`}>{n}</span>
   );
 }
 
@@ -45,12 +45,12 @@ function SlideBody({ slide }: { slide: Slide }) {
       <>
         <div className="flex min-h-0 flex-1 gap-2">
           <Card tone="ok" className={rest.length ? "basis-3/5" : "flex-1"}>
-            <p className="text-xs font-bold text-mint">이 업무는</p>
+            <p className="text-xs font-bold text-mint-deep">이 업무는</p>
             <p className="text-sm leading-relaxed text-navy sm:text-lg">{main}</p>
           </Card>
           {rest.length > 0 && (
             <Card className="flex-1">
-              <p className="text-xs font-bold text-wood">{slide.id === "summary" ? "이어서 볼 내용" : "유의할 점"}</p>
+              <p className="text-xs font-bold text-[#7a4a12]">{slide.id === "summary" ? "이어서 볼 내용" : "유의할 점"}</p>
               {rest.map((r, i) => (
                 <p key={i} className="text-xs leading-relaxed sm:text-sm">{r}</p>
               ))}
@@ -153,7 +153,7 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
     <div className="flex aspect-video w-full flex-col overflow-hidden rounded-md border-4 border-navy bg-white text-navy">
       <div className="flex shrink-0 items-center justify-between gap-2 bg-navy px-3 py-1 text-[10px] sm:px-5 sm:text-xs">
         <span className="text-mint-2">{HEADER}</span>
-        <span className="rounded-sm bg-mint px-2 py-0.5 font-semibold text-foam">{BADGE}</span>
+        <span className="rounded-sm bg-mint-deep px-2 py-0.5 font-semibold text-foam">{BADGE}</span>
       </div>
       <div className="flex min-h-0 flex-1 flex-col px-3 pb-2 pt-2 sm:px-5 sm:pt-3">
         <h2 className="font-display text-lg sm:text-3xl">{slide.title}</h2>
@@ -166,7 +166,7 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
                 </span>
               ))
             : (slide.tag || slide.subtitle) && (
-                <span className="text-xs font-semibold text-mint sm:text-sm">{[slide.tag, slide.subtitle].filter(Boolean).join(" · ")}</span>
+                <span className="text-xs font-semibold text-mint-deep sm:text-sm">{[slide.tag, slide.subtitle].filter(Boolean).join(" · ")}</span>
               )}
         </div>
         <div className="mt-2 flex min-h-0 flex-1 flex-col sm:mt-3">
@@ -175,7 +175,7 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
         {slide.sources && slide.sources.length > 0 && (
           <details className="mt-2 shrink-0 text-[10px] sm:text-xs">
             <summary className="cursor-pointer">
-              <b className="text-mint">근거</b> {sourceRefs(slide).slice(0, 2).join(" · ")}
+              <b className="text-mint-deep">근거</b> {sourceRefs(slide).slice(0, 2).join(" · ")}
               {sourceRefs(slide).length > 2 ? " 외" : ""}
             </summary>
             <ul className="mt-1 max-h-24 space-y-1 overflow-y-auto">
