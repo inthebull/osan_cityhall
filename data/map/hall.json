@@ -1,0 +1,894 @@
+{
+  "_note": "본관 1~5층 배치는 실제 청사 층별 안내판을 근거로 그렸습니다(팀 확인 2026-10-30). 별관은 일부만 반영. 좌표 단위는 타일(30×18).",
+  "tile": 32,
+  "size": {
+    "w": 30,
+    "h": 18
+  },
+  "floors": [
+    {
+      "id": "f1",
+      "name": "본관 1층",
+      "floor_plan": "/floorplans/main-1f.png",
+      "spawn": {
+        "x": 16,
+        "y": 9
+      },
+      "rooms": [
+        {
+          "id": "tax",
+          "name": "세정과",
+          "x": 2,
+          "y": 2,
+          "w": 6,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "세정과 AI 주무관. 취득세 신고와 납부 계산은 이쪽입니다. 근거 조문을 같이 펼쳐 드려요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "collect",
+          "name": "징수과",
+          "x": 9,
+          "y": 2,
+          "w": 6,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "징수과 AI 주무관. 체납 안내와 납부 일정은 징수과 달력에 남아 있습니다. 담당이 바뀌어도 일정은 청사에 남아요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "hope",
+          "name": "희망복지과",
+          "x": 16,
+          "y": 2,
+          "w": 6,
+          "h": 5,
+          "floor": "c",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "희망복지과 AI 주무관. 긴급복지와 통합사례는 여기서 받습니다. 애매하면 3층 업무 핑퐁으로 보내 주세요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "nh",
+          "name": "농협 시청지점",
+          "x": 23,
+          "y": 2,
+          "w": 6,
+          "h": 5,
+          "floor": "t",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "농협 AI 주무관. 시청 안 금융 창구입니다. 공과금과 수납 안내는 여기서 끝나요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "minwon",
+          "name": "민원여권과",
+          "x": 2,
+          "y": 12,
+          "w": 5,
+          "h": 4,
+          "floor": "t",
+          "door": "n",
+          "action": "minwon",
+          "stamp": "minwon",
+          "lines": [
+            "시민 안내 — 여권 재발급은 이 창구에서 신청해요. 여권용 사진과 신분증을 준비해 주세요.",
+            "공무원 요약 — 민원여권과. 필요 서류: 사진, 신분증. 다국어 답은 왼쪽에, 담당 부서 요약은 오른쪽에 같이 남습니다."
+          ],
+          "dept_id": "D-CIVIL",
+          "confirmed": true
+        },
+        {
+          "id": "land",
+          "name": "토지정보과",
+          "x": 8,
+          "y": 12,
+          "w": 5,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "토지정보과 AI 주무관. 토지대장, 지적, 부동산 거래 신고는 여기입니다. 건축 허가 자체는 별관 쪽 일이고, 1층에서는 대장 열람을 맡아요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "guide",
+          "name": "안내데스크",
+          "x": 14,
+          "y": 12,
+          "w": 5,
+          "h": 4,
+          "floor": "c",
+          "door": "n",
+          "action": "talk",
+          "stamp": "guide",
+          "lines": [
+            "어서 오세요. 오산시 AI 청사, 본관 1층 로비입니다.",
+            "위가 세정과·징수과·희망복지과·농협, 아래가 민원여권과·토지정보과·안내·위생과·노인장애인과입니다.",
+            "왼쪽에서 층을 고르고 부서를 누르면 그 방으로 바로 가 물어봅니다. 걸어서 E로 말을 걸 수도 있어요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "hygiene",
+          "name": "위생과",
+          "x": 20,
+          "y": 12,
+          "w": 4,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "위생과 AI 주무관. 식품·공중위생 영업 안내는 위생과입니다. 현장 사진은 2층 상황실로 넘기면 위치가 찍혀요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "senior",
+          "name": "노인장애인과",
+          "x": 25,
+          "y": 12,
+          "w": 4,
+          "h": 4,
+          "floor": "c",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "노인장애인과 AI 주무관. 노인·장애인 서비스 창구입니다. 신청 서류는 쉬운 말로 다시 써 드릴 수 있어요."
+          ],
+          "dept_id": "D-ELDER",
+          "confirmed": true
+        }
+      ],
+      "extras": {
+        "elevators": [
+          {
+            "x": 11,
+            "y": 9
+          },
+          {
+            "x": 21,
+            "y": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "f2",
+      "name": "본관 2층",
+      "floor_plan": "/floorplans/main-2f.png",
+      "spawn": {
+        "x": 16,
+        "y": 9
+      },
+      "rooms": [
+        {
+          "id": "advice",
+          "name": "정책자문실",
+          "x": 2,
+          "y": 2,
+          "w": 6,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "정책자문실 AI 주무관. 시정 현안을 짧게 메모해 두는 방입니다. 결론은 근거와 함께 남깁니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "jachi",
+          "name": "자치행정과",
+          "x": 9,
+          "y": 2,
+          "w": 12,
+          "h": 5,
+          "floor": "c",
+          "door": "s",
+          "action": "tool",
+          "stamp": "jachi",
+          "lines": [
+            "11월에는 예산 편성 자료를 모으고, 12월에는 연말 정산 안내가 옵니다.",
+            "이 방의 능력치는 업무의 능력입니다. 법률해석 4, 복무·인사 5, 협업 4.",
+            "책상 위에 초과근무 계산기를 만들 수 있어요. 만든 도구는 청사에 남습니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "mul",
+          "name": "물향기실",
+          "x": 22,
+          "y": 2,
+          "w": 7,
+          "h": 5,
+          "floor": "g",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "물향기실 AI 주무관. 접견과 환담을 위한 방입니다. 민원 결론을 말하기 전에 쉬운 문장인지 한번 더 읽어요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "situ",
+          "name": "상황실",
+          "x": 2,
+          "y": 12,
+          "w": 8,
+          "h": 4,
+          "floor": "t",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "상황실 AI 주무관. 사진 한 장이 오면 얼굴과 번호판을 가리고, 위치와 긴급도만 상황판에 남깁니다. 소관이 애매하면 3층으로 넘기세요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "vice",
+          "name": "부시장실",
+          "x": 11,
+          "y": 12,
+          "w": 5,
+          "h": 4,
+          "floor": "c",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "부시장실 AI 주무관. 실국 현안을 모으는 방입니다. 핑퐁이 반복되면 옥상 상황판에 구간으로 찍혀요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "mayor",
+          "name": "시장실",
+          "x": 17,
+          "y": 12,
+          "w": 6,
+          "h": 4,
+          "floor": "c",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "시장실 AI 주무관. 집무실입니다. 보고는 한 장 판정서로 올라옵니다. 배정 확정은 사람이 합니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "directors",
+          "name": "국장실",
+          "x": 24,
+          "y": 12,
+          "w": 5,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "국장실 AI 주무관. 국별 현안실입니다. 협조 부서가 둘 이상이면 봉투가 방마다 한 장씩 갑니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        }
+      ],
+      "extras": {
+        "elevators": [
+          {
+            "x": 12,
+            "y": 9
+          },
+          {
+            "x": 22,
+            "y": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "f3",
+      "name": "본관 3층",
+      "floor_plan": "/floorplans/main-3f.png",
+      "spawn": {
+        "x": 10,
+        "y": 9
+      },
+      "rooms": [
+        {
+          "id": "press",
+          "name": "홍보담당관",
+          "x": 2,
+          "y": 2,
+          "w": 5,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "홍보담당관 AI 주무관. 시민 문장은 짧게. 어려운 말은 형광펜으로 표시한 뒤 다시 씁니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "sports",
+          "name": "체육과",
+          "x": 8,
+          "y": 2,
+          "w": 5,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "체육과 AI 주무관. 생활체육 프로그램과 시설 일정은 여기 달력에 있습니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "climate",
+          "name": "기후환경정책과",
+          "label": "기후환경",
+          "x": 14,
+          "y": 2,
+          "w": 9,
+          "h": 5,
+          "floor": "g",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "기후환경정책과 AI 주무관. 가로수, 낙엽, 녹지 경계 업무가 자주 머무는 방입니다. 배수구 막힘은 안전·도로와 점수를 나눠 봅니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "jobs",
+          "name": "기업일자리과",
+          "x": 24,
+          "y": 2,
+          "w": 5,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "기업일자리과 AI 주무관. 기업 지원과 일자리 사업을 한 방에서 봅니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "meet",
+          "name": "업무조정",
+          "x": 2,
+          "y": 12,
+          "w": 12,
+          "h": 4,
+          "floor": "c",
+          "door": "n",
+          "action": "pingpong",
+          "lines": [
+            "대회의실입니다. 소관이 애매한 민원을 점수와 근거로 나눕니다. AI가 점수를 임의로 주지 않고, 사무분장과 사례로 계산합니다."
+          ],
+          "dept_id": null,
+          "virtual_space": "AI 업무배분(업무조정)",
+          "confirmed": false
+        },
+        {
+          "id": "econ",
+          "name": "민생경제과",
+          "x": 15,
+          "y": 12,
+          "w": 6,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "민생경제과 AI 주무관. 골목 상권과 민생 현안입니다. 간판 가림은 녹지·건축과 경계가 될 수 있어요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "budget",
+          "name": "기획예산과",
+          "x": 22,
+          "y": 12,
+          "w": 7,
+          "h": 4,
+          "floor": "t",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "기획예산과 AI 주무관. 기획과 예산을 같이 봅니다. 도구를 새로 만들어도 예산 항목이 없으면 초안만 남깁니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        }
+      ],
+      "extras": {
+        "elevators": [
+          {
+            "x": 6,
+            "y": 9
+          },
+          {
+            "x": 18,
+            "y": 9
+          }
+        ],
+        "portals": [
+          {
+            "x": 26,
+            "y": 9,
+            "to": "ax",
+            "title": "별관 연결통로",
+            "line": "본관 3층과 별관 3층이 이어집니다. 가족·교육·문화, 그리고 AI 도구 상가가 있습니다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "f4",
+      "name": "본관 4층",
+      "floor_plan": "/floorplans/main-4f.png",
+      "spawn": {
+        "x": 15,
+        "y": 9
+      },
+      "rooms": [
+        {
+          "id": "traffic",
+          "name": "교통정책과",
+          "x": 2,
+          "y": 2,
+          "w": 10,
+          "h": 5,
+          "floor": "w",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "교통정책과 AI 주무관. 교통과 주정차 정책입니다. 현장 도로는 안전정책과와 점수를 나눕니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "account",
+          "name": "회계과",
+          "x": 13,
+          "y": 2,
+          "w": 8,
+          "h": 5,
+          "floor": "t",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "회계과 AI 주무관. 지출과 결산 일정은 여기 달력에 고정입니다. 담당자가 떠나도 체크리스트는 남아요."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "edu",
+          "name": "정보화교육장",
+          "x": 22,
+          "y": 2,
+          "w": 7,
+          "h": 5,
+          "floor": "t",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "정보화교육장 AI 주무관. 직원이 도구를 같이 써 보는 방입니다. 만든 계산기는 별관 상가에 입주합니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "safety",
+          "name": "안전정책과",
+          "x": 2,
+          "y": 12,
+          "w": 14,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "안전정책과 AI 주무관. 재난과 안전입니다. 배수구·보도 파손은 여기와 기후·도로가 함께 봅니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "data",
+          "name": "데이터정책과",
+          "x": 17,
+          "y": 12,
+          "w": 12,
+          "h": 4,
+          "floor": "t",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "데이터정책과 AI 주무관. 업무 기록은 부서 이름이 아니라 업무 ID로 묶입니다. 상황판 숫자는 여기서 나옵니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        }
+      ],
+      "extras": {
+        "elevators": [
+          {
+            "x": 8,
+            "y": 9
+          },
+          {
+            "x": 24,
+            "y": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "f5",
+      "name": "본관 5층",
+      "floor_plan": "/floorplans/main-5f.png",
+      "spawn": {
+        "x": 20,
+        "y": 9
+      },
+      "rooms": [
+        {
+          "id": "roof",
+          "name": "옥상 정원",
+          "x": 2,
+          "y": 2,
+          "w": 8,
+          "h": 14,
+          "floor": "g",
+          "door": "e",
+          "action": "roof",
+          "stamp": "roof",
+          "lines": [
+            "청사에서 일어난 판정, 도장, 도구가 한 화면에 모입니다."
+          ],
+          "dept_id": null,
+          "virtual_space": "축적 현황",
+          "confirmed": false
+        },
+        {
+          "id": "assembly",
+          "name": "본회의장",
+          "x": 14,
+          "y": 2,
+          "w": 15,
+          "h": 5,
+          "floor": "c",
+          "door": "w",
+          "action": "talk",
+          "lines": [
+            "본회의장 AI 주무관. 의결은 여기서 합니다. AI 판정서는 참고 자료일 뿐, 표결을 대신하지 않습니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "council-office",
+          "name": "의회사무과",
+          "x": 14,
+          "y": 12,
+          "w": 5,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "의회사무과 AI 주무관. 의사 일정과 회의록 서식은 사무과 보관함입니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "members",
+          "name": "의원사무실",
+          "x": 20,
+          "y": 12,
+          "w": 4,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "의원사무실 AI 주무관. 의원실이 줄지어 있습니다. 민원 메모는 담당 부서 판정서와 링크됩니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        },
+        {
+          "id": "chair",
+          "name": "의장실",
+          "x": 25,
+          "y": 12,
+          "w": 4,
+          "h": 4,
+          "floor": "c",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "의장실 AI 주무관. 의장·부의장 집무입니다. 본회의 안건은 옆 회의장으로 이어집니다."
+          ],
+          "dept_id": null,
+          "confirmed": true
+        }
+      ],
+      "extras": {
+        "elevators": [
+          {
+            "x": 17,
+            "y": 9
+          },
+          {
+            "x": 23,
+            "y": 9
+          }
+        ],
+        "seal": [
+          [
+            11,
+            1
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            11,
+            16
+          ],
+          [
+            12,
+            16
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ax",
+      "name": "별관 3층",
+      "floor_plan": null,
+      "spawn": {
+        "x": 12,
+        "y": 9
+      },
+      "rooms": [
+        {
+          "id": "family",
+          "name": "가족보육과",
+          "x": 2,
+          "y": 2,
+          "w": 7,
+          "h": 5,
+          "floor": "c",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "가족보육과 AI 주무관. 보육과 가족 지원입니다. 신청 안내는 민원 창구 문장으로 다시 쓸 수 있어요."
+          ],
+          "dept_id": null,
+          "confirmed": false
+        },
+        {
+          "id": "child",
+          "name": "아동복지과",
+          "x": 10,
+          "y": 2,
+          "w": 7,
+          "h": 5,
+          "floor": "c",
+          "door": "s",
+          "action": "talk",
+          "lines": [
+            "아동복지과 AI 주무관. 아동 돌봄과 사례입니다. 여러 과가 겹치면 협조 봉투를 나눕니다."
+          ],
+          "dept_id": null,
+          "confirmed": false
+        },
+        {
+          "id": "lifelong",
+          "name": "평생교육과",
+          "x": 2,
+          "y": 12,
+          "w": 7,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "평생교육과 AI 주무관. 강좌 일정과 수강 안내가 달력에 있습니다."
+          ],
+          "dept_id": null,
+          "confirmed": false
+        },
+        {
+          "id": "culture",
+          "name": "문화예술과",
+          "x": 10,
+          "y": 12,
+          "w": 7,
+          "h": 4,
+          "floor": "w",
+          "door": "n",
+          "action": "talk",
+          "lines": [
+            "문화예술과 AI 주무관. 공연·전시 일정입니다. 홍보 문장은 본관 홍보담당관과 같이 봅니다."
+          ],
+          "dept_id": null,
+          "confirmed": false
+        },
+        {
+          "id": "market",
+          "name": "AI 도구 상가",
+          "x": 21,
+          "y": 2,
+          "w": 7,
+          "h": 14,
+          "floor": "t",
+          "door": "w",
+          "action": "market",
+          "stamp": "market",
+          "lines": [
+            "다른 팀이 만든 도구, 엑셀 계산기, 서식이 가게처럼 입주합니다. 만든 사람이 떠나도 카드는 남아요."
+          ],
+          "dept_id": null,
+          "virtual_space": "업무도구 축적(도구 상가)",
+          "confirmed": false
+        }
+      ],
+      "extras": {
+        "portals": [
+          {
+            "x": 5,
+            "y": 9,
+            "to": "f3",
+            "title": "본관 연결통로",
+            "line": "본관 3층 복도로 돌아갑니다."
+          }
+        ],
+        "seal": [
+          [
+            18,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            18,
+            2
+          ],
+          [
+            19,
+            2
+          ],
+          [
+            18,
+            3
+          ],
+          [
+            19,
+            3
+          ],
+          [
+            18,
+            4
+          ],
+          [
+            19,
+            4
+          ],
+          [
+            18,
+            5
+          ],
+          [
+            19,
+            5
+          ],
+          [
+            18,
+            6
+          ],
+          [
+            19,
+            6
+          ],
+          [
+            18,
+            11
+          ],
+          [
+            19,
+            11
+          ],
+          [
+            18,
+            12
+          ],
+          [
+            19,
+            12
+          ],
+          [
+            18,
+            13
+          ],
+          [
+            19,
+            13
+          ],
+          [
+            18,
+            14
+          ],
+          [
+            19,
+            14
+          ],
+          [
+            18,
+            15
+          ],
+          [
+            19,
+            15
+          ],
+          [
+            18,
+            16
+          ],
+          [
+            19,
+            16
+          ]
+        ]
+      }
+    }
+  ]
+}
