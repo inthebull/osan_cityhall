@@ -22,8 +22,11 @@ PPT는 pptxgenjs로 브라우저에서 만든다(`lib/handover/pptx.ts`). 화면
 
 ## 작업 순서
 
+### 0. 레퍼런스를 먼저 본다
+`osan-slide-references` 스킬의 패턴 목록(P01–P15)에서 장마다 쓸 패턴을 고른다. 새 배치를 만들 때는 거기에 패턴을 먼저 적고 번호를 코드 주석에 단다.
+
 ### 1. 장을 분류한다
-모든 장을 `layout.ts`의 배치 하나로 정한다: `cover`, `explain`, `cards`, `steps`, `table`, `questions`.
+모든 장을 `layout.ts`의 배치 하나로 정한다: `cover`, `section`, `overview`, `explain`, `cards`, `steps`, `table`, `questions`. 장 구분(`section`)은 `withSections`가 자동으로 끼운다.
 새 내용이 어디에도 맞지 않을 때만 새 배치를 만든다. 그때는 `Layout` 타입, `layoutOf`, `layout.test.ts`를 먼저 고친다.
 
 ### 2. 밀도를 정한다

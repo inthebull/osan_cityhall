@@ -9,14 +9,17 @@ export const COVER_NOTE = "2026 오산시 시정연구모임 F4O · 연구 시�
 // 민선9기 시정슬로건 가로형 로고타입 원본(DESIGN.md 0절)
 export const SLOGAN_LOGO = "/brand/osan-slogan-h.png";
 
-export type Layout = "cover" | "explain" | "cards" | "steps" | "table" | "questions";
+export type Layout = "cover" | "section" | "overview" | "explain" | "cards" | "steps" | "table" | "questions";
 
 // 장 종류별 배치. 글머리표가 많으면 카드 격자로 돌린다.
 export function layoutOf(s: Slide): Layout {
   const n = s.bullets.length;
+  if (s.id.startsWith("section-")) return "section";
   switch (s.kind) {
     case "cover":
       return "cover";
+    case "overview":
+      return n > 0 && n <= 16 ? "overview" : "cards";
     case "task":
       return n <= 3 && s.id !== "task-more" ? "explain" : "cards";
     case "firstweek":
@@ -63,4 +66,41 @@ export function basisTone(strength: "direct" | "review" | "none"): Tone {
 // 같은 문서·쪽은 한 번만 적는다.
 export function sourceRefs(s: Slide): string[] {
   return [...new Set((s.sources ?? []).map((x) => `${x.title} ${x.page}쪽`))];
+}
+
+// 장 구분(P07): 업무 장이 3장 이상이면 그 앞에, 협업·첫 주 장 앞에 남색 구분 장을 넣는다.
+// 내용은 바꾸지 않고 기존 장 제목만 모아 목차로 보여 준다. 화면과 PPT가 같은 함수를 쓴다.
+const BODY: Slide["kind"][] = ["task", "pack"];
+const WRAP: Slide["kind"][] = ["partners", "firstweek", "ask"];
+
+export function withSections(slides: Slide[]): Slide[] {
+  const body = slides.filter((s) => BODY.includes(s.kind));
+  const wrap = slides.filter((s) => WRAP.includes(s.kind));
+  const firstBody = slides.findIndex((s) => BODY.includes(s.kind));
+  const firstWrap = slides.findIndex((s) => s.kind === "partners" || s.kind === "firstweek");
+  const out: Slide[] = [];
+  let no = 0;
+  const section = (title: string, items: string[]): Slide => ({
+    id: `section-${++no}`,
+    kind: "overview",
+    tag: String(no).padStart(2, "0"),
+    title,
+    bullets: [...new Set(items)].slice(0, 6),
+  });
+  slides.forEach((s, i) => {
+    if (i === firstBody && body.length >= 3) out.push(section("업무별 안내", body.map((b) => b.title.split(" · ")[0])));
+    if (i === firstWrap && wrap.length >= 2) out.push(section("함께 일하는 곳과 첫 주", wrap.map((w) => w.title)));
+    out.push(s);
+  });
+  return out;
+}
+
+// 표지 날짜는 공문서 표기(2026. 10. 30.)로 쓴다(P13).
+export function officialDate(d = new Date()): string {
+  return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
+}
+
+// 요약 장의 큰 숫자(P09): "맡게 될 업무 6건" → "6"
+export function bigNumber(title: string): string | null {
+  return title.match(/(\d+)\s*건/)?.[1] ?? null;
 }
