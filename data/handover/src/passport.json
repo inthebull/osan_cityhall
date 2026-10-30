@@ -1,0 +1,74 @@
+{
+  "pack_id": "passport-issue",
+  "dept_id": "D-CIVIL",
+  "title": "여권 접수·재발급",
+  "team": "여권팀",
+  "match": ["여권접수", "여권 접수", "여권교부", "여권심사", "재발급사유서", "여권 분실"],
+  "summary": {
+    "text": "오산시는 외교부의 여권 사무를 대행하는 기관입니다. 발급·재발급 신청을 접수하고, 신청인의 신원을 확인해 심사하며, 수수료를 받고 완성된 여권을 교부합니다.",
+    "sources": [
+      { "doc_id": "passport-act", "page": 4, "quote": "사무의 일부를 대통령령으로 정하는 바에 따라 지방자치단체의 장에게 대행(代行)하게 할 수 있다" },
+      { "doc_id": "passport-act-decree", "page": 6, "quote": "1. 여권 등의 발급ㆍ재발급 신청 접수" }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "law",
+      "title": "근거 법령",
+      "items": [
+        { "text": "여권은 본인이 직접 신청하는 것이 원칙입니다. 대리 신청은 외교부령으로 정한 경우에만 됩니다. (여권법 제9조제3항)", "sources": [{ "doc_id": "passport-act", "page": 2, "quote": "여권의 발급 신청은 본인이 직접 하여야 한다" }] },
+        { "text": "18세 미만은 법정대리인의 동의를 받아 신청합니다. (여권법 제9조제4항)", "sources": [{ "doc_id": "passport-act", "page": 2, "quote": "법정대리인의 동의를 받아 여권의 발급을 신청하여야 한다" }] },
+        { "text": "재발급 사유는 기재 정보의 정정·변경, 분실, 훼손입니다. (여권법 제11조제1항)", "sources": [{ "doc_id": "passport-act", "page": 2, "quote": "발급받은 여권을 잃어버린 경우" }] },
+        { "text": "주소지가 오산이 아니어도 오산시에 신청할 수 있습니다. (여권법 제21조제2항)", "sources": [{ "doc_id": "passport-act", "page": 4, "quote": "주소지를 관할하지 아니하는 지방자치단체의 장에게도 이를 신청할 수 있다" }] }
+      ]
+    },
+    {
+      "kind": "process",
+      "title": "처리 절차",
+      "items": [
+        { "text": "① 접수: 신청서, 6개월 이내 촬영한 여권용 사진, 신분증을 확인합니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "여권용 사진 1매 (6개월 이내에 촬영한 사진)" }] },
+        { "text": "② 심사: 신청인의 신원을 확인하고 신청 내용을 심사합니다.", "sources": [{ "doc_id": "passport-act-decree", "page": 6, "quote": "2. 신청인의 신원 확인 등 심사" }] },
+        { "text": "③ 수수료 징수 후 여권이 오면 교부합니다. 수령은 본인이 직접 와야 합니다.", "sources": [{ "doc_id": "passport-act-decree", "page": 6, "quote": "6. 수수료 징수" }, { "doc_id": "passport-guide-reissue", "page": 4, "quote": "여권 수령시 본인이 직접 방문 필요" }] }
+      ]
+    },
+    {
+      "kind": "documents",
+      "title": "필요 서류",
+      "items": [
+        { "text": "18세 이상 재발급: 여권발급신청서, 여권용 사진 1매, 신분증, 유효기간이 남은 기존 여권", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "기존 여권(유효기간이 남아 있는 경우)" }] },
+        { "text": "가족관계 증명서는 행정정보 공동이용망으로 확인되면 받지 않습니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "행정정보 공동이용망을 통해 확인 가능한 경우 제출 생략" }] },
+        { "text": "18세 미만: 법정대리인 동의서와 법정대리인 인감증명서(또는 본인서명사실확인서)를 더 받습니다. 동의서에 서명한 법정대리인이 직접 오면 인감증명서는 생략합니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "법정대리인 인감증명서는 법정대리인동의서에 서명(날인)한 법정대리인이 직접 방문하는 경우 생략" }] },
+        { "text": "분실에 따른 재발급은 여권분실신고서를 함께 받습니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 3, "quote": "여권 분실에 의한 재발급 기본 구비서류 여권분실신고서" }] }
+      ]
+    },
+    {
+      "kind": "fees",
+      "title": "수수료",
+      "items": [
+        { "text": "복수여권 10년: 58면 52,000원, 26면 49,000원", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "10년 | 58면 | 52,000원 | 52불 | 10년 | 26면 | 49,000원" }] },
+        { "text": "18세 미만 복수여권 5년(8세 이상): 58면 44,000원", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "5년 | 58면 | 44,000원" }] },
+        { "text": "기존 여권의 남은 유효기간만 주는 재발급: 27,000원 / 단수여권: 17,000원", "sources": [{ "doc_id": "passport-guide-reissue", "page": 2, "quote": "잔여 유효기간 | 58면/26면 선택 | 27,000원" }, { "doc_id": "passport-guide-reissue", "page": 1, "quote": "1년 이내 | - | 17,000원" }] },
+        { "text": "낸 수수료는 원칙적으로 돌려주지 않습니다. 발급이 거부·제한되거나 수수료를 잘못 낸 경우에만 반환합니다.", "sources": [{ "doc_id": "passport-act-decree", "page": 6, "quote": "수수료가 명백히 잘못 납부된 경우에는 이를 반환한다" }] }
+      ]
+    },
+    {
+      "kind": "pitfalls",
+      "title": "자주 틀리는 점",
+      "items": [
+        { "text": "대리 신청은 18세 미만, 질병·장애, 의전상 필요한 경우만 됩니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "대리신청은 예외적인 경우(18세 미만 미성년자, 질병·장애, 의전상 필요)에 한하여 허용합니다." }] },
+        { "text": "5년 안에 두 번 이상 잃어버린 사람은 재발급 전에 분실 경위를 확인할 수 있고, 확인 기간은 신청일부터 30일 이내입니다.", "sources": [{ "doc_id": "passport-act", "page": 2, "quote": "재발급 신청일 전 5년 이내에 2회 이상 여권을 잃어버린 사람" }, { "doc_id": "passport-act", "page": 2, "quote": "재발급 신청일부터 30일 이내로 한다" }] },
+        { "text": "이름·주민등록번호·로마자 성명 변경에 따른 재발급은 온라인 신청이 안 되니 창구로 안내합니다. 사진 변경은 온라인도 됩니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 2, "quote": "여권 수록정보의 정정 및 변경에 의한 재발급의 경우 온라인 신청이 불가합니다. (단, 여권 사진 변경은 온라인 신청 가능)" }] },
+        { "text": "낙서나 기념 스탬프도 훼손으로 봅니다. 출입국에 문제가 될 수 있으니 재발급을 권합니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 3, "quote": "임의의 낙서나 기념 스탬프 날인 포함" }] }
+      ]
+    },
+    {
+      "kind": "faq",
+      "title": "자주 묻는 질문",
+      "items": [
+        { "text": "유효기간이 남았는데 새로 만들 수 있나요? 네, 만료 전에도 본인이 원하면 재발급을 신청할 수 있습니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 1, "quote": "유효기간이 만료되기 이전에 본인의 희망에 따라 새로운 여권을 신청하는 경우" }] },
+        { "text": "온라인으로 신청했는데 받을 곳을 바꿀 수 있나요? 신청이 끝나면 수령 기관은 바꿀 수 없습니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 4, "quote": "일단 신청이 완료되면 수령 기관 변경 불가" }] },
+        { "text": "아이 여권을 부모가 대신 받을 수 있나요? 법정대리인이 온라인으로 신청한 18세 미만 여권은 법정대리인이 대신 받을 수 있습니다.", "sources": [{ "doc_id": "passport-guide-reissue", "page": 4, "quote": "법정대리인이 대리 수령 가능합니다" }] }
+      ]
+    }
+  ]
+}

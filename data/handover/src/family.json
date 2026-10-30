@@ -1,0 +1,69 @@
+{
+  "pack_id": "family-register",
+  "dept_id": "D-CIVIL",
+  "title": "가족관계등록 신고·증명서 발급",
+  "team": "가족관계팀",
+  "match": ["가족관계등록신고서", "가족관계등록 신고서", "가족관계등록 증명서", "가족관계등록 사무", "동 신고 접수", "가족관계증명서", "가족관계 등록사항 신고", "출생ㆍ사망신고"],
+  "summary": {
+    "text": "출생·사망·혼인 같은 가족관계등록 신고서를 받아 기록하고, 가족관계증명서 같은 등록사항별 증명서를 발급합니다. 신고는 사건 본인의 등록기준지뿐 아니라 신고인의 주소지나 현재지에서도 받습니다.",
+    "sources": [
+      { "doc_id": "family-register-act", "page": 3, "quote": "신고사건 본인의 등록기준지 또는 신고인의 주소지나 현재지에서 할 수 있다" }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "law",
+      "title": "근거 법령",
+      "items": [
+        { "text": "증명서는 본인, 배우자, 직계혈족이 청구할 수 있고, 대리인은 위임을 받아야 합니다. (가족관계등록법 제14조)", "sources": [{ "doc_id": "family-register-act", "page": 2, "quote": "본인등의 대리인이 청구하는 경우에는 본인등의 위임을 받아야 한다" }] },
+        { "text": "출생신고는 출생 후 1개월 이내에 합니다. (제44조)", "sources": [{ "doc_id": "family-register-act", "page": 5, "quote": "출생의 신고는 출생 후 1개월 이내에 하여야 한다" }] },
+        { "text": "사망신고는 사망 사실을 안 날부터 1개월 이내에 진단서나 검안서를 붙여 합니다. (제84조)", "sources": [{ "doc_id": "family-register-act", "page": 9, "quote": "사망의 사실을 안 날부터 1개월 이내에 진단서 또는 검안서를 첨부하여 하여야 한다" }] },
+        { "text": "시에서는 출생·사망신고를 주민등록지 관할 동을 거쳐 할 수 있습니다. 동 행정복지센터가 접수하는 근거입니다. (제21조)", "sources": [{ "doc_id": "family-register-act", "page": 3, "quote": "주민등록을 할 지역을 관할하는 동을 거쳐 할 수 있다" }] }
+      ]
+    },
+    {
+      "kind": "process",
+      "title": "처리 절차",
+      "items": [
+        { "text": "① 신고서를 받을 때 신고인이나 제출인의 신분증으로 신분을 확인합니다.", "sources": [{ "doc_id": "family-report-identity-check", "page": 1, "quote": "신고인 또는 제출인{신고인의 사자(使者)로서 신고서를 제출하는 사람을 말한다. 이하 같다}의 주민등록증" }] },
+        { "text": "② 제출인이 출생·사망신고서를 대신 내면 신고인의 신분증 사본도 받아 확인합니다.", "sources": [{ "doc_id": "family-report-identity-check", "page": 1, "quote": "출생ㆍ사망신고서를 제출인이 접수하는 경우에는 신고인의 신분증명서 사본을 첨부하게 하여 신고인의 신분도 확인하여야 한다" }] },
+        { "text": "③ 수리하지 않는 신고는 그 사유를 신고인에게 지체 없이 서면으로 알립니다.", "sources": [{ "doc_id": "family-register-act", "page": 5, "quote": "신고를 수리하지 아니한 때에는 그 사유를 지체 없이 신고인에게 서면으로 통지하여야 한다" }] },
+        { "text": "④ 증명서 신청을 받으면 지체 없이 전산에 입력합니다.", "sources": [{ "doc_id": "family-certificate-guideline", "page": 1, "quote": "신청서를 접수한 때에는 지체 없이 전산정보처리조직에 입력하여야 한다" }] }
+      ]
+    },
+    {
+      "kind": "documents",
+      "title": "필요 서류",
+      "items": [
+        { "text": "본인이 증명서를 신청할 때는 신청서를 쓰지 않아도 됩니다(영문증명서는 제외).", "sources": [{ "doc_id": "family-certificate-guideline", "page": 1, "quote": "본인이 등록사항별 증명서(영문증명서는 제외한다) 발급을 신청하는 경우에는 신청서를 작성하지 아니할 수 있다" }] },
+        { "text": "대리인이 신청하면 본인 등이 서명·날인한 위임장 원본과 신분증명서 사본을 받습니다.", "sources": [{ "doc_id": "family-certificate-guideline", "page": 1, "quote": "본인 등이 서명 또는 날인한 위임장과 신분증명서" }, { "doc_id": "family-certificate-guideline", "page": 1, "quote": "위임장은 원본을 제출하되" }] },
+        { "text": "혼인처럼 당사자 한쪽만 출석한 창설적 신고는 불출석한 사람의 신분증, 인감증명서 또는 서명공증서로 신분을 확인합니다.", "sources": [{ "doc_id": "family-report-identity-check", "page": 1, "quote": "불출석 본인의 신분증명서를 제시받거나 신고서에 첨부된 인감증명서 또는 신고서의 서명에 대한 공증서" }] }
+      ]
+    },
+    {
+      "kind": "fees",
+      "title": "수수료·기한",
+      "items": [
+        { "text": "등록사항별 증명서는 통당 1,000원, 무인발급기는 500원, 인터넷 발급은 무료입니다.", "sources": [{ "doc_id": "family-register-rule", "page": 5, "quote": "등록사항별 증명서 및 제적등본의 수수료는 통당 1,000원으로 하고" }, { "doc_id": "family-register-rule", "page": 5, "quote": "무인증명서발급기를 이용하여 발급되는 등록사항별 증명서 및 제적등본의 수수료는 통당 500원" }] },
+        { "text": "신고 기간을 정당한 사유 없이 넘기면 5만원 이하의 과태료 대상입니다.", "sources": [{ "doc_id": "family-register-act", "page": 11, "quote": "정당한 사유 없이 기간 내에 하여야 할 신고 또는 신청을 하지 아니한 때에는 5만원 이하의 과태료를 부과한다" }] }
+      ]
+    },
+    {
+      "kind": "pitfalls",
+      "title": "자주 틀리는 점",
+      "items": [
+        { "text": "사생활 침해 등 부당한 목적이 분명한 증명서 청구는 발급을 거부할 수 있습니다.", "sources": [{ "doc_id": "family-certificate-guideline", "page": 1, "quote": "사생활의 비밀침해 등 부당한 목적임이 분명한 경우에는 등록사항별 증명서의 발급을 거부할 수 있다" }] },
+        { "text": "가정폭력 피해자 관련 증명서는 별도 지침이 먼저 적용됩니다. 교부 제한 대상인지 꼭 확인하세요.", "sources": [{ "doc_id": "family-certificate-guideline", "page": 1, "quote": "피해자의 개인정보가 기재된 다른 사람의 증명서에 대하여는" }] },
+        { "text": "협의이혼 신고와 사실혼 확정판결에 따른 혼인신고는 한쪽이 안 와도 불출석자 신분증을 요구하면 안 됩니다.", "sources": [{ "doc_id": "family-report-identity-check", "page": 1, "quote": "본인들 중 한쪽이 불출석하였더라도 신분확인을 위하여 신분증명서의 제시 등을 요구해서는 안 된다" }] }
+      ]
+    },
+    {
+      "kind": "faq",
+      "title": "자주 묻는 질문",
+      "items": [
+        { "text": "등록기준지가 오산이 아니어도 신고할 수 있나요? 네, 신고인의 주소지나 현재지에서도 할 수 있습니다.", "sources": [{ "doc_id": "family-register-act", "page": 3, "quote": "신고인의 주소지나 현재지에서 할 수 있다" }] },
+        { "text": "형제의 가족관계증명서를 뗄 수 있나요? 본인·배우자·직계혈족이 아니면 위임이 있거나 법에서 정한 사유가 있어야 합니다.", "sources": [{ "doc_id": "family-register-act", "page": 2, "quote": "본인 또는 배우자, 직계혈족(이하 “본인등”이라 한다)" }] }
+      ]
+    }
+  ]
+}

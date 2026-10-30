@@ -22,7 +22,7 @@ describe("맞춤 자료 인용 대조", () => {
 
   it("원문에 없는 인용, 없는 쪽, 없는 문서는 걸러 낸다", () => {
     expect(verifyPack(pack("여권은 우편으로만 신청한다"), docPages, pageText)[0]).toMatch(/없음/);
-    expect(verifyPack(pack("여권을 발급받으려는", 3), docPages, pageText)[0]).toMatch(/범위 밖/);
+    expect(verifyPack(pack("여권을 발급받으려는", 3), docPages, pageText)[0]).toMatch(/3쪽 없음/);
     const p = pack("여권");
     p.summary.sources[0].doc_id = "nope";
     expect(verifyPack(p, docPages, pageText)[0]).toMatch(/문서 nope 없음/);
