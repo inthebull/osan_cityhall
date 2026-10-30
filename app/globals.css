@@ -8,6 +8,15 @@
   --color-navy: #24344c;
   --color-navy-2: #1a2638;
   --color-mint: #1f9a7c;
+  --color-mint-deep: #14634f;
+  /* 문서 팔레트(DESIGN.md 2절): 시정슬로건 남색·청록 */
+  --color-osan-navy: #16288b;
+  --color-osan-teal: #00a0ad;
+  --color-osan-teal-deep: #006b73;
+  --color-osan-tint: #e0f4f5;
+  --color-doc-ink: #1f2937;
+  --color-doc-card: #f7f8fa;
+  --color-doc-line: #d9dee7;
   --color-mint-2: #d7f3ea;
   --color-wood: #c9843a;
   --color-line: #ddcfb6;

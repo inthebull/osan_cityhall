@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "validate-data": "tsx scripts/validate-data.ts",
-    "import:pingpong": "tsx scripts/import-pingpong.ts"
+    "import:pingpong": "tsx scripts/import-pingpong.ts",
+    "render:handover": "tsx scripts/render-handover.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

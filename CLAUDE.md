@@ -53,6 +53,7 @@ docs/                기획서, 설계서, 작업 순서
 - 데이터 형식은 `data/schema/*.schema.json`을 따른다. 형식을 바꾸면 스키마와 `scripts/validate-data.ts`를 같이 고친다.
 - 기능마다 서브 에이전트가 있다(`.claude/agents/`). 지도는 `map-builder`, 지식 베이스는 `kb-curator`, 인수인계는 `ai-officer`, 업무배분은 `pingpong-engine`, 업무도구 축적은 `tool-library`, 마무리 점검은 `security-reviewer`와 `demo-qa`.
 - 외부에서 가져온 스킬은 `.claude/skills/`, 목록과 출처는 `docs/04_외부스킬목록.md`.
+- 화면·PPT의 색·서체·배치·오산시 상징 사용은 루트 `DESIGN.md`를 따른다. PPT를 고칠 때는 `osan-pptx-design` 스킬과 `npm run render:handover` 점검을 쓴다.
 - 커밋 전: `npm run lint && npm run typecheck && npm test && npm run validate-data`.
 - 시연 장면이 바뀌면 `tests/e2e/demo.spec.ts`도 고친다.
 
