@@ -14,11 +14,25 @@ import {
   Wrench,
   X,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { unlockAudio } from "./audio";
 import { HallEngine, type Hud } from "./engine";
 import { directory, floorList, QUEST, type FloorId, type RoomKind, type Spot } from "./world";
 import { DEPT_NAMES } from "@/lib/pingpong/demo";
 import { LOBBY_EXAMPLES, judgeLobby, type LobbyResult } from "@/lib/pingpong/lobby";
+
+// WebGL이 되면 3D 장면을 쓰고, 안 되면(구형 PC 등) 기존 2D 캔버스로 그린다.
+const Hall3D = dynamic(() => import("./Hall3D").then((m) => m.Hall3D), { ssr: false });
+
+function hasWebGL() {
+  if (new URLSearchParams(window.location.search).has("2d")) return false;
+  try {
+    const c = document.createElement("canvas");
+    return Boolean(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
 
 type Overlay =
   | { kind: "talk"; spot: Spot; page: number }
@@ -98,6 +112,7 @@ export function HallGame() {
   const [wide, setWide] = useState(true);
   const [railFloor, setRailFloor] = useState<FloorId>("f1");
   const [pointer, setPointer] = useState(false);
+  const [use3d, setUse3d] = useState(false);
   overlayRef.current = overlay;
 
   useEffect(() => {
@@ -108,6 +123,10 @@ export function HallGame() {
       onSpot: (spot) => openSpot(spot),
     });
     engineRef.current = engine;
+    if (hasWebGL()) {
+      engine.renderer = "3d";
+      setUse3d(true);
+    }
     setHasSave(engine.hasSave);
     engine.start();
 
@@ -238,7 +257,7 @@ export function HallGame() {
     <main className="relative h-dvh w-full overflow-hidden bg-[#EEF1F6] font-sans text-slate-ink select-none">
       <canvas
         ref={canvasRef}
-        className={`absolute inset-0 h-full w-full touch-none ${pointer ? "cursor-pointer" : "cursor-default"}`}
+        className={`absolute inset-0 h-full w-full touch-none ${pointer ? "cursor-pointer" : "cursor-default"} ${use3d ? "invisible" : ""}`}
         onPointerDown={(event) => {
           pressRef.current = local(event);
         }}
@@ -256,6 +275,16 @@ export function HallGame() {
         }}
         onWheel={(event) => engineRef.current?.zoomBy(event.deltaY > 0 ? 0.9 : 1.1)}
       />
+      {use3d && (
+        <Hall3D
+          engineRef={engineRef}
+          insetLeft={started && railOpen && wide ? 296 : 0}
+          insetRight={overlay && wide ? 432 : 0}
+          onBackgroundClick={() => {
+            if (overlayRef.current) close();
+          }}
+        />
+      )}
 
       {/* 위쪽 표시줄 */}
       <header

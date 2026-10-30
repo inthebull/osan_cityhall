@@ -86,6 +86,8 @@ export class HallEngine {
   insetRight = 0;
   hasSave = false;
   mode: "title" | "play" = "title";
+  // "3d"이면 그리기는 React Three Fiber 장면(Hall3D)이 맡고 이 엔진은 이동·판정만 한다.
+  renderer: "2d" | "3d" = "2d";
   hovered: string | null = null;
 
   private floor: FloorMap = FLOORS.f1;
@@ -245,19 +247,28 @@ export class HallEngine {
 
   // 화면 좌표(CSS px)에 있는 방을 찾아 마우스 모양을 바꾸는 데 쓴다.
   pointerMove(cssX: number, cssY: number) {
+    const [wx, wy] = this.pick(cssX, cssY);
+    return this.hoverWorld(wx, wy);
+  }
+
+  pointerClick(cssX: number, cssY: number) {
+    const [wx, wy] = this.pick(cssX, cssY);
+    this.clickWorld(wx, wy);
+  }
+
+  // 세계 좌표(px)로 직접 가리키기. 3D 화면은 바닥면 광선 교차점으로 이것을 부른다.
+  hoverWorld(wx: number, wy: number) {
     if (this.mode !== "play") {
       this.hovered = null;
       return null;
     }
-    const [wx, wy] = this.pick(cssX, cssY);
     const spot = this.spotAt(wx, wy);
     this.hovered = spot?.id ?? null;
     return this.hovered;
   }
 
-  pointerClick(cssX: number, cssY: number) {
+  clickWorld(wx: number, wy: number) {
     if (this.mode !== "play" || this.locked || this.fading) return;
-    const [wx, wy] = this.pick(cssX, cssY);
     const spot = this.spotAt(wx, wy);
     if (spot) {
       if (Math.hypot(spot.x - this.x, spot.y - this.y) < TALK_RADIUS) {
@@ -271,6 +282,26 @@ export class HallEngine {
     const ty = Math.floor(wy / TILE);
     if (tx < 0 || ty < 0 || tx >= MAP_W || ty >= MAP_H) return;
     this.walkTo({ x: wx, y: wy }, null);
+  }
+
+  // 3D 화면이 매 프레임 읽는 현재 상태
+  view() {
+    const near = this.mode === "play" && !this.locked ? this.nearest(TALK_RADIUS) : null;
+    return {
+      floor: this.floor,
+      x: this.x,
+      y: this.y,
+      moving: Math.hypot(this.vx, this.vy) > 8,
+      vx: this.vx,
+      vy: this.vy,
+      time: this.time,
+      marker: this.marker,
+      envelopes: this.envelopes,
+      hovered: this.hovered,
+      nearId: near?.id ?? null,
+      zoom: this.userZoom,
+      fade: this.fade,
+    };
   }
 
   private open(spot: Spot) {
@@ -373,7 +404,7 @@ export class HallEngine {
       this.step(1 / 60);
       this.acc -= 1 / 60;
     }
-    this.draw();
+    if (this.renderer === "2d") this.draw();
     this.raf = requestAnimationFrame(this.frame);
   };
 
