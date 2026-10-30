@@ -1,0 +1,172 @@
+[
+  {
+    "doc_id": "passport-act",
+    "dept_id": "D-CIVIL",
+    "title": "여권법 [시행 2026. 8. 28.] [법률 제21383호, 2026. 2. 27., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=283681",
+    "fetched_at": "2026-10-30",
+    "pages": 6
+  },
+  {
+    "doc_id": "passport-act-decree",
+    "dept_id": "D-CIVIL",
+    "title": "여권법 시행령 [시행 2026. 3. 1.] [대통령령 제36078호, 2026. 2. 10., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=283271",
+    "fetched_at": "2026-10-30",
+    "pages": 12
+  },
+  {
+    "doc_id": "passport-act-rule",
+    "dept_id": "D-CIVIL",
+    "title": "여권법 시행규칙 [시행 2026. 6. 1.] [외교부령 제160호, 2026. 6. 1., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=286665",
+    "fetched_at": "2026-10-30",
+    "pages": 6
+  },
+  {
+    "doc_id": "passport-guide-issue",
+    "dept_id": "D-CIVIL",
+    "title": "외교부 여권안내 - 여권 신청·발급(최초·긴급·여행증명서·분실) (2026-10-30 수집)",
+    "year": 2026,
+    "publisher": "외교부 여권안내",
+    "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=2",
+    "fetched_at": "2026-10-30",
+    "pages": 9,
+    "sources": [
+      {
+        "title": "여권안내 페이지: 02_여권신청·발급 - 최초 발급 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=2"
+      },
+      {
+        "title": "여권안내 페이지: 03_여권신청·발급 - 최초 발급 - 18세 이상",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=3"
+      },
+      {
+        "title": "여권안내 페이지: 04_여권신청·발급 - 최초 발급 - 18세 미만",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=4"
+      },
+      {
+        "title": "여권안내 페이지: 05_여권신청·발급 - 최초 발급 - 병역의무자",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=5"
+      },
+      {
+        "title": "여권안내 페이지: 15_여권신청·발급 - 긴급여권 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=15"
+      },
+      {
+        "title": "여권안내 페이지: 16_여권신청·발급 - 긴급여권 - 48시간내 발급여권(전자여권)",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=16"
+      },
+      {
+        "title": "여권안내 페이지: 21_여권신청·발급 - 여행증명서 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=21"
+      },
+      {
+        "title": "여권안내 페이지: 24_여권신청·발급 - 종전여권 병행발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=24"
+      },
+      {
+        "title": "여권안내 페이지: 26_여권신청·발급 - 여권 분실·습득",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=26"
+      }
+    ]
+  },
+  {
+    "doc_id": "passport-guide-reissue",
+    "dept_id": "D-CIVIL",
+    "title": "외교부 여권안내 - 여권 재발급(유효기간 만료·정보 변경·훼손 분실·온라인) (2026-10-30 수집)",
+    "year": 2026,
+    "publisher": "외교부 여권안내",
+    "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=7",
+    "fetched_at": "2026-10-30",
+    "pages": 5,
+    "sources": [
+      {
+        "title": "여권안내 페이지: 07_여권신청·발급 - 재발급 - 유효기간 만료에 따른 재발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=7"
+      },
+      {
+        "title": "여권안내 페이지: 08_여권신청·발급 - 재발급 - 여권 수록 정보의 정정·변경에 따른 재발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=8"
+      },
+      {
+        "title": "여권안내 페이지: 09_여권신청·발급 - 재발급 - 여권 훼손 · 분실에 따른 재발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=9"
+      },
+      {
+        "title": "여권안내 페이지: 11_여권신청·발급 - 온라인 재발급 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=11"
+      },
+      {
+        "title": "여권안내 페이지: 12_여권신청·발급 - 온라인 재발급 - 온라인용 사진파일 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=12"
+      }
+    ]
+  },
+  {
+    "doc_id": "passport-guide-basics",
+    "dept_id": "D-CIVIL",
+    "title": "외교부 여권안내 - 여권 사진·로마자 성명·수수료·기재사항 변경·사용 안내 (2026-10-30 수집)",
+    "year": 2026,
+    "publisher": "외교부 여권안내",
+    "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=32",
+    "fetched_at": "2026-10-30",
+    "pages": 8,
+    "sources": [
+      {
+        "title": "여권안내 페이지: 32_여권기본사항 - 여권 사진 - 여권 사진",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=32"
+      },
+      {
+        "title": "여권안내 페이지: 36_여권기본사항 - 로마자 성명 표기 규정 - 로마자성명 표기 제도",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=36"
+      },
+      {
+        "title": "여권안내 페이지: 37_여권기본사항 - 로마자 성명 표기 규정 - 로마자성명 표기의 기본방법",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=37"
+      },
+      {
+        "title": "여권안내 페이지: 39_여권기본사항 - 로마자 성명 표기 규정 - 로마자성명 표기의 변경 허용 요건",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=39"
+      },
+      {
+        "title": "여권안내 페이지: 41_여권기본사항 - 수수료 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=41"
+      },
+      {
+        "title": "여권안내 페이지: 43_여권기본사항 - 기재사항 변경제도",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=43"
+      },
+      {
+        "title": "여권안내 페이지: 50_여권기본사항 - 여권사용안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=50"
+      }
+    ]
+  },
+  {
+    "doc_id": "passport-use-restriction-notice",
+    "dept_id": "D-CIVIL",
+    "title": "‘여권의 사용제한 등’에 관한 고시 [시행 2026. 7. 9.] [외교부고시 제2026-8호]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000283768",
+    "fetched_at": "2026-10-30",
+    "pages": 4
+  },
+  {
+    "doc_id": "passport-romanization-notice",
+    "dept_id": "D-CIVIL",
+    "title": "여권 통계 상 일정 수준 이상의 사람이 사용하고 있어 로마자 성명의 정정 또는 변경이 되지 않는 기준에 관한 고시 [시행 2024. 12. 31.] [외교부고시 제2024-10호, 2024. 12. 31., 일부개정]",
+    "year": 2024,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000252156",
+    "fetched_at": "2026-10-30",
+    "pages": 1
+  }
+]
