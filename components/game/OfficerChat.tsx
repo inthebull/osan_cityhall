@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { BookOpen, Lock, Send } from "lucide-react";
+import { officerForDept } from "@/lib/officers/officer";
 
 type Citation = { id: string; title: string; page: number; kind?: "manual" | "duty"; source_url: string; text: string };
 type Answer = { found: boolean; answer: string; citations: Citation[]; locked?: boolean; error?: string };
@@ -19,6 +20,7 @@ export function OfficerChat({
   onClose?: () => void;
   prefill?: { text: string; n: number };
 }) {
+  const officer = officerForDept(deptId);
   const [question, setQuestion] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
   const [busy, setBusy] = useState(false);
@@ -83,9 +85,16 @@ export function OfficerChat({
         <span className="rounded-sm border-2 border-navy bg-paper-2 px-2 text-xs font-semibold text-navy">답변은 초안</span>
       </div>
       <p className="mt-1 text-sm leading-relaxed">자리별 업무 목록·분장사무와 내려받은 지침에서 근거를 찾아 답합니다. 자료에 없으면 없다고 말씀드리고, 최종 판단은 담당자가 합니다.</p>
-      <a href={`/handover?dept=${deptId}`} className="mt-1 inline-block text-xs font-semibold text-mint underline">
-        이 부서 인수인계 슬라이드 보기
-      </a>
+      <div className="mt-1 flex flex-wrap gap-x-3 text-xs font-semibold">
+        <a href={`/handover?dept=${deptId}`} className="text-mint underline">
+          이 부서 인수인계 슬라이드 보기
+        </a>
+        {officer && (
+          <a href={`/officer/${officer.officer_id}`} className="text-navy underline">
+            {officer.name} 자리로 가기 (안내문·응대 연습·음성)
+          </a>
+        )}
+      </div>
 
       <div className="mt-3 max-h-64 space-y-3 overflow-y-auto pr-1">
         {turns.map((turn, i) => (

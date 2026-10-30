@@ -1,1 +1,392 @@
-[]
+[
+  {
+    "doc_id": "passport-act",
+    "dept_id": "D-CIVIL",
+    "title": "여권법 [시행 2026. 8. 28.] [법률 제21383호, 2026. 2. 27., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=283681",
+    "fetched_at": "2026-10-30",
+    "pages": 6
+  },
+  {
+    "doc_id": "passport-act-decree",
+    "dept_id": "D-CIVIL",
+    "title": "여권법 시행령 [시행 2026. 3. 1.] [대통령령 제36078호, 2026. 2. 10., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=283271",
+    "fetched_at": "2026-10-30",
+    "pages": 12
+  },
+  {
+    "doc_id": "passport-act-rule",
+    "dept_id": "D-CIVIL",
+    "title": "여권법 시행규칙 [시행 2026. 6. 1.] [외교부령 제160호, 2026. 6. 1., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=286665",
+    "fetched_at": "2026-10-30",
+    "pages": 6
+  },
+  {
+    "doc_id": "passport-guide-issue",
+    "dept_id": "D-CIVIL",
+    "title": "외교부 여권안내 - 여권 신청·발급(최초·긴급·여행증명서·분실) (2026-10-30 수집)",
+    "year": 2026,
+    "publisher": "외교부 여권안내",
+    "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=2",
+    "fetched_at": "2026-10-30",
+    "pages": 9,
+    "sources": [
+      {
+        "title": "여권안내 페이지: 02_여권신청·발급 - 최초 발급 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=2"
+      },
+      {
+        "title": "여권안내 페이지: 03_여권신청·발급 - 최초 발급 - 18세 이상",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=3"
+      },
+      {
+        "title": "여권안내 페이지: 04_여권신청·발급 - 최초 발급 - 18세 미만",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=4"
+      },
+      {
+        "title": "여권안내 페이지: 05_여권신청·발급 - 최초 발급 - 병역의무자",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=5"
+      },
+      {
+        "title": "여권안내 페이지: 15_여권신청·발급 - 긴급여권 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=15"
+      },
+      {
+        "title": "여권안내 페이지: 16_여권신청·발급 - 긴급여권 - 48시간내 발급여권(전자여권)",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=16"
+      },
+      {
+        "title": "여권안내 페이지: 21_여권신청·발급 - 여행증명서 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=21"
+      },
+      {
+        "title": "여권안내 페이지: 24_여권신청·발급 - 종전여권 병행발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=24"
+      },
+      {
+        "title": "여권안내 페이지: 26_여권신청·발급 - 여권 분실·습득",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=26"
+      }
+    ]
+  },
+  {
+    "doc_id": "passport-guide-reissue",
+    "dept_id": "D-CIVIL",
+    "title": "외교부 여권안내 - 여권 재발급(유효기간 만료·정보 변경·훼손 분실·온라인) (2026-10-30 수집)",
+    "year": 2026,
+    "publisher": "외교부 여권안내",
+    "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=7",
+    "fetched_at": "2026-10-30",
+    "pages": 5,
+    "sources": [
+      {
+        "title": "여권안내 페이지: 07_여권신청·발급 - 재발급 - 유효기간 만료에 따른 재발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=7"
+      },
+      {
+        "title": "여권안내 페이지: 08_여권신청·발급 - 재발급 - 여권 수록 정보의 정정·변경에 따른 재발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=8"
+      },
+      {
+        "title": "여권안내 페이지: 09_여권신청·발급 - 재발급 - 여권 훼손 · 분실에 따른 재발급",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=9"
+      },
+      {
+        "title": "여권안내 페이지: 11_여권신청·발급 - 온라인 재발급 - 기본사항 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=11"
+      },
+      {
+        "title": "여권안내 페이지: 12_여권신청·발급 - 온라인 재발급 - 온라인용 사진파일 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=12"
+      }
+    ]
+  },
+  {
+    "doc_id": "passport-guide-basics",
+    "dept_id": "D-CIVIL",
+    "title": "외교부 여권안내 - 여권 사진·로마자 성명·수수료·기재사항 변경·사용 안내 (2026-10-30 수집)",
+    "year": 2026,
+    "publisher": "외교부 여권안내",
+    "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=32",
+    "fetched_at": "2026-10-30",
+    "pages": 8,
+    "sources": [
+      {
+        "title": "여권안내 페이지: 32_여권기본사항 - 여권 사진 - 여권 사진",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=32"
+      },
+      {
+        "title": "여권안내 페이지: 36_여권기본사항 - 로마자 성명 표기 규정 - 로마자성명 표기 제도",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=36"
+      },
+      {
+        "title": "여권안내 페이지: 37_여권기본사항 - 로마자 성명 표기 규정 - 로마자성명 표기의 기본방법",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=37"
+      },
+      {
+        "title": "여권안내 페이지: 39_여권기본사항 - 로마자 성명 표기 규정 - 로마자성명 표기의 변경 허용 요건",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=39"
+      },
+      {
+        "title": "여권안내 페이지: 41_여권기본사항 - 수수료 안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=41"
+      },
+      {
+        "title": "여권안내 페이지: 43_여권기본사항 - 기재사항 변경제도",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=43"
+      },
+      {
+        "title": "여권안내 페이지: 50_여권기본사항 - 여권사용안내",
+        "source_url": "https://www.passport.go.kr/home/kor/contents.do?menuPos=50"
+      }
+    ]
+  },
+  {
+    "doc_id": "passport-use-restriction-notice",
+    "dept_id": "D-CIVIL",
+    "title": "‘여권의 사용제한 등’에 관한 고시 [시행 2026. 7. 9.] [외교부고시 제2026-8호]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000283768",
+    "fetched_at": "2026-10-30",
+    "pages": 4
+  },
+  {
+    "doc_id": "passport-romanization-notice",
+    "dept_id": "D-CIVIL",
+    "title": "여권 통계 상 일정 수준 이상의 사람이 사용하고 있어 로마자 성명의 정정 또는 변경이 되지 않는 기준에 관한 고시 [시행 2024. 12. 31.] [외교부고시 제2024-10호, 2024. 12. 31., 일부개정]",
+    "year": 2024,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000252156",
+    "fetched_at": "2026-10-30",
+    "pages": 1
+  },
+  {
+    "doc_id": "family-register-act",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계의 등록 등에 관한 법률 [시행 2026. 10. 2.] [법률 제21857호, 2026. 8. 4., 타법개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290741",
+    "fetched_at": "2026-10-30",
+    "pages": 16
+  },
+  {
+    "doc_id": "family-register-rule",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계의 등록 등에 관한 규칙 [시행 2025. 7. 19.] [대법원규칙 제3220호, 2025. 6. 26., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=272659",
+    "fetched_at": "2026-10-30",
+    "pages": 17
+  },
+  {
+    "doc_id": "family-certificate-guideline",
+    "dept_id": "D-CIVIL",
+    "title": "등록사항별 증명서의 발급 등에 관한 사무처리지침 [시행 2025. 7. 19.] [가족관계등록예규 제641호, 2025. 7. 7., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000107577",
+    "fetched_at": "2026-10-30",
+    "pages": 4
+  },
+  {
+    "doc_id": "family-report-identity-check",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계등록신고사건 접수시 신고인 등 확인방법 [시행 2022. 7. 22.] [가족관계등록예규 제600호, 2022. 7. 20., 일부개정]",
+    "year": 2022,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000103565",
+    "fetched_at": "2026-10-30",
+    "pages": 2
+  },
+  {
+    "doc_id": "family-name-record-method",
+    "dept_id": "D-CIVIL",
+    "title": "가족관계등록부에 성명을 기록하는 방법 [시행 2017. 6. 29.] [가족관계등록예규 제510호, 2017. 6. 29., 일부개정]",
+    "year": 2017,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000103581",
+    "fetched_at": "2026-10-30",
+    "pages": 1
+  },
+  {
+    "doc_id": "disability-welfare-act",
+    "dept_id": "D-ELDER",
+    "title": "장애인복지법 [시행 2026. 10. 2.] [법률 제22024호, 2026. 9. 29., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290211",
+    "fetched_at": "2026-10-30",
+    "pages": 32
+  },
+  {
+    "doc_id": "disability-welfare-act-decree",
+    "dept_id": "D-ELDER",
+    "title": "장애인복지법 시행령 [시행 2026. 9. 1.] [대통령령 제36559호, 2026. 8. 4., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=288467",
+    "fetched_at": "2026-10-30",
+    "pages": 20
+  },
+  {
+    "doc_id": "disability-welfare-act-rule",
+    "dept_id": "D-ELDER",
+    "title": "장애인복지법 시행규칙 [시행 2026. 1. 1.] [보건복지부령 제1149호, 2025. 12. 31., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=282417",
+    "fetched_at": "2026-10-30",
+    "pages": 27
+  },
+  {
+    "doc_id": "disability-grade-criteria",
+    "dept_id": "D-ELDER",
+    "title": "장애정도판정기준 [시행 2026. 7. 1.] [보건복지부고시 제2025-228호]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271088",
+    "fetched_at": "2026-10-30",
+    "pages": 117
+  },
+  {
+    "doc_id": "disability-review-rules",
+    "dept_id": "D-ELDER",
+    "title": "장애정도심사규정 [시행 2025. 2. 21.] [보건복지부고시 제2025-29호, 2025. 2. 21., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000254902",
+    "fetched_at": "2026-10-30",
+    "pages": 3
+  },
+  {
+    "doc_id": "disability-guide-2025-1",
+    "dept_id": "D-ELDER",
+    "title": "2025년 장애인복지 사업안내(1권)",
+    "year": 2025,
+    "publisher": "보건복지부 장애인정책과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1487676",
+    "fetched_at": "2026-10-30",
+    "pages": 505
+  },
+  {
+    "doc_id": "disability-guide-2026-2",
+    "dept_id": "D-ELDER",
+    "title": "2026년 장애인복지 사업안내 2",
+    "year": 2026,
+    "publisher": "보건복지부 장애인권익지원과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1489919",
+    "fetched_at": "2026-10-30",
+    "pages": 556
+  },
+  {
+    "doc_id": "elderly-care-guide-2026",
+    "dept_id": "D-ELDER",
+    "title": "2026년 노인맞춤돌봄서비스 사업안내 (개정, 2026.7.27. 시행)",
+    "year": 2026,
+    "publisher": "보건복지부 노인정책과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1491777",
+    "fetched_at": "2026-10-30",
+    "pages": 215
+  },
+  {
+    "doc_id": "elderly-care-guide-2026-changes",
+    "dept_id": "D-ELDER",
+    "title": "2026년 노인맞춤돌봄서비스 사업안내 개정이유 및 주요내용 (2026.7.27. 시행)",
+    "year": 2026,
+    "publisher": "보건복지부 노인정책과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1491777",
+    "fetched_at": "2026-10-30",
+    "pages": 8
+  },
+  {
+    "doc_id": "elderly-welfare-act",
+    "dept_id": "D-ELDER",
+    "title": "노인복지법 [시행 2026. 10. 2.] [법률 제22020호, 2026. 9. 29., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290133",
+    "fetched_at": "2026-10-30",
+    "pages": 21
+  },
+  {
+    "doc_id": "elderly-welfare-act-decree",
+    "dept_id": "D-ELDER",
+    "title": "노인복지법 시행령 [시행 2026. 1. 24.] [대통령령 제36050호, 2026. 1. 20., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=282799",
+    "fetched_at": "2026-10-30",
+    "pages": 11
+  },
+  {
+    "doc_id": "funeral-act",
+    "dept_id": "D-ELDER",
+    "title": "장사 등에 관한 법률 [시행 2025. 1. 24.] [법률 제20110호, 2024. 1. 23., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=259173",
+    "fetched_at": "2026-10-30",
+    "pages": 9
+  },
+  {
+    "doc_id": "funeral-act-decree",
+    "dept_id": "D-ELDER",
+    "title": "장사 등에 관한 법률 시행령 [시행 2026. 3. 24.] [대통령령 제36220호, 2026. 3. 24., 타법개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=284837",
+    "fetched_at": "2026-10-30",
+    "pages": 13
+  },
+  {
+    "doc_id": "funeral-act-rule",
+    "dept_id": "D-ELDER",
+    "title": "장사 등에 관한 법률 시행규칙 [시행 2026. 4. 3.] [보건복지부령 제1170호, 2026. 4. 3., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=285427",
+    "fetched_at": "2026-10-30",
+    "pages": 19
+  },
+  {
+    "doc_id": "funeral-guide",
+    "dept_id": "D-ELDER",
+    "title": "2024년 장사정책 추진 우수사례 및 민원답변 모음집 (보건복지부, 2024.3.)",
+    "year": 2024,
+    "publisher": "보건복지부 노인지원과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1480763",
+    "fetched_at": "2026-10-30",
+    "pages": 392
+  },
+  {
+    "doc_id": "elderly-welfare-guide-2026-1",
+    "dept_id": "D-ELDER",
+    "title": "2026년 노인보건복지 사업안내(Ⅰ) 발췌: 2-3 경로당 운영·2-4 노인복지관 설치·운영·2-5 노인교실 (PDF 64~130쪽, 책 쪽수 60~126)",
+    "year": 2026,
+    "publisher": "보건복지부 노인정책과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1488990",
+    "fetched_at": "2026-10-30",
+    "pages": 67
+  },
+  {
+    "doc_id": "elderly-welfare-act-rule",
+    "dept_id": "D-ELDER",
+    "title": "노인복지법 시행규칙 [시행 2025. 12. 29.] [보건복지부령 제1143호, 2025. 12. 29., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=282119",
+    "fetched_at": "2026-10-30",
+    "pages": 51
+  }
+]

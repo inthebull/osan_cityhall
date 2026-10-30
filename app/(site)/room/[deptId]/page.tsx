@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { getDept, listDepts } from "@/lib/map/data";
+import { officerForDept } from "@/lib/officers/officer";
 
 export function generateStaticParams() {
   return listDepts().map((d) => ({ deptId: d.dept_id }));
@@ -15,15 +17,22 @@ export default async function RoomPage({ params }: { params: Promise<{ deptId: s
   const { deptId } = await params;
   const dept = getDept(deptId);
   if (!dept) notFound();
+  const officer = officerForDept(dept.dept_id);
   return (
     <div className="space-y-4">
       <div>
         <h1 className="text-xl font-bold">{dept.name}</h1>
         <p className="text-sm opacity-70">{[dept.bureau, dept.phone].filter(Boolean).join(" · ") || "대표번호 확인 필요"}</p>
       </div>
+      {officer ? (
+        <Link href={`/officer/${officer.officer_id}`} className="block rounded-md border-2 border-navy bg-mint-2 px-3 py-2 text-sm text-navy">
+          <b>{officer.name}</b>이(가) 근무 중입니다. 업무 묻기 · 안내문 만들기 · 응대 연습 →
+        </Link>
+      ) : (
       <div className="rounded-md border border-amber-500/40 bg-amber-100/40 dark:bg-amber-900/20 px-3 py-2 text-sm">
         부서 자료 수집 중입니다. 자료가 들어오면 이 방의 AI 주무관이 일을 시작합니다.
       </div>
+      )}
       <div className="grid gap-3 sm:grid-cols-3">
         {sections.map((s) => (
           <section key={s.key} className="rounded-lg border border-black/10 dark:border-white/10 p-4">
