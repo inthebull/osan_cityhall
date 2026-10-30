@@ -1,8 +1,14 @@
 // 인수인계 슬라이드 묶음. 구조와 근거는 코드가 자리별 업무 데이터로 만들고,
 // AI는 업무별 쉬운 설명·유의점·첫 주 할 일 문장만 채운다(없으면 기본 문장).
+// 맞춤 자료(packs)가 있는 업무는 지침 원문 쪽을 근거로 단 장을 덧붙인다.
 import { basisStrength, basisText, seatsOf, type DutyTask, type Seat } from "@/lib/kb/duties";
+import type { Pack, PackItem, PackSource } from "./packs";
 
-export type SlideKind = "cover" | "overview" | "task" | "partners" | "firstweek" | "ask";
+export type SlideKind = "cover" | "overview" | "task" | "pack" | "partners" | "firstweek" | "ask";
+
+// 화면·PPT에 보여 줄 근거: 문서 제목, 쪽, 원문 인용, 출처 주소
+export type SlideSource = { title: string; page: number; quote: string; url: string };
+export type ResolveSource = (s: PackSource) => SlideSource;
 
 export type Slide = {
   id: string;
@@ -13,6 +19,7 @@ export type Slide = {
   tag?: string;
   basis?: { text: string; strength: "direct" | "review" | "none" };
   question?: string; // "이 장에 대해 묻기"에 미리 채울 질문
+  sources?: SlideSource[];
 };
 
 export type AiText = {
@@ -48,7 +55,81 @@ function defaultTip(t: DutyTask): string {
   return "최근 1년 처리 문서를 훑어보고, 반복되는 일정과 서식을 먼저 익히세요.";
 }
 
-export function buildDeck(seat: Seat, deptName: string, ai: AiText = {}): Slide[] {
+const SECTION_ICON: Record<string, string> = {
+  law: "근거 법령",
+  process: "처리 절차",
+  documents: "필요 서류·서식",
+  fees: "수수료·기한",
+  pitfalls: "자주 틀리는 점",
+  partners: "함께 일하는 곳",
+  faq: "자주 묻는 질문",
+};
+
+function sourcesOf(items: PackItem[], resolve: ResolveSource): SlideSource[] {
+  const seen = new Set<string>();
+  const out: SlideSource[] = [];
+  for (const src of items.flatMap((i) => i.sources)) {
+    const key = `${src.doc_id}:${src.page}:${src.quote}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(resolve(src));
+  }
+  return out;
+}
+
+// 맞춤 자료 한 묶음을 장으로 바꾼다: 섹션 하나 = 한 장
+export function packSlides(pack: Pack, resolve: ResolveSource): Slide[] {
+  return pack.sections.map((sec, i) => ({
+    id: `pack-${pack.pack_id}-${i}`,
+    kind: "pack" as const,
+    title: `${pack.title} · ${sec.title}`,
+    tag: SECTION_ICON[sec.kind] ?? sec.title,
+    bullets: sec.items.map((it) => it.text),
+    sources: sourcesOf(sec.items, resolve),
+    question: `${pack.title}의 ${sec.title}에 대해 더 알려 주세요.`,
+  }));
+}
+
+// 업무 하나만 다루는 인수인계 묶음(시범 업무용)
+export function buildPackDeck(pack: Pack, deptName: string, resolve: ResolveSource): Slide[] {
+  return [
+    {
+      id: "cover",
+      kind: "cover",
+      title: pack.title,
+      subtitle: `${deptName} ${pack.team} · 업무 인수인계 안내 · AI 초안`,
+      bullets: ["이 자료의 모든 문장에는 지침·법령 원문의 쪽 번호와 인용이 붙어 있습니다. 원문과 다르면 원문이 우선합니다."],
+    },
+    {
+      id: "summary",
+      kind: "task",
+      title: "이 업무는 무엇인가요",
+      tag: "한눈에 보기",
+      bullets: [pack.summary.text, `이어서 ${pack.sections.map((s) => s.title).join(", ")} 순서로 안내합니다.`],
+      sources: sourcesOf([pack.summary], resolve),
+      question: `${pack.title} 업무를 처음 맡으면 무엇부터 보면 되나요?`,
+    },
+    ...packSlides(pack, resolve),
+    {
+      id: "ask",
+      kind: "ask",
+      title: "모르는 건 AI 주무관에게",
+      subtitle: "내려받은 지침·법령 안에서만 답하고, 근거 쪽을 함께 보여 드립니다",
+      bullets: pack.sections
+        .filter((s) => s.kind === "faq")
+        .flatMap((s) => s.items.map((i) => i.text.split(/[?？]/)[0] + "?"))
+        .slice(0, 3),
+    },
+  ];
+}
+
+export function buildDeck(
+  seat: Seat,
+  deptName: string,
+  ai: AiText = {},
+  packOf: (t: DutyTask) => Pack | undefined = () => undefined,
+  resolve?: ResolveSource,
+): Slide[] {
   const tasks = seat.tasks;
   const shown = tasks.slice(0, MAX_TASK_SLIDES);
   const count = (s: "direct" | "review" | "none") => tasks.filter((t) => basisStrength(t) === s).length;
@@ -70,9 +151,27 @@ export function buildDeck(seat: Seat, deptName: string, ai: AiText = {}): Slide[
     },
   ];
 
+  const used = new Set<string>();
   for (const t of shown) {
     const text = ai.tasks?.[t.task_id];
     const b = basisText(t);
+    const pack = resolve ? packOf(t) : undefined;
+    if (pack && resolve && !used.has(pack.pack_id)) {
+      // 맞춤 자료가 있는 업무: 지침 근거 요약 + 섹션별 장
+      used.add(pack.pack_id);
+      slides.push({
+        id: `task-${t.task_id}`,
+        kind: "task",
+        title: t.title,
+        tag: "맞춤 자료 · 지침 근거",
+        bullets: [pack.summary.text],
+        basis: b ? { text: b, strength: basisStrength(t) } : undefined,
+        sources: sourcesOf([pack.summary], resolve),
+        question: `'${t.title}' 업무를 처음 맡으면 무엇부터 보면 되나요?`,
+      });
+      slides.push(...packSlides(pack, resolve));
+      continue;
+    }
     slides.push({
       id: `task-${t.task_id}`,
       kind: "task",

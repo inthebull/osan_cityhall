@@ -41,6 +41,12 @@ export async function downloadPptx(slides: Slide[], fileName: string, sourceNote
         s.bullets.map((b) => ({ text: b, options: { bullet: s.kind === "firstweek" ? { type: "number" as const } : true } })),
         { x: 0.6, y, w: 12.1, h: s.basis ? 3.4 : 4.6, fontFace: FONT, fontSize: many ? 13 : 18, color: NAVY, valign: "top", paraSpaceAfter: 6 },
       );
+      if (s.sources?.length) {
+        const refs = [...new Set(s.sources.map((x) => `${x.title} ${x.page}쪽`))].join(" · ");
+        slide.addText(`근거: ${refs}`, {
+          x: 0.6, y: 6.35, w: 12.1, h: 0.5, fontFace: FONT, fontSize: 10, color: MINT, valign: "top",
+        });
+      }
       if (s.basis) {
         const label = s.basis.strength === "direct" ? "근거 확인" : s.basis.strength === "review" ? "근거 검토 필요" : "확인 필요";
         slide.addText(`근거 (${label})\n${s.basis.text}`, {

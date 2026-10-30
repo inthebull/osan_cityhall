@@ -3,14 +3,36 @@ import { NextResponse } from "next/server";
 import { MODELS } from "@/lib/ai/models";
 import { HANDOVER_DECK_PROMPT } from "@/lib/ai/prompts/handover-deck";
 import { isUnlocked } from "@/lib/auth/demo";
-import { buildDeck, MAX_TASK_SLIDES, sanitizeAi, type AiText } from "@/lib/handover/deck";
+import { buildDeck, buildPackDeck, MAX_TASK_SLIDES, sanitizeAi, type AiText, type ResolveSource } from "@/lib/handover/deck";
+import { getPack, packFor } from "@/lib/handover/packs";
 import { basisStrength, basisText, getSeat } from "@/lib/kb/duties";
+import { loadManuals } from "@/lib/kb/manuals";
 import { getDept } from "@/lib/map/data";
 
 export const runtime = "nodejs";
 
+// 맞춤 자료의 근거(doc_id·쪽·인용)를 문서 제목과 출처 주소로 바꾼다.
+const resolve: ResolveSource = (src) => {
+  const doc = loadManuals().docs.find((d) => d.doc_id === src.doc_id);
+  return { title: doc?.title ?? src.doc_id, page: src.page, quote: src.quote, url: doc?.source_url ?? "" };
+};
+
 export async function POST(req: Request) {
-  const { seat_id }: { seat_id?: string } = await req.json().catch(() => ({}));
+  const { seat_id, pack_id }: { seat_id?: string; pack_id?: string } = await req.json().catch(() => ({}));
+
+  if (pack_id) {
+    const pack = getPack(pack_id);
+    const pdept = pack ? getDept(pack.dept_id) : undefined;
+    if (!pack || !pdept) return NextResponse.json({ error: "업무 자료를 찾을 수 없습니다." }, { status: 400 });
+    return NextResponse.json({
+      seat: { seat_id: pack.pack_id, label: pack.title, dept_id: pack.dept_id, dept_name: pdept.name },
+      slides: buildPackDeck(pack, pdept.name, resolve),
+      ai: false,
+      locked: false,
+      draft: true,
+    });
+  }
+
   const seat = seat_id ? getSeat(seat_id) : undefined;
   const dept = seat ? getDept(seat.dept_id) : undefined;
   if (!seat || !dept) return NextResponse.json({ error: "자리를 찾을 수 없습니다." }, { status: 400 });
@@ -44,7 +66,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     seat: { seat_id: seat.seat_id, label: seat.label, dept_id: seat.dept_id, dept_name: dept.name },
-    slides: buildDeck(seat, dept.name, ai),
+    slides: buildDeck(seat, dept.name, ai, (t) => packFor(t.title, seat.dept_id), resolve),
     ai: Object.keys(ai).length > 0,
     locked: Boolean(process.env.ANTHROPIC_API_KEY) && !canUseAi,
     draft: true,

@@ -52,6 +52,7 @@ export function tokenize(text: string): string[] {
 
 export class PassageIndex {
   private docs: { passage: Passage; tf: Map<string, number>; len: number }[] = [];
+  private byId = new Map<string, Passage>();
   private df = new Map<string, number>();
   private avgLen = 0;
 
@@ -62,6 +63,7 @@ export class PassageIndex {
       for (const t of toks) tf.set(t, (tf.get(t) ?? 0) + 1);
       for (const t of tf.keys()) this.df.set(t, (this.df.get(t) ?? 0) + 1);
       this.docs.push({ passage, tf, len: toks.length });
+      this.byId.set(passage.id, passage);
     }
     this.avgLen = this.docs.reduce((s, d) => s + d.len, 0) / Math.max(1, this.docs.length);
   }
@@ -71,7 +73,7 @@ export class PassageIndex {
   }
 
   get(id: string): Passage | undefined {
-    return this.docs.find((d) => d.passage.id === id)?.passage;
+    return this.byId.get(id);
   }
 
   search(query: string, limit = 5, filter?: (p: Passage) => boolean): Hit[] {

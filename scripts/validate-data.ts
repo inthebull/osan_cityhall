@@ -3,6 +3,8 @@ import Ajv2020 from "ajv/dist/2020";
 import addFormats from "ajv-formats";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { PACKS, verifyPack } from "../lib/handover/packs";
+import { loadManuals, pageText } from "../lib/kb/manuals";
 
 const root = process.cwd();
 const read = (p: string) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -63,6 +65,13 @@ for (const s of (duties as { seats: { seat_id: string }[] }).seats ?? []) {
   seatIds.add(s.seat_id);
 }
 if (/\b0\d{1,2}-?\d{3,4}-?\d{4}\b/.test(JSON.stringify(duties))) errors.push("kb/duties.json: 전화번호가 들어 있음");
+
+// 업무별 맞춤 자료: 모든 인용이 지침 원문 해당 쪽에 그대로 있어야 한다
+{
+  const { docs } = loadManuals();
+  const docPages = (id: string) => docs.find((d) => d.doc_id === id && d.kind !== "duty")?.pages;
+  for (const pack of PACKS) errors.push(...verifyPack(pack, docPages, pageText));
+}
 
 // 개인정보 패턴: 주민번호, 휴대전화, 이메일
 const pii: [string, RegExp][] = [

@@ -1,4 +1,5 @@
-import { HandoverStudio, type SeatSummary } from "@/components/handover/HandoverStudio";
+import { HandoverStudio, type PackSummary, type SeatSummary } from "@/components/handover/HandoverStudio";
+import { packFor, PACKS } from "@/lib/handover/packs";
 import { DUTIES } from "@/lib/kb/duties";
 import { listDepts } from "@/lib/map/data";
 
@@ -13,7 +14,9 @@ export default async function HandoverPage({ searchParams }: { searchParams: Pro
     team: s.team,
     label: s.label,
     count: s.tasks.length,
+    packs: new Set(s.tasks.map((t) => packFor(t.title, s.dept_id)?.pack_id).filter(Boolean)).size,
   }));
+  const packs: PackSummary[] = PACKS.map((p) => ({ pack_id: p.pack_id, dept_id: p.dept_id, title: p.title, team: p.team }));
   const initial = depts.some((d) => d.dept_id === dept) ? (dept as string) : depts[0].dept_id;
-  return <HandoverStudio depts={depts} seats={seats} initialDept={initial} />;
+  return <HandoverStudio depts={depts} seats={seats} packs={packs} initialDept={initial} />;
 }

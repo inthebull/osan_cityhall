@@ -5,7 +5,8 @@ import { ChevronLeft, ChevronRight, Download, Lock, MessageCircle, Sparkles } fr
 import { OfficerChat } from "@/components/game/OfficerChat";
 import type { Slide } from "@/lib/handover/deck";
 
-export type SeatSummary = { seat_id: string; dept_id: string; team: string | null; label: string; count: number };
+export type SeatSummary = { seat_id: string; dept_id: string; team: string | null; label: string; count: number; packs: number };
+export type PackSummary = { pack_id: string; dept_id: string; title: string; team: string };
 type Dept = { dept_id: string; name: string };
 type Deck = { seat: { seat_id: string; label: string; dept_name: string }; slides: Slide[]; ai: boolean; locked: boolean };
 
@@ -38,6 +39,29 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
           <b>근거 ({slide.basis.strength === "direct" ? "근거 확인" : slide.basis.strength === "review" ? "근거 검토 필요" : "확인 필요"})</b> {slide.basis.text}
         </div>
       )}
+      {slide.sources && slide.sources.length > 0 && (
+        <details className="mt-2 rounded-sm bg-foam/80 p-2 text-xs">
+          <summary className="cursor-pointer font-semibold text-mint">
+            지침 근거 {slide.sources.length}곳: {[...new Set(slide.sources.map((x) => `${x.title} ${x.page}쪽`))].slice(0, 2).join(", ")}
+            {slide.sources.length > 2 ? " 외" : ""}
+          </summary>
+          <ul className="mt-1 space-y-1">
+            {slide.sources.map((x, i) => (
+              <li key={i}>
+                <b>
+                  {x.title} {x.page}쪽
+                </b>{" "}
+                &ldquo;{x.quote}&rdquo;{" "}
+                {x.url && (
+                  <a href={x.url} target="_blank" rel="noreferrer" className="underline">
+                    원문
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
       <p className={`mt-2 text-[10px] ${cover ? "text-mint-2" : "text-navy/60"}`}>
         {index + 1}/{total}
       </p>
@@ -45,7 +69,17 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
   );
 }
 
-export function HandoverStudio({ depts, seats, initialDept }: { depts: Dept[]; seats: SeatSummary[]; initialDept: string }) {
+export function HandoverStudio({
+  depts,
+  seats,
+  packs,
+  initialDept,
+}: {
+  depts: Dept[];
+  seats: SeatSummary[];
+  packs: PackSummary[];
+  initialDept: string;
+}) {
   const [deptId, setDeptId] = useState(initialDept);
   const [seatId, setSeatId] = useState<string | null>(null);
   const [deck, setDeck] = useState<Deck | null>(null);
@@ -59,7 +93,7 @@ export function HandoverStudio({ depts, seats, initialDept }: { depts: Dept[]; s
   const dept = depts.find((d) => d.dept_id === deptId)!;
   const teams = [...new Set(seats.filter((s) => s.dept_id === deptId).map((s) => s.team ?? "부서장"))];
 
-  async function load(id: string) {
+  async function load(id: string, kind: "seat" | "pack" = "seat") {
     setSeatId(id);
     setLoading(true);
     setError(null);
@@ -67,7 +101,7 @@ export function HandoverStudio({ depts, seats, initialDept }: { depts: Dept[]; s
       const res = await fetch("/api/handover/deck", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ seat_id: id }),
+        body: JSON.stringify(kind === "pack" ? { pack_id: id } : { seat_id: id }),
       });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error);
@@ -92,7 +126,7 @@ export function HandoverStudio({ depts, seats, initialDept }: { depts: Dept[]; s
       return;
     }
     setPasscode("");
-    if (seatId) void load(seatId);
+    if (seatId) void load(seatId, packs.some((p) => p.pack_id === seatId) ? "pack" : "seat");
   }
 
   useEffect(() => {
@@ -135,7 +169,24 @@ export function HandoverStudio({ depts, seats, initialDept }: { depts: Dept[]; s
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[13rem_1fr]">
-        <nav className="max-h-[28rem] space-y-3 overflow-y-auto rounded-md border-2 border-navy/20 p-2 text-sm">
+        <nav className="max-h-[32rem] space-y-3 overflow-y-auto rounded-md border-2 border-navy/20 p-2 text-sm">
+          {packs.some((p) => p.dept_id === deptId) && (
+            <div className="rounded-sm bg-mint-2 p-1">
+              <p className="px-1 text-xs font-semibold text-mint">업무별 맞춤 자료 (시범)</p>
+              {packs
+                .filter((p) => p.dept_id === deptId)
+                .map((p) => (
+                  <button
+                    key={p.pack_id}
+                    type="button"
+                    onClick={() => load(p.pack_id, "pack")}
+                    className={`block w-full rounded-sm px-2 py-1 text-left ${p.pack_id === seatId ? "bg-foam font-semibold" : "hover:bg-foam/70"}`}
+                  >
+                    {p.title} <span className="opacity-60">· {p.team}</span>
+                  </button>
+                ))}
+            </div>
+          )}
           {teams.map((team) => (
             <div key={team}>
               <p className="px-1 text-xs font-semibold text-mint">{team}</p>
@@ -149,6 +200,7 @@ export function HandoverStudio({ depts, seats, initialDept }: { depts: Dept[]; s
                     className={`block w-full rounded-sm px-2 py-1 text-left ${s.seat_id === seatId ? "bg-mint-2 font-semibold" : "hover:bg-paper-2"}`}
                   >
                     {s.label.replace(`${team} `, "")} <span className="opacity-60">· 업무 {s.count}건</span>
+                    {s.packs > 0 && <span className="ml-1 rounded-sm bg-mint px-1 text-[10px] text-foam">맞춤</span>}
                   </button>
                 ))}
             </div>
