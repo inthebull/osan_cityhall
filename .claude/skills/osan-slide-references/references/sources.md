@@ -29,4 +29,5 @@
 | 스위스 격자 디자인 키트 (jsDelivr @wrongstack/core design-kits/swiss-grid) | 글 확인 | 12단·단 사이 24px, 왼쪽 정렬, 글자 단계 비율 약 1.32(12/16/21/28/37/49), 상자 대신 1px 선, 둥근 모서리·그림자·그라데이션 없음, 번호 붙인 절 |
 | Beautiful.ai 템플릿 목록 https://www.beautiful.ai/templates | 목록만 | 큰 숫자, 장 구분, 목차, 시간표, 절차, 표, 아이콘 목록 같은 장 종류 |
 | Slidesgo 업무 템플릿 https://slidesgo.com/business | 소개 글만 | "깔끔한", "차분한 파란색", "결과 중심"이라는 보고형 템플릿 설명 |
-| Canva, Pitch, SlidesCarnival, Behance, Dribbble, Figma Community, Google Slides 갤러리 | 막힘·빈 화면 | 이미지 중심이라 이 환경에서 확인 못 함 |
+| Canva, SlidesCarnival, Behance, Dribbble, Slidesgo, 미리캔버스, 망고보드, KRDS, 정책브리핑 | PC 브라우저 화면 수집(2026-10-30) | [gallery.md](gallery.md)에 정리 |
+| Pitch, Figma Community, Google Slides 갤러리, Pinterest | 막힘·로그인 | 확인 못 함 |

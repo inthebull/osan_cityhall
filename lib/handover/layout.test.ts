@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Slide } from "./deck";
-import { bigNumber, chipsOf, gridOf, layoutOf, officialDate, splitRow, withSections } from "./layout";
+import { bigNumber, chipsOf, kpisOf, gridOf, layoutOf, officialDate, splitRow, withSections } from "./layout";
 
 const slide = (kind: Slide["kind"], bullets: string[], id: string = kind): Slide => ({ id, kind, title: "제목", bullets });
 
@@ -28,6 +28,10 @@ describe("인수인계 장 배치", () => {
     expect(chipsOf("근거 확인 1건 · 검토 필요 3건 · 근거 못 찾음 2건").map((c) => c.tone)).toEqual(["ok", "warn", "bad"]);
     expect(splitRow("관련 부서 근거: 회계과")).toEqual(["관련 부서 근거", "회계과"]);
     expect(splitRow("쌍점 없음")).toEqual(["", "쌍점 없음"]);
+    expect(kpisOf("근거 확인 1건 · 검토 필요 3건 · 메모")).toEqual([
+      { label: "근거 확인", value: "1", tone: "ok" },
+      { label: "검토 필요", value: "3", tone: "warn" },
+    ]);
   });
 
   it("업무 장과 마무리 장 앞에 구분 장을 넣는다", () => {

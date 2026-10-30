@@ -13,6 +13,7 @@ import {
   bigNumber,
   chipsOf,
   gridOf,
+  kpisOf,
   layoutOf,
   officialDate,
   sourceRefs,
@@ -144,8 +145,24 @@ function overview(slide: PSlide, S: Shapes, s: Slide) {
     t({ x: X, y: TOP, w: lw, h: 1.6, valign: "bottom" }),
   );
   slide.addText("이 자리에서 맡게 될 업무", t({ x: X, y: TOP + 1.7, w: lw, h: 0.4, fontSize: 14, color: MUTED }));
-  bar(slide, S, X, TOP + 2.25, 1.1, 0.06, TEAL);
-  slide.addText("근거 상태는 위 칩으로 표시했습니다. '검토 필요'·'못 찾음' 업무는 팀장과 범위를 확인하세요.", t({ x: X, y: TOP + 2.5, w: lw - 0.2, h: 1.2, fontSize: 12, color: INK, valign: "top" }));
+  const kpis = kpisOf(s.subtitle);
+  if (!kpis.length) bar(slide, S, X, TOP + 2.25, 1.1, 0.06, TEAL);
+  // 근거 상태별 건수를 작은 수치 칸으로(레퍼런스 mangoboard_1·behance_1의 숫자 3칸)
+  const ky = TOP + 2.5;
+  const kw = (lw - 0.2 - 0.15 * (kpis.length - 1)) / Math.max(1, kpis.length);
+  kpis.forEach((k, j) => {
+    const kx = X + j * (kw + 0.15);
+    bar(slide, S, kx, ky, kw, 0.04, TONE[k.tone].edge);
+    slide.addText(
+      [
+        { text: k.value, options: { fontSize: 26, bold: true, color: TONE[k.tone].ink, breakLine: true } },
+        { text: k.label, options: { fontSize: 10, color: MUTED } },
+      ],
+      t({ x: kx, y: ky + 0.1, w: kw, h: 0.85, valign: "top" }),
+    );
+  });
+  const ny = kpis.length ? ky + 1.05 : ky;
+  slide.addText("'검토 필요'·'못 찾음' 업무는 팀장과 범위를 확인하세요.", t({ x: X, y: ny, w: lw - 0.2, h: BOTTOM - ny, fontSize: 12, color: INK, valign: "top" }));
   const rx = X + lw + 0.4;
   vrule(slide, S, rx - 0.2, TOP, BOTTOM - TOP);
   list(slide, S, s.bullets, true, rx, TOP, X + W - rx, BOTTOM - TOP);
@@ -202,7 +219,7 @@ function table(slide: PSlide, s: Slide) {
   const thin = { type: "solid" as const, pt: 0.75, color: LINE };
   const headB: [PptxGenJS.BorderProps, PptxGenJS.BorderProps, PptxGenJS.BorderProps, PptxGenJS.BorderProps] = [none, none, { type: "solid", pt: 1.5, color: NAVY }, none];
   const rowB: typeof headB = [none, none, thin, none];
-  const head = { bold: true, color: NAVY, border: headB, fontSize: 12 };
+  const head = { bold: true, color: NAVY, fill: { color: CARD }, border: headB, fontSize: 12 }; // KRDS 표: 옅은 머리 칸
   slide.addTable(
     [
       [{ text: "자리·부서", options: head }, { text: "함께 볼 내용", options: head }],
@@ -250,7 +267,8 @@ function section(slide: PSlide, S: Shapes, s: Slide, i: number, total: number, n
   s.bullets.forEach((b, k) => {
     const y = 1.9 + k * 0.62;
     rule(slide, S, rx, y, X + W - rx, "3A4BA6");
-    slide.addText(b, t({ x: rx, y, w: X + W - rx, h: 0.62, fontSize: 15, color: "FFFFFF", valign: "middle", fit: "shrink" }));
+    slide.addText(String(k + 1).padStart(2, "0"), t({ x: rx, y, w: 0.5, h: 0.62, fontSize: 12, bold: true, color: TEAL, valign: "middle" }));
+    slide.addText(b, t({ x: rx + 0.55, y, w: X + W - rx - 0.55, h: 0.62, fontSize: 15, color: "FFFFFF", valign: "middle", fit: "shrink" }));
   });
   footer(slide, S, { ...s, sources: undefined }, i, total, note, true);
 }

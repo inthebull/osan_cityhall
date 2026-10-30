@@ -55,6 +55,14 @@ export function chipsOf(subtitle?: string): { text: string; tone: Tone }[] {
   }));
 }
 
+// 요약 장 왼쪽의 작은 수치 칸(P09): 칩 중 "n건"이 있는 것만 숫자와 이름으로 나눈다.
+export function kpisOf(subtitle?: string): { label: string; value: string; tone: Tone }[] {
+  return chipsOf(subtitle).flatMap(({ text, tone }) => {
+    const m = text.match(/^(.*?)\s*(\d+)\s*건$/);
+    return m ? [{ label: m[1], value: m[2], tone }] : [];
+  });
+}
+
 export function basisLabel(strength: "direct" | "review" | "none"): string {
   return strength === "direct" ? "근거 확인" : strength === "review" ? "근거 검토 필요" : "확인 필요";
 }

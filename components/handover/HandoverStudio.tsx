@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { ChevronLeft, ChevronRight, Download, Lock, MessageCircle, Sparkles } from "lucide-react";
 import { OfficerChat } from "@/components/game/OfficerChat";
 import type { Slide } from "@/lib/handover/deck";
-import { BADGE, COVER_NOTE, HEADER, SLOGAN_LOGO, basisLabel, basisTone, bigNumber, chipsOf, gridOf, layoutOf, officialDate, sourceRefs, splitRow, withSections, type Tone } from "@/lib/handover/layout";
+import { BADGE, COVER_NOTE, HEADER, SLOGAN_LOGO, basisLabel, basisTone, bigNumber, chipsOf, gridOf, kpisOf, layoutOf, officialDate, sourceRefs, splitRow, withSections, type Tone } from "@/lib/handover/layout";
 
 export type SeatSummary = { seat_id: string; dept_id: string; team: string | null; label: string; count: number; packs: number };
 export type PackSummary = { pack_id: string; dept_id: string; title: string; team: string };
@@ -19,6 +19,7 @@ const TONE_CLASS: Record<Tone, string> = {
   bad: "border-rose bg-[#fde2e1] text-[#8a2e2a]",
   plain: "border-doc-line bg-doc-card text-doc-ink",
 };
+const KPI_CLASS: Record<Tone, string> = { ok: "border-osan-teal text-osan-teal-deep", warn: "border-wood text-[#7a4a12]", bad: "border-rose text-[#8a2e2a]", plain: "border-doc-line text-doc-ink" };
 const PILL_CLASS: Record<Tone, string> = { ok: "bg-osan-teal-deep", warn: "bg-[#7a4a12]", bad: "bg-[#8a2e2a]", plain: "bg-doc-ink" };
 
 // 색·서체는 DESIGN.md, PPT(lib/handover/pptx.ts)와 같은 배치 규칙(lib/handover/layout.ts), 패턴 번호는 osan-slide-references 스킬.
@@ -62,8 +63,15 @@ function SlideBody({ slide }: { slide: Slide }) {
             <span className="text-lg sm:text-2xl"> 건</span>
           </p>
           <p className="mt-1 text-xs text-[#6b7280] sm:text-sm">이 자리에서 맡게 될 업무</p>
-          <span aria-hidden className="mt-2 block h-1 w-10 bg-osan-teal" />
-          <p className="mt-2 hidden text-xs leading-relaxed sm:block">근거 상태는 위 칩으로 표시했습니다. &apos;검토 필요&apos;·&apos;못 찾음&apos; 업무는 팀장과 범위를 확인하세요.</p>
+          <dl className="mt-3 flex gap-2">
+            {kpisOf(slide.subtitle).map((k) => (
+              <div key={k.label} className={`flex-1 border-t-2 pt-1 ${KPI_CLASS[k.tone]}`}>
+                <dd className="text-lg font-bold sm:text-2xl">{k.value}</dd>
+                <dt className="text-[10px] text-[#6b7280] sm:text-xs">{k.label}</dt>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-2 hidden text-xs leading-relaxed sm:block">&apos;검토 필요&apos;·&apos;못 찾음&apos; 업무는 팀장과 범위를 확인하세요.</p>
         </div>
         <NumberedList items={slide.bullets} />
       </div>
@@ -110,8 +118,8 @@ function SlideBody({ slide }: { slide: Slide }) {
       <div className="min-h-0 flex-1 overflow-y-auto">
         <table className="w-full border-collapse text-xs sm:text-sm">
           <thead>
-            <tr className="border-b-2 border-osan-navy text-left text-osan-navy">
-              <th className="w-1/3 py-1 pr-2">자리·부서</th>
+            <tr className="border-b-2 border-osan-navy bg-doc-card text-left text-osan-navy">
+              <th className="w-1/3 py-1 pl-1 pr-2">자리·부서</th>
               <th className="py-1">함께 볼 내용</th>
             </tr>
           </thead>
@@ -239,7 +247,10 @@ function SlideView({ slide, index, total }: { slide: Slide; index: number; total
           </div>
           <ul className="flex-1 text-xs sm:text-base">
             {slide.bullets.map((b, i) => (
-              <li key={i} className="border-t border-[#3a4ba6] py-1 sm:py-2">{b}</li>
+              <li key={i} className="flex gap-2 border-t border-[#3a4ba6] py-1 sm:py-2">
+                <span className="w-6 shrink-0 font-bold text-osan-teal">{String(i + 1).padStart(2, "0")}</span>
+                <span>{b}</span>
+              </li>
             ))}
           </ul>
         </div>
