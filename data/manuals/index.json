@@ -218,5 +218,75 @@
     "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2200000103581",
     "fetched_at": "2026-10-30",
     "pages": 1
+  },
+  {
+    "doc_id": "disability-welfare-act",
+    "dept_id": "D-ELDER",
+    "title": "장애인복지법 [시행 2026. 10. 2.] [법률 제22024호, 2026. 9. 29., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290211",
+    "fetched_at": "2026-10-30",
+    "pages": 32
+  },
+  {
+    "doc_id": "disability-welfare-act-decree",
+    "dept_id": "D-ELDER",
+    "title": "장애인복지법 시행령 [시행 2026. 9. 1.] [대통령령 제36559호, 2026. 8. 4., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=288467",
+    "fetched_at": "2026-10-30",
+    "pages": 20
+  },
+  {
+    "doc_id": "disability-welfare-act-rule",
+    "dept_id": "D-ELDER",
+    "title": "장애인복지법 시행규칙 [시행 2026. 1. 1.] [보건복지부령 제1149호, 2025. 12. 31., 일부개정]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=282417",
+    "fetched_at": "2026-10-30",
+    "pages": 27
+  },
+  {
+    "doc_id": "disability-grade-criteria",
+    "dept_id": "D-ELDER",
+    "title": "장애정도판정기준 [시행 2026. 7. 1.] [보건복지부고시 제2025-228호]",
+    "year": 2026,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271088",
+    "fetched_at": "2026-10-30",
+    "pages": 117
+  },
+  {
+    "doc_id": "disability-review-rules",
+    "dept_id": "D-ELDER",
+    "title": "장애정도심사규정 [시행 2025. 2. 21.] [보건복지부고시 제2025-29호, 2025. 2. 21., 일부개정]",
+    "year": 2025,
+    "publisher": "법제처 국가법령정보센터(행정규칙)",
+    "source_url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000254902",
+    "fetched_at": "2026-10-30",
+    "pages": 3
+  },
+  {
+    "doc_id": "disability-guide-2025-1",
+    "dept_id": "D-ELDER",
+    "title": "2025년 장애인복지 사업안내(1권)",
+    "year": 2025,
+    "publisher": "보건복지부 장애인정책과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1487676",
+    "fetched_at": "2026-10-30",
+    "pages": 505
+  },
+  {
+    "doc_id": "disability-guide-2026-2",
+    "dept_id": "D-ELDER",
+    "title": "2026년 장애인복지 사업안내 2",
+    "year": 2026,
+    "publisher": "보건복지부 장애인권익지원과",
+    "source_url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1489919",
+    "fetched_at": "2026-10-30",
+    "pages": 556
   }
 ]
